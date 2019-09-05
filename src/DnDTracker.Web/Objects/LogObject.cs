@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DnDTracker.Web.Objects
 {
-    [DynamoDBTable("Logs")]
+    [DynamoDBTable("DnDTracker.Logs")]
     public class LogObject : AbstractObject
     {
         [DynamoDBProperty]

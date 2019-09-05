@@ -24,7 +24,7 @@ namespace DnDTracker.Web.Persisters
             var envConfig = Singleton.Get<EnvironmentConfig>();
             var accessKey = envConfig["aws"]?["access_key"]?.ToString();
             var secretKey = envConfig["aws"]?["secret_key"]?.ToString();
-            var endpoint = envConfig["aws"]["endpoint"].ToString();
+            var endpoint = envConfig["aws"]?["endpoint"]?.ToString();
             var credentials = new BasicAWSCredentials(accessKey, secretKey);
             _context = new DynamoDBContext(
                 _client = new AmazonDynamoDBClient(credentials, new AmazonDynamoDBConfig
@@ -34,6 +34,13 @@ namespace DnDTracker.Web.Persisters
                 }));
         }
 
+        /// <summary>
+        /// Asynchronously retrieves all the objects of type <typeparamref name="T"/> with the given tablename.
+        /// </summary>
+        /// <typeparam name="T">The type of IObject.</typeparam>
+        /// <param name="tableName">The guid of the IObject.</param>
+        /// <param name="scanFilter">The optional scan filter (look into AWS ScanFilter documentation).</param>
+        /// <returns></returns>
         public virtual async Task<List<T>> Scan<T>(string tableName, ScanFilter scanFilter = null) where T : IObject
         {
             Table table = Table.LoadTable(_client, tableName);

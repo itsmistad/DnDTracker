@@ -8,9 +8,22 @@ jobs:
       script: dotnet build ./src/DnDTracker.sln -c Release
     - stage: test
       script: dotnet test ./src/DnDTracker.Tests/DnDTracker.Tests.csproj
-#    - stage: deploy
-#      script: ls
+    - stage: deploy
+      deploy:
+        provider: elasticbeanstalk
+        access_key_id:
+          secure: "Encrypted <access-key-id>=$ACCESS_KEY"
+        secret_access_key:
+          secure: "Encypted <secret-access-key>=$SECRET_KEY"
+        region: "us-east-2"
+        app: "dndtracker"
+        env: "dndtracker-$ENVIRONMENT"
+        bucket_name: "dndtracker"
+        on:
+          branches: 
+            - master
+            - develop
 stages:
   - build
   - test
-#  - deploy
+  - deploy
