@@ -16,14 +16,11 @@ jobs:
         secret_access_key:
           secure: "Encypted <secret-access-key>=$SECRET_KEY"
         region: "us-east-2"
-        app: "dndtracker"
+        app: "dndtracker-app"
         env: "dndtracker-$ENVIRONMENT"
-        bucket_name: "dndtracker"
-        on:
-          branches: 
-            - master
-            - develop
+        bucket_name: "dndtracker-$ENVIRONMENT"
 stages:
   - build
   - test
-  - deploy
+  - name: deploy
+    if: branch = master OR branch = develop

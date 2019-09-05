@@ -18,7 +18,10 @@ DnDTracker is a campaign utility and data tracker for Dungeons and Dragons. You 
 This code is open-source and under the [MIT License](https://opensource.org/licenses/MIT).
 
 #### Contributors
-> [itsmistad](https://github.com/itsmistad/), [tylercarey98](https://github.com/TylerCarey98), [nathanielduncan](https://github.com/nathanielduncan), [andrewschlein](https://github.com/AndrewSchlein)
+> [itsmistad](https://github.com/itsmistad/) - Derek Williamson
+> [tylercarey98](https://github.com/TylerCarey98)
+> [nathanielduncan](https://github.com/nathanielduncan)
+> [andrewschlein](https://github.com/AndrewSchlein)
 
 ## Development
 ### Requirements
