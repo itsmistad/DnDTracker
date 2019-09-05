@@ -1,11 +1,11 @@
 language: csharp
-solution: dndtracker.sln
+solution: ./src/DnDTracker.sln
 mono: none
 dotnet: 2.2.401
 jobs:
   include:
     - stage: build
-      script: dotnet build ./src/DnDTracker.sln -c Release
+      script: dotnet build -c Release
     - stage: test
       script: dotnet test ./src/DnDTracker.Tests/DnDTracker.Tests.csproj
     - stage: deploy
