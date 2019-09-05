@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDTracker.Web", "DnDTracker.Web\DnDTracker.Web.csproj", "{408E7835-2F5A-49C8-ADE0-44F1FC7206EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDTracker.Web", "src\DnDTracker.Web\DnDTracker.Web.csproj", "{408E7835-2F5A-49C8-ADE0-44F1FC7206EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnDTracker.Tests", "DnDTracker.Tests\DnDTracker.Tests.csproj", "{7F61C1D2-96FD-43EA-A177-8BE382FEA587}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnDTracker.Tests", "src\DnDTracker.Tests\DnDTracker.Tests.csproj", "{7F61C1D2-96FD-43EA-A177-8BE382FEA587}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,24 +1,22 @@
 language: csharp
-solution: ./src/DnDTracker.sln
+solution: DnDTracker.sln
 mono: none
 dotnet: 2.2.401
 jobs:
   include:
     - stage: build
-      script: dotnet build ./src/DnDTracker.sln -c Release
+      script: dotnet build  -c Release
     - stage: test
       script: dotnet test ./src/DnDTracker.Tests/DnDTracker.Tests.csproj
     - stage: deploy
       deploy:
         provider: elasticbeanstalk
-        access_key_id:
-          secure: "Encrypted <access-key-id>=$ACCESS_KEY"
-        secret_access_key:
-          secure: "Encypted <secret-access-key>=$SECRET_KEY"
-        region: "us-east-2"
-        app: "dndtracker-app"
-        env: "dndtracker-$ENVIRONMENT"
-        bucket_name: "dndtracker-$ENVIRONMENT"
+        access_key_id: $ACCESS_KEY
+        secret_access_key: $SECRET_KEY
+        region: us-east-2
+        app: dndtracker-app
+        env: dndtracker-$ENVIRONMENT
+        bucket_name: dndtracker-$ENVIRONMENT
 stages:
   - build
   - test
