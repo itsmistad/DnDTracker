@@ -5,9 +5,9 @@ dotnet: 2.2.401
 jobs:
   include:
     - stage: build
-      script: dotnet build
+      script: dotnet build ./src/DnDTracker.sln -c Release
     - stage: test
-      script: dotnet test
+      script: dotnet test ./src/DnDTracker.Tests/DnDTracker.Tests.csproj
 #    - stage: deploy
 #      script: ls
 stages:
