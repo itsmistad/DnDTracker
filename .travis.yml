@@ -1,0 +1,16 @@
+language: csharp
+solution: dndtracker.sln
+mono: none
+dotnet: 2.2.401
+jobs:
+  include:
+    - stage: build
+      script: ls # dotnet restore
+    - stage: test
+      script: ls # dotnet test
+    - stage: deploy
+      script: ls # this would be a shell script
+stages:
+  - build
+  - test
+  - deploy # this needs to be configured to only deploy for "master" and "prod"

@@ -1,0 +1,1 @@
+dynamodb-admin -o -p 8001
