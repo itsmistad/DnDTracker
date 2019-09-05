@@ -40,8 +40,7 @@ namespace DnDTracker.Tests
 
             // Assert
             _persister.Verify(_ => _.Save(
-                    It.Is<IObject>(x => x is LogObject && ((LogObject)x).Message == "Test message"),
-                    It.IsAny<Action>()), 
+                It.Is<IObject>(x => x is LogObject && ((LogObject)x).Message == "Test message")), 
                 Times.Once);
         }
     }

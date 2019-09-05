@@ -11,14 +11,12 @@ namespace DnDTracker.Web.Configuration
 {
     public class AppConfig
     {
-        private readonly string _tableName;
         private int _cacheExpirationSeconds;
         private Dictionary<string, DateTime> _timeOfRetrieveal;
         private Dictionary<string, object> _configCache;
 
         public AppConfig()
         {
-            _tableName = "ConfigKeys";
             _cacheExpirationSeconds = 30;
             _timeOfRetrieveal = new Dictionary<string, DateTime>();
 
@@ -31,7 +29,7 @@ namespace DnDTracker.Web.Configuration
 
             _configCache = new Dictionary<string, object>();
             var persister = Singleton.Get<DynamoDbPersister>();
-            var results = Task.Run(async () => await persister.Scan<ConfigKeyObject>(_tableName)).Result;
+            var results = persister.Scan<ConfigKeyObject>(TableName.ConfigKeys);
             foreach (var configKey in results)
             {
                 var key = configKey.Key;
@@ -63,7 +61,7 @@ namespace DnDTracker.Web.Configuration
                 var persister = Singleton.Get<DynamoDbPersister>();
                 var scanFilter = new ScanFilter();
                 scanFilter.AddCondition("Key", ScanOperator.Equal, key);
-                var result = Task.Run(async () => await persister.Scan<ConfigKeyObject>(_tableName, scanFilter)).Result.First();
+                var result = persister.Scan<ConfigKeyObject>(TableName.ConfigKeys).First();
 
                 if (_configCache.ContainsKey(key))
                     _configCache[key] = result;
