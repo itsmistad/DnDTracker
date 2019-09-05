@@ -5,7 +5,7 @@ dotnet: 2.2.401
 jobs:
   include:
     - stage: build
-      script: dotnet restore
+      script: dotnet build
     - stage: test
       script: dotnet test
 #    - stage: deploy
