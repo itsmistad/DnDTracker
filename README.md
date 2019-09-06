@@ -2,10 +2,10 @@ DnDTracker
 =====
 
 `master`    
-[![Build Status](https://travis-ci.org/itsmistad/DnDTracker.svg?branch=master)](https://travis-ci.org/itsmistad/DnDTracker) 
+[![Build Status](https://travis-ci.com/itsmistad/DnDTracker.svg?branch=master)](https://travis-ci.com/itsmistad/DnDTracker) 
 
 `develop`   
-[![Build Status](https://travis-ci.org/itsmistad/DnDTracker.svg?branch=develop)](https://travis-ci.org/itsmistad/DnDTracker)
+[![Build Status](https://travis-ci.com/itsmistad/DnDTracker.svg?branch=develop)](https://travis-ci.com/itsmistad/DnDTracker)
 
 DnDTracker is a campaign utility and data tracker for Dungeons and Dragons.
 
