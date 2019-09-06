@@ -5,18 +5,17 @@ dotnet: 2.2.401
 jobs:
   include:
     - stage: build
-      script: dotnet build  -c Release
+      script: dotnet build -c Release
     - stage: test
       script: dotnet test ./src/DnDTracker.Tests/DnDTracker.Tests.csproj
     - stage: deploy
-      deploy:
-        provider: elasticbeanstalk
-        access_key_id: $ACCESS_KEY
-        secret_access_key: $SECRET_KEY
-        region: us-east-2
-        app: dndtracker-app
-        env: dndtracker-$ENVIRONMENT
-        bucket_name: dndtracker-$ENVIRONMENT
+      script:
+        - dotnet publish -o dndtracker-app
+        - cd dndtracker-app
+        - zip ../dndtracker-app.zip *
+        - cd ..
+        - zip deploy.zip ./dndtracker-app/dndtracker-app.zip aws-windows-deployment-manifest.json
+        - aws eb deploy dndtracker-$ENVIRONMENT
 stages:
   - build
   - test
