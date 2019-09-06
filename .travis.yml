@@ -22,3 +22,5 @@ stages:
   - test
   - name: deploy
     if: branch = master OR branch = develop
+after_failure:
+  - sleep 10
