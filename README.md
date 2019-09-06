@@ -47,6 +47,7 @@ This code is open-source and under the [MIT License](https://opensource.org/lice
 From within `/scripts`, run this within bash to install the admin panel:
 > `./install-dynamodb-admin.sh`
 
+Extract `dynamodb-local` to a `./scripts/dynamodb`.
 Then, run this to start your local DynamoDb instance:
 > `./start-dynamodb.sh`
 
