@@ -26,12 +26,10 @@ namespace DnDTracker.Web.Persisters
             var secretKey = envConfig["aws"]?["secret_key"]?.ToString();
             var endpoint = envConfig["aws"]?["endpoint"]?.ToString();
             var credentials = new BasicAWSCredentials(accessKey, secretKey);
-            _context = new DynamoDBContext(
-                _client = new AmazonDynamoDBClient(credentials, new AmazonDynamoDBConfig
-                {
-                    RegionEndpoint = RegionEndpoint.USEast2,
-                    ServiceURL = endpoint
-                }));
+            var config = new AmazonDynamoDBConfig { RegionEndpoint = RegionEndpoint.USEast2 };
+            if (!string.IsNullOrEmpty(endpoint))
+                config.ServiceURL = endpoint;
+            _context = new DynamoDBContext(_client = new AmazonDynamoDBClient(credentials, config));
         }
 
         /// <summary>
