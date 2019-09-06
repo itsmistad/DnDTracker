@@ -8,31 +8,29 @@ jobs:
       script: dotnet build -c Release
     - stage: test
       script: dotnet test ./src/DnDTracker.Tests/DnDTracker.Tests.csproj
+    - stage: deploy
+      script:
+        - dotnet publish -o $TRAVIS_BUILD_DIR/dndtracker-app
+        - cd $TRAVIS_BUILD_DIR/dndtracker-app
+        - zip ../dndtracker-app.zip *
+        - cd ..
+        - zip deploy.zip ./dndtracker-app.zip ./aws-windows-deployment-manifest.json
+      deploy:
+        - provider: elasticbeanstalk
+          access_key_id: $ACCESS_KEY
+          secret_access_key: $SECRET_KEY
+          region: us-east-2
+          app: dndtracker-app
+          env: dndtracker-$ENVIRONMENT
+          bucket_name: dndtracker-$ENVIRONMENT
+          zip_file: deploy.zip
+          skip_cleanup: true
+          edge: true
 stages:
   - build
   - test
-deploy:
-  - provider: elasticbeanstalk
-    access_key_id: $ACCESS_KEY
-    secret_access_key: $SECRET_KEY
-    region: us-east-2
-    app: dndtracker-app
-    env: dndtracker-$ENVIRONMENT
-    bucket_name: dndtracker-$ENVIRONMENT
-    zip_file: deploy.zip
-    skip_cleanup: true
-    on:
-      branch: develop
-  - provider: elasticbeanstalk
-    access_key_id: $ACCESS_KEY
-    secret_access_key: $SECRET_KEY
-    region: us-east-2
-    app: dndtracker-app
-    env: dndtracker-$ENVIRONMENT
-    bucket_name: dndtracker-$ENVIRONMENT
-    zip_file: deploy.zip
-    skip_cleanup: true
-    on:
-      branch: master
+  - name: deploy
+    if: branch = master OR branch = develop
+
 after_failure:
   - sleep 10
