@@ -87,7 +87,17 @@ namespace DnDTracker.Web.Persisters
         /// <param name="guid">The guid of the IObject.</param>
         public virtual async Task<T> GetAsync<T>(Guid guid) where T : IObject
         {
-            var result = await _context.LoadAsync<T>(guid);
+            var tableMap = Singleton.Get<TableMap>();
+            var tableName = tableMap[typeof(T)];
+            if (string.IsNullOrEmpty(tableName))
+            {
+                Log.Error($"Tried to save an IObject {typeof(T).Name} without an entry in TableMap.");
+                return default;
+            }
+            var result = await _context.LoadAsync<T>(guid, new DynamoDBOperationConfig()
+            {
+                OverrideTableName = tableName
+            });
             return result;
         }
 
@@ -98,7 +108,17 @@ namespace DnDTracker.Web.Persisters
         /// <param name="obj">The persistable object.</param>
         public virtual async void Save<T>(T obj) where T : IObject
         {
-            await _context.SaveAsync(obj);
+            var tableMap = Singleton.Get<TableMap>();
+            var tableName = tableMap[typeof(T)];
+            if (string.IsNullOrEmpty(tableName))
+            {
+                Log.Error($"Tried to save an IObject {typeof(T).Name} without an entry in TableMap.");
+                return;
+            }
+            await _context.SaveAsync(obj, new DynamoDBOperationConfig()
+            {
+                OverrideTableName = tableName
+            });
         }
     }
 }

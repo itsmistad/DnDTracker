@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace DnDTracker.Web.Objects
 {
-    [DynamoDBTable(TableName.Logs)]
     public class LogObject : AbstractObject
     {
         [DynamoDBProperty]

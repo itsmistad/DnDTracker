@@ -29,7 +29,7 @@ namespace DnDTracker.Web.Configuration
 
             _configCache = new Dictionary<string, object>();
             var persister = Singleton.Get<DynamoDbPersister>();
-            var results = persister.Scan<ConfigKeyObject>(TableName.ConfigKeys);
+            var results = persister.Scan<ConfigKeyObject>();
             foreach (var configKey in results)
             {
                 var key = configKey.Key;
@@ -61,7 +61,7 @@ namespace DnDTracker.Web.Configuration
                 var persister = Singleton.Get<DynamoDbPersister>();
                 var scanFilter = new ScanFilter();
                 scanFilter.AddCondition("Key", ScanOperator.Equal, key);
-                var result = persister.Scan<ConfigKeyObject>(TableName.ConfigKeys).First();
+                var result = persister.Scan<ConfigKeyObject>().First();
 
                 if (_configCache.ContainsKey(key))
                     _configCache[key] = result;

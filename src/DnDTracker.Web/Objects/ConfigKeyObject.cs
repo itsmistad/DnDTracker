@@ -1,6 +1,5 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
-using DnDTracker.Web.Persisters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace DnDTracker.Web.Objects
 {
-    [DynamoDBTable(TableName.ConfigKeys)]
     public class ConfigKeyObject : AbstractObject
     {
         [DynamoDBProperty]

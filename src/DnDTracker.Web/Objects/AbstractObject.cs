@@ -1,5 +1,6 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
+using DnDTracker.Web.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace DnDTracker.Web.Objects
         /// </summary>
         [DynamoDBProperty]
         public string CreateDate { get; set; }
-        
+
         /// <summary>
         /// The default base constructor of an IObject. Be sure to include ": base ()" with your object's constructor.
         /// </summary>

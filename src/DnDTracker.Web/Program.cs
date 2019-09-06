@@ -23,6 +23,7 @@ namespace DnDTracker.Web
                 .Add<EnvironmentConfig>(new EnvironmentConfig())
                 .Add<DynamoDbPersister>(new DynamoDbPersister())
                 .Add<AppConfig>(new AppConfig())
+                .Add<TableMap>(new TableMap())
                 // Add more global instances here
                 ;
 
