@@ -1,29 +1,41 @@
 language: csharp
-solution: dndtracker.sln
+solution: DnDTracker.sln
 mono: none
 dotnet: 2.2.401
+
 jobs:
   include:
     - stage: build
-      script: dotnet build ./src/DnDTracker.sln -c Release
+      script: dotnet build -c Release
     - stage: test
       script: dotnet test ./src/DnDTracker.Tests/DnDTracker.Tests.csproj
     - stage: deploy
+      script:
+        - dotnet publish -o $TRAVIS_BUILD_DIR/dndtracker-app
+        - cd $TRAVIS_BUILD_DIR/dndtracker-app
+        - zip ../dndtracker-app.zip *
+        - cd ..
+        - zip deploy.zip ./dndtracker-app.zip ./aws-windows-deployment-manifest.json
       deploy:
-        provider: elasticbeanstalk
-        access_key_id:
-          secure: "Encrypted <access-key-id>=$ACCESS_KEY"
-        secret_access_key:
-          secure: "Encypted <secret-access-key>=$SECRET_KEY"
-        region: "us-east-2"
-        app: "dndtracker"
-        env: "dndtracker-$ENVIRONMENT"
-        bucket_name: "dndtracker"
-        on:
-          branches: 
-            - master
-            - develop
+        - provider: elasticbeanstalk
+          access_key_id: $AWS_ACCESS_KEY_ID
+          secret_access_key:
+            secure: $AWS_SECRET_ACCESS_KEY
+          region: us-east-2
+          app: dndtracker-app
+          env: dndtracker-$ENVIRONMENT
+          bucket_name: dndtracker-$ENVIRONMENT
+          zip_file: deploy.zip
+          skip_cleanup: true
+          edge: true
+          on:
+            branch: $TRAVIS_BRANCH
+          
 stages:
   - build
   - test
-  - deploy
+  - name: deploy
+    if: branch = master OR branch = develop
+
+after_failure:
+  - sleep 10

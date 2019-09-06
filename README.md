@@ -11,14 +11,20 @@ DnDTracker is a campaign utility and data tracker for Dungeons and Dragons. You 
 
 1. Persists information about your current and past campaigns in a database.
 2. Provides the Dungeon Master with an interface of the campaign's current state and event log.
-3. Provides the players with an of their character's and campaign's current state.
+3. Provides the players with an interface of their character's and campaign's current state.
 4. Allows the Dungeon Master to modify the characters' states.
 5. Authenticates users through Google's Auth API.
 
 This code is open-source and under the [MIT License](https://opensource.org/licenses/MIT).
 
 #### Contributors
-> [itsmistad](https://github.com/itsmistad/), [tylercarey98](https://github.com/TylerCarey98), [nathanielduncan](https://github.com/nathanielduncan), [andrewschlein](https://github.com/AndrewSchlein)
+> [itsmistad](https://github.com/itsmistad/) - Derek Williamson
+> 
+> [tylercarey98](https://github.com/TylerCarey98)
+>
+> [nathanielduncan](https://github.com/nathanielduncan)
+>
+> [andrewschlein](https://github.com/AndrewSchlein)
 
 ## Development
 ### Requirements

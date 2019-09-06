@@ -3,9 +3,9 @@
     "deployments": {
         "aspNetCoreWeb": [
         {
-            "name": "dndtracker",
+            "name": "dndtracker-app",
             "parameters": {
-                "appBundle": "deploy.zip",
+                "appBundle": "dndtracker-app.zip",
                 "iisPath": "/",
                 "iisWebSite": "Default Web Site"
             }
