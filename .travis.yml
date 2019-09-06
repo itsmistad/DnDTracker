@@ -2,6 +2,7 @@ language: csharp
 solution: DnDTracker.sln
 mono: none
 dotnet: 2.2.401
+
 jobs:
   include:
     - stage: build
@@ -26,6 +27,9 @@ jobs:
           zip_file: deploy.zip
           skip_cleanup: true
           edge: true
+          on:
+            branch: $TRAVIS_BRANCH
+          
 stages:
   - build
   - test
