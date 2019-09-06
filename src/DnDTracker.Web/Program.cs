@@ -21,9 +21,9 @@ namespace DnDTracker.Web
 
             var singleton = Singleton.Initialize()
                 .Add<EnvironmentConfig>(new EnvironmentConfig())
+                .Add<TableMap>(new TableMap())
                 .Add<DynamoDbPersister>(new DynamoDbPersister())
                 .Add<AppConfig>(new AppConfig())
-                .Add<TableMap>(new TableMap())
                 // Add more global instances here
                 ;
 
