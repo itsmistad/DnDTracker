@@ -30,15 +30,16 @@ namespace DnDTracker.Web.Configuration
             _configCache = new Dictionary<string, object>();
             var persister = Singleton.Get<DynamoDbPersister>();
             var results = persister.Scan<ConfigKeyObject>();
-            foreach (var configKey in results)
-            {
-                var key = configKey.Key;
-                var value = configKey.Value;
-                if (!_configCache.ContainsKey(key))
-                    _configCache.Add(key, value);
-                if (!_timeOfRetrieveal.ContainsKey(key))
-                    _timeOfRetrieveal.Add(key, DateTime.Now);
-            }
+            if (results != null)
+                foreach (var configKey in results)
+                {
+                    var key = configKey.Key;
+                    var value = configKey.Value;
+                    if (!_configCache.ContainsKey(key))
+                        _configCache.Add(key, value);
+                    if (!_timeOfRetrieveal.ContainsKey(key))
+                        _timeOfRetrieveal.Add(key, DateTime.Now);
+                }
         }
 
         public object this[string key]
