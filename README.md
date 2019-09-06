@@ -20,7 +20,7 @@ This code is open-source and under the [MIT License](https://opensource.org/lice
 #### Contributors
 > [itsmistad](https://github.com/itsmistad/) - Derek Williamson
 > 
-> [tylercarey98](https://github.com/TylerCarey98)
+> [tylercarey98](https://github.com/TylerCarey98) - Tyler Carey
 >
 > [nathanielduncan](https://github.com/nathanielduncan)
 >
