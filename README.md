@@ -7,7 +7,11 @@ DnDTracker
 `develop`   
 [![Build Status](https://travis-ci.org/itsmistad/DnDTracker.svg?branch=develop)](https://travis-ci.org/itsmistad/DnDTracker)
 
-DnDTracker is a campaign utility and data tracker for Dungeons and Dragons. You can find the current live version here: https://dnd.mistad.net/. Here's what it does:
+DnDTracker is a campaign utility and data tracker for Dungeons and Dragons.
+
+You can find `master` live [here](https://dnd.mistad.net/) and `develop` [here](https://dev.dnd.mistad.net/).
+
+Here's what it does:
 
 1. Persists information about your current and past campaigns in a database.
 2. Provides the Dungeon Master with an interface of the campaign's current state and event log.
@@ -43,6 +47,7 @@ This code is open-source and under the [MIT License](https://opensource.org/lice
 From within `/scripts`, run this within bash to install the admin panel:
 > `./install-dynamodb-admin.sh`
 
+Extract `dynamodb-local` to a `./scripts/dynamodb`.
 Then, run this to start your local DynamoDb instance:
 > `./start-dynamodb.sh`
 

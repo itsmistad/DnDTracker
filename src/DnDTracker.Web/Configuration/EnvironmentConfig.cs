@@ -102,6 +102,7 @@ namespace DnDTracker.Web.Configuration
     public class Environments
     {
         public static string Local = "local";
+        public static string Development = "dev";
         public static string Production = "prod";
     }
 }

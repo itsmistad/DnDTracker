@@ -26,23 +26,31 @@ namespace DnDTracker.Web.Persisters
             var secretKey = envConfig["aws"]?["secret_key"]?.ToString();
             var endpoint = envConfig["aws"]?["endpoint"]?.ToString();
             var credentials = new BasicAWSCredentials(accessKey, secretKey);
-            _context = new DynamoDBContext(
-                _client = new AmazonDynamoDBClient(credentials, new AmazonDynamoDBConfig
-                {
-                    RegionEndpoint = RegionEndpoint.USEast2,
-                    ServiceURL = endpoint
-                }));
+            var config = new AmazonDynamoDBConfig { RegionEndpoint = RegionEndpoint.USEast2 };
+            if (!string.IsNullOrEmpty(endpoint))
+                config.ServiceURL = endpoint;
+            _context = new DynamoDBContext(_client = new AmazonDynamoDBClient(credentials, config));
         }
 
         /// <summary>
-        /// Asynchronously retrieves all the objects of type <typeparamref name="T"/> with the given tablename.
+        /// Synchronously retrieves all the objects of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type of IObject.</typeparam>
-        /// <param name="tableName">The guid of the IObject.</param>
         /// <param name="scanFilter">The optional scan filter (look into AWS ScanFilter documentation).</param>
-        /// <returns></returns>
-        public virtual async Task<List<T>> Scan<T>(string tableName, ScanFilter scanFilter = null) where T : IObject
+        public virtual List<T> Scan<T>(ScanFilter scanFilter = null) where T: IObject
         {
+            return Task.Run(async () => await ScanAsync<T>(scanFilter)).Result;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves all the objects of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of IObject.</typeparam>
+        /// <param name="scanFilter">The optional scan filter (look into AWS ScanFilter documentation).</param>
+        public virtual async Task<List<T>> ScanAsync<T>(ScanFilter scanFilter = null) where T : IObject
+        {
+            var tableMap = Singleton.Get<TableMap>();
+            var tableName = tableMap[typeof(T)];
             Table table = Table.LoadTable(_client, tableName);
             Search search = table.Scan(scanFilter ?? new ScanFilter());
             List<T> results = new List<T>();
@@ -61,14 +69,33 @@ namespace DnDTracker.Web.Persisters
         }
 
         /// <summary>
+        /// Synchronously retrieves the object of type <typeparamref name="T"/> with the given <paramref name="guid"/> and invokes the <paramref name="callback"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of IObject.</typeparam>
+        /// <param name="guid">The guid of the IObject.</param>
+        public virtual T Get<T>(Guid guid) where T : IObject
+        {
+            return Task.Run(async () => await GetAsync<T>(guid)).Result;
+        }
+
+        /// <summary>
         /// Asynchronously retrieves the object of type <typeparamref name="T"/> with the given <paramref name="guid"/> and invokes the <paramref name="callback"/>.
         /// </summary>
         /// <typeparam name="T">The type of IObject.</typeparam>
         /// <param name="guid">The guid of the IObject.</param>
-        /// <param name="callback">The optional callback action that gets invoked with the result after retrieval.</param>
-        public virtual async Task<T> Get<T>(Guid guid) where T : IObject
+        public virtual async Task<T> GetAsync<T>(Guid guid) where T : IObject
         {
-            var result = await _context.LoadAsync<T>(guid);
+            var tableMap = Singleton.Get<TableMap>();
+            var tableName = tableMap[typeof(T)];
+            if (string.IsNullOrEmpty(tableName))
+            {
+                Log.Error($"Tried to retrieve an IObject {typeof(T).Name} without an entry in TableMap.");
+                return default;
+            }
+            var result = await _context.LoadAsync<T>(guid, new DynamoDBOperationConfig()
+            {
+                OverrideTableName = tableName
+            });
             return result;
         }
 
@@ -77,9 +104,19 @@ namespace DnDTracker.Web.Persisters
         /// </summary>
         /// <typeparam name="T">The type of IObject.</typeparam>
         /// <param name="obj">The persistable object.</param>
-        public virtual async void Save<T>(T obj, Action callback = null) where T : IObject
+        public virtual async void Save<T>(T obj) where T : IObject
         {
-            await _context.SaveAsync(obj);
+            var tableMap = Singleton.Get<TableMap>();
+            var tableName = tableMap[typeof(T)];
+            if (string.IsNullOrEmpty(tableName))
+            {
+                Log.Error($"Tried to save an IObject {typeof(T).Name} without an entry in TableMap.");
+                return;
+            }
+            await _context.SaveAsync(obj, new DynamoDBOperationConfig()
+            {
+                OverrideTableName = tableName
+            });
         }
     }
 }

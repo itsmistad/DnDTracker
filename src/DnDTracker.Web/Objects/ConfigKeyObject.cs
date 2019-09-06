@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace DnDTracker.Web.Objects
 {
-    [DynamoDBTable("DnDTracker.ConfigKeys")]
     public class ConfigKeyObject : AbstractObject
     {
         [DynamoDBProperty]

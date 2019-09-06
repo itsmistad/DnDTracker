@@ -11,14 +11,12 @@ namespace DnDTracker.Web.Configuration
 {
     public class AppConfig
     {
-        private readonly string _tableName;
         private int _cacheExpirationSeconds;
         private Dictionary<string, DateTime> _timeOfRetrieveal;
         private Dictionary<string, object> _configCache;
 
         public AppConfig()
         {
-            _tableName = "ConfigKeys";
             _cacheExpirationSeconds = 30;
             _timeOfRetrieveal = new Dictionary<string, DateTime>();
 
@@ -31,16 +29,17 @@ namespace DnDTracker.Web.Configuration
 
             _configCache = new Dictionary<string, object>();
             var persister = Singleton.Get<DynamoDbPersister>();
-            var results = Task.Run(async () => await persister.Scan<ConfigKeyObject>(_tableName)).Result;
-            foreach (var configKey in results)
-            {
-                var key = configKey.Key;
-                var value = configKey.Value;
-                if (!_configCache.ContainsKey(key))
-                    _configCache.Add(key, value);
-                if (!_timeOfRetrieveal.ContainsKey(key))
-                    _timeOfRetrieveal.Add(key, DateTime.Now);
-            }
+            var results = persister.Scan<ConfigKeyObject>();
+            if (results != null)
+                foreach (var configKey in results)
+                {
+                    var key = configKey.Key;
+                    var value = configKey.Value;
+                    if (!_configCache.ContainsKey(key))
+                        _configCache.Add(key, value);
+                    if (!_timeOfRetrieveal.ContainsKey(key))
+                        _timeOfRetrieveal.Add(key, DateTime.Now);
+                }
         }
 
         public object this[string key]
@@ -63,7 +62,7 @@ namespace DnDTracker.Web.Configuration
                 var persister = Singleton.Get<DynamoDbPersister>();
                 var scanFilter = new ScanFilter();
                 scanFilter.AddCondition("Key", ScanOperator.Equal, key);
-                var result = Task.Run(async () => await persister.Scan<ConfigKeyObject>(_tableName, scanFilter)).Result.First();
+                var result = persister.Scan<ConfigKeyObject>().First();
 
                 if (_configCache.ContainsKey(key))
                     _configCache[key] = result;
