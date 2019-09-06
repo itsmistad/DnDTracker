@@ -7,7 +7,7 @@
             "parameters": {
                 "appBundle": "dndtracker-app.zip",
                 "iisPath": "/",
-                "iisWebSite": "DnDTracker"
+                "iisWebSite": "Default Web Site"
             }
         }
         ]
