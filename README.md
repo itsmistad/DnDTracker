@@ -28,7 +28,7 @@ This code is open-source and under the [MIT License](https://opensource.org/lice
 >
 > [nathanielduncan](https://github.com/nathanielduncan)
 >
-> [andrewschlein](https://github.com/AndrewSchlein)
+> [andrewschlein](https://github.com/AndrewSchlein) - Andrew Schlein
 
 ## Development
 ### Requirements
