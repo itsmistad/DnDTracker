@@ -1,5 +1,6 @@
 DnDTracker
 =====
+**CSCE 3444 Team Name:** Silicon Valley
 
 `master`    
 [![Build Status](https://travis-ci.com/itsmistad/DnDTracker.svg?branch=master)](https://travis-ci.com/itsmistad/DnDTracker) 
