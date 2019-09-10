@@ -26,7 +26,7 @@ This code is open-source and under the [MIT License](https://opensource.org/lice
 > 
 > [tylercarey98](https://github.com/TylerCarey98) - Tyler Carey
 >
-> [nathanielduncan](https://github.com/nathanielduncan)
+> [nathanielduncan](https://github.com/nathanielduncan) - Nathan Duncan
 >
 > [andrewschlein](https://github.com/AndrewSchlein) - Andrew Schlein
 
