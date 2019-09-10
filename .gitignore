@@ -332,3 +332,4 @@ ASALocalRun/
 dynamodb/
 *.db
 env.json
+deploy/

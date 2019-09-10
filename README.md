@@ -40,6 +40,7 @@ This code is open-source and under the [MIT License](https://opensource.org/lice
 4. [dynamodb-local](https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.zip)
 5. [NUnit3 Adapter](https://marketplace.visualstudio.com/items?itemName=NUnitDevelopers.NUnit3TestAdapter)
 6. [.NET Core 2.2 Runtime and SDK](https://dotnet.microsoft.com/download)
+7. [Java](https://www.java.com/en/download/)
 
 ## Setup
 
@@ -48,7 +49,7 @@ This code is open-source and under the [MIT License](https://opensource.org/lice
 From within `/scripts`, run this within bash to install the admin panel:
 > `./install-dynamodb-admin.sh`
 
-Extract `dynamodb-local` to a `./scripts/dynamodb`.
+Extract `dynamodb-local` to `./scripts/dynamodb`.
 Then, run this to start your local DynamoDb instance:
 > `./start-dynamodb.sh`
 
@@ -57,12 +58,32 @@ Finally, run this to start your admin panel:
 
 ## Testing
 
-🤯 Woops. Still need to write this.
+From the base directory of the repo, run this to execute all unit tests:
+> `dotnet test`
 
-## Building
+Alternatively, you can run the tests from within Visual Studio:
 
-🤯 Woops. Still need to write this.
+<img width="300px" src="https://cdn.mistad.net/8677548.png" alt="screenshot of right click on test project hovering over run tests option"/>
 
-## Deploying
+## Building and Running
 
-🤯 Woops. Still need to write this.
+Run this to download the packages and build the app:
+> `dotnet build -c Release`
+
+Then, run this to start it:
+> `dotnet ./src/DnDTracker.Web/bin/Release/netcoreapp2.2/DnDTracker.Web.dll`
+
+Alternatively, you could just use Visual Studio 😉
+
+## Publishing
+
+This script requires the bash `zip` command. This is natively available in unix environments, but not on Windows. You can download it [here](https://sourceforge.net/projects/infozip/).
+
+You can create an AWS ElasticBeanstalk-ready zip file by running this command in `./scripts` AFTER adding credentials to the script file:
+> `./create-deployable.sh`
+
+This will create a `deploy` directory with a `deployables` subdirectory.
+
+`dndtracker-app.zip` is the compiled application. `deploy.zip` is the ElasticBeanstalk-ready deployable.
+
+Please read the comments in the script before running.
