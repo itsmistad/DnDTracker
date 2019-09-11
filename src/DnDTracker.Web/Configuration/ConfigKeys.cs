@@ -7,8 +7,10 @@ namespace DnDTracker.Web.Configuration
 {
     public class ConfigKeys
     {
-        public class Admin
+        public class System
         {
+            public const string PersistLogs = "System.PersistLogs";
+            public const string WelcomeMessage = "System.WelcomeMessage";
         }
     }
 }

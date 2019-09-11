@@ -16,8 +16,8 @@ namespace DnDTracker.Web.Persisters
 {
     public class DynamoDbPersister
     {
-        private DynamoDBContext _context;
-        private AmazonDynamoDBClient _client;
+        public DynamoDBContext Context { get; private set; }
+        public AmazonDynamoDBClient Client { get; private set; }
 
         public DynamoDbPersister()
         {
@@ -29,7 +29,7 @@ namespace DnDTracker.Web.Persisters
             var config = new AmazonDynamoDBConfig { RegionEndpoint = RegionEndpoint.USEast2 };
             if (!string.IsNullOrEmpty(endpoint))
                 config.ServiceURL = endpoint;
-            _context = new DynamoDBContext(_client = new AmazonDynamoDBClient(credentials, config));
+            Context = new DynamoDBContext(Client = new AmazonDynamoDBClient(credentials, config));
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace DnDTracker.Web.Persisters
         {
             var tableMap = Singleton.Get<TableMap>();
             var tableName = tableMap[typeof(T)];
-            Table table = Table.LoadTable(_client, tableName);
+            Table table = Table.LoadTable(Client, tableName);
             Search search = table.Scan(scanFilter ?? new ScanFilter());
             List<T> results = new List<T>();
             do
@@ -92,7 +92,7 @@ namespace DnDTracker.Web.Persisters
                 Log.Error($"Tried to retrieve an IObject {typeof(T).Name} without an entry in TableMap.");
                 return default;
             }
-            var result = await _context.LoadAsync<T>(guid, new DynamoDBOperationConfig()
+            var result = await Context.LoadAsync<T>(guid, new DynamoDBOperationConfig()
             {
                 OverrideTableName = tableName
             });
@@ -113,7 +113,7 @@ namespace DnDTracker.Web.Persisters
                 Log.Error($"Tried to save an IObject {typeof(T).Name} without an entry in TableMap.");
                 return;
             }
-            await _context.SaveAsync(obj, new DynamoDBOperationConfig()
+            await Context.SaveAsync(obj, new DynamoDBOperationConfig()
             {
                 OverrideTableName = tableName
             });

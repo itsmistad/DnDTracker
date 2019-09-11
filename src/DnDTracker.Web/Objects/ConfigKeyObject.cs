@@ -16,6 +16,12 @@ namespace DnDTracker.Web.Objects
 
         public ConfigKeyObject() : base() { }
 
+        public ConfigKeyObject(string key, string value)
+        {
+            Key = key;
+            Value = value;
+        }
+
         public new void FromDocument(Document document)
         {
             base.FromDocument(document);

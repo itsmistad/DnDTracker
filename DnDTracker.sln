@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29209.62
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDTracker.Web", "src\DnDTracker.Web\DnDTracker.Web.csproj", "{408E7835-2F5A-49C8-ADE0-44F1FC7206EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnDTracker.Tests", "src\DnDTracker.Tests\DnDTracker.Tests.csproj", "{7F61C1D2-96FD-43EA-A177-8BE382FEA587}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDTracker.Tests", "src\DnDTracker.Tests\DnDTracker.Tests.csproj", "{7F61C1D2-96FD-43EA-A177-8BE382FEA587}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnDTracker.Migrations", "DnDTracker.Migrations\DnDTracker.Migrations.csproj", "{AF3B4911-9300-4ED3-915C-BF2EC007B766}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{7F61C1D2-96FD-43EA-A177-8BE382FEA587}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F61C1D2-96FD-43EA-A177-8BE382FEA587}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F61C1D2-96FD-43EA-A177-8BE382FEA587}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF3B4911-9300-4ED3-915C-BF2EC007B766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF3B4911-9300-4ED3-915C-BF2EC007B766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF3B4911-9300-4ED3-915C-BF2EC007B766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF3B4911-9300-4ED3-915C-BF2EC007B766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
