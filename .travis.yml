@@ -9,6 +9,10 @@ jobs:
       script: dotnet build -c Release
     - stage: test
       script: dotnet test ./src/DnDTracker.Tests/DnDTracker.Tests.csproj
+    - stage: migrate
+      script: 
+        - cd $TRAVIS_BUILD_DIR/scripts
+        - ./run-migrations.sh
     - stage: deploy
       script:
         - dotnet publish ./src/DnDTracker.Web/DnDTracker.Web.csproj -c Release -o $TRAVIS_BUILD_DIR/dndtracker-app
@@ -35,6 +39,8 @@ jobs:
 stages:
   - build
   - test
+  - name: migrate
+    if: branch = master OR branch = develop
   - name: deploy
     if: branch = master OR branch = develop
 
