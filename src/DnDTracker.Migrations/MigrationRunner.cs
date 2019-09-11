@@ -21,7 +21,7 @@ namespace DnDTracker.Migrations
         /// <param name="targetTimeStamp"></param>
         public static void Start(long? targetTimeStamp = null)
         {
-            var migrationTypes = Assembly.GetExecutingAssembly()
+            var migrationTypes = Assembly.GetCallingAssembly()
                 .GetTypes()
                 .Where(_ => _.GetCustomAttribute(typeof(MigrationAttribute)) != null)
                 .GroupBy(_ => ((MigrationAttribute)_.GetCustomAttribute(typeof(MigrationAttribute))).Type)
@@ -29,15 +29,14 @@ namespace DnDTracker.Migrations
                     _ => _.Key,
                     _ => _.ToList().OrderBy(x => ((MigrationAttribute)x.GetCustomAttribute(typeof(MigrationAttribute))).EpochTimeStamp));
 
+            Console.WriteLine($"Found {migrationTypes.Count} migration types.");
             foreach(var migrationType in migrationTypes)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine($"Running {migrationType.Key.ToString()} migrations:");
+                Console.WriteLine($"Running {migrationType.Value.Count()} {migrationType.Key.ToString()} migrations:");
                 foreach (var migration in migrationType.Value)
                 {
                     var attribute = (MigrationAttribute)migration.GetCustomAttribute(typeof(MigrationAttribute));
 
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine($" - [{attribute.EpochTimeStamp}] {attribute.Name}");
                     var migrationInstance = Activator.CreateInstance(migration);
                     var UpMethod = migration.GetMethod("Up");

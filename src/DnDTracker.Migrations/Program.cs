@@ -9,7 +9,6 @@ namespace DnDTracker.Migrations
     {
         public static void Main(string[] args)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Starting migrator...");
 
             Console.WriteLine("Registering Singleton instances...");
@@ -18,13 +17,11 @@ namespace DnDTracker.Migrations
                 .Add<TableMap>(new TableMap())
                 .Add<DynamoDbPersister>(new DynamoDbPersister());
 
-            var timeStampArg = args != null && args.Length > 0 ? args[0] : "";
+            var timeStampArg = args != null && args.Length > 0 ? args[0] : "N/A";
             Console.WriteLine($"Target timestamp: {timeStampArg}");
             MigrationRunner.Start(long.TryParse(timeStampArg, out var timeStamp) ? (long?)timeStamp : null);
 
-            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Done!");
-            Console.ResetColor();
         }
     }
 }
