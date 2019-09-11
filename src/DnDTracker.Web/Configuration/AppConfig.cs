@@ -39,7 +39,7 @@ namespace DnDTracker.Web.Configuration
                 }
         }
 
-        public string this[ConfigKey configKey]
+        public virtual string this[ConfigKey configKey]
         {
             get
             {

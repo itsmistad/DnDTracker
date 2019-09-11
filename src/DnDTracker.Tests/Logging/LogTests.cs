@@ -18,14 +18,20 @@ namespace DnDTracker.Tests
     public class LogTests : UnitTestFixture
     {
         private Mock<DynamoDbPersister> _persister;
+        private Mock<AppConfig> _appConfig;
 
         [SetUp]
         public void Setup()
         {
             _persister = new Mock<DynamoDbPersister>();
+            _appConfig = new Mock<AppConfig>();
+
+            _appConfig.SetupGet(_ => _[It.IsAny<ConfigKey>()])
+                .Returns("true");
 
             MockSingleton
-                .Override<DynamoDbPersister>(_persister.Object);
+                .Override<DynamoDbPersister>(_persister.Object)
+                .Override<AppConfig>(_appConfig.Object);
         }
 
         [Test]
