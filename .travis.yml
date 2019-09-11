@@ -12,7 +12,7 @@ jobs:
     - stage: migrate
       script: 
         - cd $TRAVIS_BUILD_DIR/scripts
-        - ./run-migrations.sh
+        - bash run-migrations.sh
     - stage: deploy
       script:
         - dotnet publish ./src/DnDTracker.Web/DnDTracker.Web.csproj -c Release -o $TRAVIS_BUILD_DIR/dndtracker-app
