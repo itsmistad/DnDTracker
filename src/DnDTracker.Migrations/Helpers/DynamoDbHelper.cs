@@ -5,6 +5,7 @@ using DnDTracker.Web.Objects;
 using DnDTracker.Web.Persisters;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,11 +28,6 @@ namespace DnDTracker.Migrations.Helpers
                         {
                             AttributeName = "Guid",
                             AttributeType = "S"
-                        },
-                        new AttributeDefinition
-                        {
-                            AttributeName = "CreateDate",
-                            AttributeType = "S"
                         }
                     },
                     KeySchema = new List<KeySchemaElement>
@@ -40,11 +36,6 @@ namespace DnDTracker.Migrations.Helpers
                         {
                             AttributeName = "Guid",
                             KeyType = "HASH" //Partition key
-                        },
-                        new KeySchemaElement
-                        {
-                            AttributeName = "CreateDate",
-                            KeyType = "RANGE" //Sort key
                         }
                     },
                     ProvisionedThroughput = new ProvisionedThroughput
@@ -54,18 +45,21 @@ namespace DnDTracker.Migrations.Helpers
                     },
                     TableName = tableMap[typeof(T)]
                 };
-
-                Task.Run(async () => await Persister.Client.CreateTableAsync(request));
+                var response = Task.Run(async () => await Persister.Client.CreateTableAsync(request)).Result;
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine($"   - CreateTableRequest for {request.TableName} returned {response.HttpStatusCode}");
             }
         }
 
-        public static void UpdateTable<T>(UpdateTableRequest request) where T : IObject
+        public static void UpdateTable<T>(UpdateTableRequest updateTableRequest) where T : IObject
         {
             if (TableExists<T>())
             {
                 var tableMap = Singleton.Get<TableMap>();
-                request.TableName = tableMap[typeof(T)];
-                Task.Run(async () => await Persister.Client.UpdateTableAsync(request));
+                updateTableRequest.TableName = tableMap[typeof(T)];
+                var response = Task.Run(async () => await Persister.Client.UpdateTableAsync(updateTableRequest)).Result;
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine($"   - UpdateTableRequest for {updateTableRequest.TableName} returned {response.HttpStatusCode}");
             }
         }
 
@@ -74,16 +68,19 @@ namespace DnDTracker.Migrations.Helpers
             if (TableExists<T>())
             {
                 var tableMap = Singleton.Get<TableMap>();
-                Persister.Client.DeleteTableAsync(new DeleteTableRequest()
+                var request = new DeleteTableRequest()
                 {
                     TableName = tableMap[typeof(T)]
-                });
+                };
+                var response = Task.Run(async () => await Persister.Client.DeleteTableAsync(request)).Result;
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine($"   - DeleteTableRequest for {request.TableName} returned {response.HttpStatusCode}");
             }
         }
 
         public static void Save<T>(T obj) where T : IObject
         {
-            if (TableExists<T>())
+            if (TableExists<T>() && Get<T>(obj.Guid) == default)
                 Persister.Save(obj);
         }
 
@@ -102,13 +99,12 @@ namespace DnDTracker.Migrations.Helpers
             var tableMap = Singleton.Get<TableMap>();
             try
             {
-                return Task.Run(async () => await Persister.Client.DescribeTableAsync(new DescribeTableRequest()
-                {
-                    TableName = tableMap[typeof(T)]
-                })).Result.Table.TableStatus == "ACTIVE";
+                return Task.Run(async () => await Persister.Client.ListTablesAsync(new ListTablesRequest()))
+                    .Result.TableNames.Contains(tableMap[typeof(T)]);
             }
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine(ex.ToString());
             }
 

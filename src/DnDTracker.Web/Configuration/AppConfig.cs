@@ -11,23 +11,20 @@ namespace DnDTracker.Web.Configuration
 {
     public class AppConfig
     {
-        private int _cacheExpirationSeconds;
-        private Dictionary<string, DateTime> _timeOfRetrieveal;
-        private Dictionary<string, object> _configCache;
+        public const int CacheExpirationSeconds = 30;
+        public Dictionary<string, DateTime> TimeOfRetrieveal;
+        public Dictionary<string, string> ConfigCache;
 
         public AppConfig()
         {
-            _cacheExpirationSeconds = 30;
-            _timeOfRetrieveal = new Dictionary<string, DateTime>();
+            TimeOfRetrieveal = new Dictionary<string, DateTime>();
+            ConfigCache = new Dictionary<string, string>();
 
             Load();
         }
 
         private void Load()
         {
-            if (_configCache != null) return;
-
-            _configCache = new Dictionary<string, object>();
             var persister = Singleton.Get<DynamoDbPersister>();
             var results = persister.Scan<ConfigKeyObject>();
             if (results != null)
@@ -35,40 +32,40 @@ namespace DnDTracker.Web.Configuration
                 {
                     var key = configKey.Key;
                     var value = configKey.Value;
-                    if (!_configCache.ContainsKey(key))
-                        _configCache.Add(key, value);
-                    if (!_timeOfRetrieveal.ContainsKey(key))
-                        _timeOfRetrieveal.Add(key, DateTime.Now);
+                    if (!ConfigCache.ContainsKey(key))
+                        ConfigCache.Add(key, value);
+                    if (!TimeOfRetrieveal.ContainsKey(key))
+                        TimeOfRetrieveal.Add(key, DateTime.Now);
                 }
         }
 
-        public object this[string key]
+        public string this[ConfigKey configKey]
         {
             get
             {
+                var key = configKey.Name;
                 // Has this been retrieved before?
-                if (_timeOfRetrieveal.ContainsKey(key) && _configCache.ContainsKey(key))
+                if (TimeOfRetrieveal.ContainsKey(key) && ConfigCache.ContainsKey(key))
                 {
-                    var seconds = (DateTime.Now - _timeOfRetrieveal[key]).TotalSeconds;
+                    var seconds = (DateTime.Now - TimeOfRetrieveal[key]).TotalSeconds;
                     // Has our cached value NOT expired?
-                    if (seconds < _cacheExpirationSeconds)
-                        return _configCache[key];
+                    if (seconds < CacheExpirationSeconds)
+                        return ConfigCache[key];
                     else
-                        _timeOfRetrieveal[key] = DateTime.Now;
+                        TimeOfRetrieveal[key] = DateTime.Now;
                 }
                 else
-                    _timeOfRetrieveal.Add(key, DateTime.Now);
+                    TimeOfRetrieveal.Add(key, DateTime.Now);
 
                 var persister = Singleton.Get<DynamoDbPersister>();
-                var scanFilter = new ScanFilter();
-                scanFilter.AddCondition("Key", ScanOperator.Equal, key);
-                var result = persister.Scan<ConfigKeyObject>().First();
+                var result = persister.Get<ConfigKeyObject>(configKey.Guid);
 
-                if (_configCache.ContainsKey(key))
-                    _configCache[key] = result;
-                else
-                    _configCache.Add(key, result);
-                return result;
+                if (result != null)
+                    if (ConfigCache.ContainsKey(key))
+                        ConfigCache[key] = result.Value;
+                    else
+                        ConfigCache.Add(key, result.Value);
+                return result.Value;
             }
         }
     }

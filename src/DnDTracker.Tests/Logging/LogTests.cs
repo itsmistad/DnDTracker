@@ -15,7 +15,7 @@ namespace DnDTracker.Tests
     /// Methods that function as "passthroughs" (methods that do not alter behavior and do not compare conditions) do not need tests.
     /// </summary>
     [TestFixture]
-    public class LogTest : UnitTestFixture
+    public class LogTests : UnitTestFixture
     {
         private Mock<DynamoDbPersister> _persister;
 

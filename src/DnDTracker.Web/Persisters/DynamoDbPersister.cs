@@ -92,11 +92,20 @@ namespace DnDTracker.Web.Persisters
                 Log.Error($"Tried to retrieve an IObject {typeof(T).Name} without an entry in TableMap.");
                 return default;
             }
-            var result = await Context.LoadAsync<T>(guid, new DynamoDBOperationConfig()
+            try
             {
-                OverrideTableName = tableName
-            });
-            return result;
+                var result = await Context.LoadAsync<T>(guid, new DynamoDBOperationConfig()
+                {
+                    OverrideTableName = tableName
+                });
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Failed to retrieve an IObject {typeof(T).Name} due to an exception: {ex.Message}", ex);
+            }
+
+            return default;
         }
 
         /// <summary>

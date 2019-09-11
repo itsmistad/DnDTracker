@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DnDTracker.Web.Configuration;
 using DnDTracker.Web.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,12 +16,13 @@ namespace DnDTracker.Web
     {
         public void Configure(IApplicationBuilder app)
         {
+            var appConfig = Singleton.Get<AppConfig>();
             app.Run(context =>
             {
-                return context.Response.WriteAsync("Nice.");
+                return context.Response.WriteAsync(appConfig[ConfigKeys.System.WelcomeMessage].ToString());
             });
 
-            Log.Info("Nice.");
+            Log.Info(appConfig[ConfigKeys.System.WelcomeMessage].ToString());
         }
     }
 }

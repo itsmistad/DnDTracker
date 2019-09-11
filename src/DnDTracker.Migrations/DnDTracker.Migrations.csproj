@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\DnDTracker.Web\DnDTracker.Web.csproj" />
+    <ProjectReference Include="..\DnDTracker.Web\DnDTracker.Web.csproj" />
   </ItemGroup>
 
 </Project>

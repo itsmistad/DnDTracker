@@ -1,5 +1,6 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
+using DnDTracker.Web.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,10 @@ namespace DnDTracker.Web.Objects
 
         public ConfigKeyObject() : base() { }
 
-        public ConfigKeyObject(string key, string value)
+        public ConfigKeyObject(ConfigKey configKey, string value)
         {
-            Key = key;
+            Key = configKey.Name;
+            Guid = configKey.Guid;
             Value = value;
         }
 
