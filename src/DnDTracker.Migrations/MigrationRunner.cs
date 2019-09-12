@@ -21,7 +21,7 @@ namespace DnDTracker.Migrations
         /// <param name="targetTimeStamp"></param>
         public static void Start(long? targetTimeStamp = null)
         {
-            var migrationTypes = Assembly.GetCallingAssembly()
+            var migrationTypes = Assembly.GetExecutingAssembly()
                 .GetTypes()
                 .Where(_ => _.GetCustomAttribute(typeof(MigrationAttribute)) != null)
                 .GroupBy(_ => ((MigrationAttribute)_.GetCustomAttribute(typeof(MigrationAttribute))).Type)
