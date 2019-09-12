@@ -38,9 +38,6 @@ namespace DnDTracker.Tests
         [Author("Derek Williamson")]
         public void ShouldLogDebugWhenDebugFlagIsTrue()
         {
-            // Setup
-            Log.AllowDebug();
-
             // Execute
             Log.Debug("Test message");
 
