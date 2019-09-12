@@ -1,4 +1,5 @@
-﻿using DnDTracker.Web.Objects;
+﻿using DnDTracker.Web.Configuration;
+using DnDTracker.Web.Objects;
 using DnDTracker.Web.Persisters;
 using System;
 using System.Collections.Generic;
@@ -41,8 +42,11 @@ namespace DnDTracker.Web.Logging
                 if (originMethodName.Contains(t))
                     return;
 
-            var dynamo = Singleton.Get<DynamoDbPersister>();
-            dynamo?.Save(new LogObject(formattedTag, message, caller, ex));
+            if (bool.TryParse(Singleton.Get<AppConfig>()[ConfigKeys.System.PersistLogs], out var persistLogs) && persistLogs)
+            {
+                var dynamo = Singleton.Get<DynamoDbPersister>();
+                dynamo?.Save(new LogObject(formattedTag, message, caller, ex));
+            }
         }
 
         public static void AllowDebug()

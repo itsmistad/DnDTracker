@@ -53,8 +53,13 @@ Extract `dynamodb-local` to `./scripts/dynamodb`.
 Then, run this to start your local DynamoDb instance:
 > `./start-dynamodb.sh`
 
-Finally, run this to start your admin panel:
+Run this to start your admin panel:
 > `./start-dynamodb-admin.sh`
+
+Finally, run this to setup your local database:
+> `./run-migrations.sh (timestamp)`
+
+`timestamp` is optional. If one isn't specified, all migrations will run. *Do not specify a timestamp if you don't know what you're doing.*
 
 ## Testing
 

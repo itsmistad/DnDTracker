@@ -11,6 +11,9 @@ jobs:
       script: dotnet test ./src/DnDTracker.Tests/DnDTracker.Tests.csproj
     - stage: deploy
       script:
+        - cd ./scripts
+        - bash run-migrations.sh
+        - cd ..
         - dotnet publish ./src/DnDTracker.Web/DnDTracker.Web.csproj -c Release -o $TRAVIS_BUILD_DIR/dndtracker-app
         - cd $TRAVIS_BUILD_DIR/dndtracker-app
         - echo $ENV_FILE >> env.json

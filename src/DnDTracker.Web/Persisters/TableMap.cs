@@ -9,8 +9,9 @@ namespace DnDTracker.Web.Persisters
 {
     public class TableMap
     {
+        public string TableNamePrefix => "dndtracker-" + Singleton.Get<EnvironmentConfig>().Current + "-";
+
         private Dictionary<Type, string> _tableNames = new Dictionary<Type, string>();
-        private string TableNamePrefix => "dndtracker-" + Singleton.Get<EnvironmentConfig>().Current + "-";
 
         public TableMap()
         {
