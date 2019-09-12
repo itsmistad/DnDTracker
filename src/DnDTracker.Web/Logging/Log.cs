@@ -13,8 +13,6 @@ namespace DnDTracker.Web.Logging
 {
     public class Log
     {
-        private static List<Type> _debugFlags = new List<Type>();
-
         private static void WithTag(string tag, string message, MethodBase caller, Exception ex)
         {
             var formattedTag = $"{tag.Trim().ToUpper()}";
@@ -30,7 +28,7 @@ namespace DnDTracker.Web.Logging
 
             };
 
-            if (formattedTag == "DEBUG" && !_debugFlags.Contains(caller.DeclaringType))
+            if (formattedTag == "DEBUG" && Singleton.Get<EnvironmentConfig>().Current != Environments.Local)
                 return;
 
             System.Diagnostics.Debug.WriteLine($"[{createDate}]\t[{formattedTag}]\t{message} ({originTypeName}.{originMethodName})");
@@ -47,14 +45,6 @@ namespace DnDTracker.Web.Logging
                 var dynamo = Singleton.Get<DynamoDbPersister>();
                 dynamo?.Save(new LogObject(formattedTag, message, caller, ex));
             }
-        }
-
-        public static void AllowDebug()
-        {
-            var caller = new StackTrace().GetFrame(1).GetMethod();
-            var type = caller.DeclaringType;
-            if (!_debugFlags.Contains(type))
-                _debugFlags.Add(type);
         }
 
         public static void Info(string message) => WithTag("info", message, new StackTrace().GetFrame(1).GetMethod(), null);

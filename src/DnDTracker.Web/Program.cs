@@ -17,8 +17,6 @@ namespace DnDTracker.Web
     {
         public static void Main(string[] args)
         {
-            Log.Debug("Starting...");
-
             var singleton = Singleton.Initialize()
                 .Add<EnvironmentConfig>(new EnvironmentConfig())
                 .Add<TableMap>(new TableMap())
