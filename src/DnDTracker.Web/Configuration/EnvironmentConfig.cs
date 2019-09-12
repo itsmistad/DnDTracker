@@ -24,8 +24,6 @@ namespace DnDTracker.Web.Configuration
 
         private void Load()
         {
-            Log.AllowDebug();
-
             var envPath = Path.Combine(Directory.GetCurrentDirectory(), _envFileName);
             if (!File.Exists(envPath))
             {
