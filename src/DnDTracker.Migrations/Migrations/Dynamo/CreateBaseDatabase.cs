@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DnDTracker.Migrations.Migrations.DynamoDb
+namespace DnDTracker.Migrations.Migrations.Dynamo
 {
     [Migration(MigrationType.DynamoDb, 1568152737, "CreateBaseDatabase")]
     public class CreateBaseDatabase : AbstractMigration

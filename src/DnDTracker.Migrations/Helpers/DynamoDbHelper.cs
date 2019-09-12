@@ -7,13 +7,34 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Amazon.DynamoDBv2;
+using DnDTracker.Web.Configuration;
 
 namespace DnDTracker.Migrations.Helpers
 {
     public class DynamoDbHelper
     {
         private static DynamoDbPersister Persister => Singleton.Get<DynamoDbPersister>();
+
+        private static void WaitUntilActive(string tableName)
+        {
+            var envConfig = Singleton.Get<EnvironmentConfig>();
+            if (envConfig.Current == Environments.Local)
+                return;
+
+            Console.WriteLine($"   - Waiting for {tableName} to be ACTIVE");
+            bool success;
+            Task<DescribeTableResponse> task = null;
+            do
+            {
+                if (task != null)
+                    Thread.Sleep(3000);
+                task = Task.Run(async () => await Persister.Client.DescribeTableAsync(tableName));
+                success = task.Result.Table.TableStatus == TableStatus.ACTIVE;
+            } while (!success);
+        }
 
         public static void CreateTable<T>() where T : IObject
         {
@@ -46,8 +67,8 @@ namespace DnDTracker.Migrations.Helpers
                     TableName = tableMap[typeof(T)]
                 };
                 var response = Task.Run(async () => await Persister.Client.CreateTableAsync(request)).Result;
-                Console.ForegroundColor = ConsoleColor.Gray;
                 Console.WriteLine($"   - CreateTableRequest for {request.TableName} returned {response.HttpStatusCode}");
+                WaitUntilActive(request.TableName);
             }
         }
 
@@ -58,8 +79,8 @@ namespace DnDTracker.Migrations.Helpers
                 var tableMap = Singleton.Get<TableMap>();
                 updateTableRequest.TableName = tableMap[typeof(T)];
                 var response = Task.Run(async () => await Persister.Client.UpdateTableAsync(updateTableRequest)).Result;
-                Console.ForegroundColor = ConsoleColor.Gray;
                 Console.WriteLine($"   - UpdateTableRequest for {updateTableRequest.TableName} returned {response.HttpStatusCode}");
+                WaitUntilActive(updateTableRequest.TableName);
             }
         }
 
@@ -73,14 +94,13 @@ namespace DnDTracker.Migrations.Helpers
                     TableName = tableMap[typeof(T)]
                 };
                 var response = Task.Run(async () => await Persister.Client.DeleteTableAsync(request)).Result;
-                Console.ForegroundColor = ConsoleColor.Gray;
                 Console.WriteLine($"   - DeleteTableRequest for {request.TableName} returned {response.HttpStatusCode}");
             }
         }
 
         public static void Save<T>(T obj) where T : IObject
         {
-            if (TableExists<T>() && Get<T>(obj.Guid) == default)
+            if (TableExists<T>() && Get<T>(obj.Guid) == null)
                 Persister.Save(obj);
         }
 
@@ -104,7 +124,6 @@ namespace DnDTracker.Migrations.Helpers
             }
             catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine(ex.ToString());
             }
 

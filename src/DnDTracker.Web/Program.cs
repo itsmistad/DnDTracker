@@ -15,9 +15,9 @@ namespace DnDTracker.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
-            var singleton = Singleton.Initialize()
+            Singleton.Initialize()
                 .Add<EnvironmentConfig>(new EnvironmentConfig())
                 .Add<TableMap>(new TableMap())
                 .Add<DynamoDbPersister>(new DynamoDbPersister())

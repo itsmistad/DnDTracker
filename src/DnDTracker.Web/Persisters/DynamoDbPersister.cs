@@ -60,7 +60,7 @@ namespace DnDTracker.Web.Persisters
                 foreach (var document in documents) // for each row
                 {
                     T t = (T)typeof(T).GetMethod("FromDocument", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new[] { document });
-                    if (t != default)
+                    if (t != null)
                         results.Add(t);
                 }
             } while (!search.IsDone);
@@ -100,10 +100,7 @@ namespace DnDTracker.Web.Persisters
                 });
                 return result;
             }
-            catch (Exception ex)
-            {
-                Log.Error($"Failed to retrieve an IObject {typeof(T).Name} due to an exception: {ex.Message}", ex);
-            }
+            catch (Exception) { }
 
             return default;
         }

@@ -17,11 +17,11 @@ namespace DnDTracker.Web.Logging
         {
             var formattedTag = $"{tag.Trim().ToUpper()}";
             var createDate = DateTime.Now.ToString("s");
-            var originTypeName = caller.DeclaringType.Name;
+            var originTypeName = caller.DeclaringType?.Name;
             var originMethodName = caller.Name;
             var disallowedTypeNameWords = new string[]
             {
-                "Singleton", "DynamoDbPersister", "EnvironmentConfig"
+                "Singleton", "DynamoDbPersister", "EnvironmentConfig", "InvokeMethod"
             };
             var disallowedMemberNameWords = new string[]
             {
@@ -29,9 +29,7 @@ namespace DnDTracker.Web.Logging
             };
 
             var log = $"[{createDate}]\t[{formattedTag}]\t{message} ({originTypeName}.{originMethodName})";
-            if (Assembly.GetExecutingAssembly().FullName.Contains("Migrations"))
-                Console.WriteLine(log);
-            if (formattedTag == "DEBUG" && Singleton.Get<EnvironmentConfig>().Current != Environments.Local)
+            if (formattedTag == "DEBUG" && Singleton.Get<EnvironmentConfig>()?.Current != Environments.Local)
                 return;
 
             System.Diagnostics.Debug.WriteLine(log);
