@@ -28,10 +28,13 @@ namespace DnDTracker.Web.Logging
 
             };
 
+            var log = $"[{createDate}]\t[{formattedTag}]\t{message} ({originTypeName}.{originMethodName})";
+            if (Assembly.GetExecutingAssembly().FullName.Contains("Migrations"))
+                Console.WriteLine(log);
             if (formattedTag == "DEBUG" && Singleton.Get<EnvironmentConfig>().Current != Environments.Local)
                 return;
 
-            System.Diagnostics.Debug.WriteLine($"[{createDate}]\t[{formattedTag}]\t{message} ({originTypeName}.{originMethodName})");
+            System.Diagnostics.Debug.WriteLine(log);
 
             foreach (var t in disallowedTypeNameWords)
                 if (originTypeName.Contains(t))

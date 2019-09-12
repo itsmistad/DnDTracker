@@ -11,8 +11,8 @@ namespace DnDTracker.Web.Configuration
 {
     public class EnvironmentConfig
     {
-        private Dictionary<string, JToken> _configPairs;
-        private string _envFileName;
+        private readonly Dictionary<string, JToken> _configPairs;
+        private readonly string _envFileName;
 
         public EnvironmentConfig()
         {
@@ -44,7 +44,7 @@ namespace DnDTracker.Web.Configuration
                         _configPairs[pair.Key] = pair.Value;
                     else
                         _configPairs.Add(pair.Key, pair.Value);
-                    Log.Debug($"{pair.Key}={pair.Value.ToString()}");
+                    Log.Debug($"{pair.Key}={pair.Value}");
                 }
                 Log.Debug($"Successfully loaded {_envFileName}.");
             }
@@ -57,6 +57,7 @@ namespace DnDTracker.Web.Configuration
 
         private void SetDefaultValues()
         {
+            _configPairs.Clear();
             _configPairs.Add("env", Environments.Local);
             _configPairs.Add("aws", JToken.FromObject(new
             {
@@ -69,13 +70,7 @@ namespace DnDTracker.Web.Configuration
         /// <summary>
         /// Returns the current environment from <see cref="Environments"/>.
         /// </summary>
-        public string Current
-        {
-            get
-            {
-                return _configPairs["env"].ToString();
-            }
-        }
+        public string Current => _configPairs["env"].ToString();
 
         /// <summary>
         /// Retrieves the value of a specified config key.
@@ -88,11 +83,9 @@ namespace DnDTracker.Web.Configuration
             {
                 if (_configPairs.ContainsKey(key))
                     return _configPairs[key];
-                else
-                {
-                    Log.Error($"Tried retrieving a non-existant config key. Key {key}");
-                    return null;
-                }
+                
+                Log.Error($"Tried retrieving a non-existent config key. Key {key}");
+                return null;
             }
         }
     }
