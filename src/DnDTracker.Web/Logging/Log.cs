@@ -17,11 +17,11 @@ namespace DnDTracker.Web.Logging
         {
             var formattedTag = $"{tag.Trim().ToUpper()}";
             var createDate = DateTime.Now.ToString("s");
-            var originTypeName = caller.DeclaringType?.Name;
-            var originMethodName = caller.Name;
-            var disallowedTypeNameWords = new string[]
+            var originTypeName = caller.DeclaringType?.Name ?? "";
+            var originMethodName = caller.Name ?? "";
+            var disallowedTypeNameWords = new []
             {
-                "Singleton", "DynamoDbPersister", "EnvironmentConfig", "InvokeMethod"
+                "Singleton", "DynamoDbPersister", "EnvironmentConfig"
             };
             var disallowedMemberNameWords = new string[]
             {

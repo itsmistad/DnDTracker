@@ -41,7 +41,7 @@ namespace DnDTracker.Tests.Configuration
         {
             // Setup
             var appConfig = Singleton.Get<AppConfig>();
-            appConfig.TimeOfRetrieveal.Clear();
+            appConfig.TimeOfRetrieval.Clear();
             var startTime = DateTime.Now;
 
             // Execute
@@ -52,8 +52,8 @@ namespace DnDTracker.Tests.Configuration
                 _ => _.Get<ConfigKeyObject>(
                     It.Is<Guid>(g => g == ConfigKeys.System.PersistLogs.Guid)),
                 Times.Once);
-            Assert.IsTrue(appConfig.TimeOfRetrieveal.ContainsKey(ConfigKeys.System.PersistLogs.Name));
-            Assert.IsTrue(appConfig.TimeOfRetrieveal[ConfigKeys.System.PersistLogs.Name] > startTime);
+            Assert.IsTrue(appConfig.TimeOfRetrieval.ContainsKey(ConfigKeys.System.PersistLogs.Name));
+            Assert.IsTrue(appConfig.TimeOfRetrieval[ConfigKeys.System.PersistLogs.Name] > startTime);
             Assert.AreEqual(result, "false"); // Should pull from Get(), which returns false
         }
 
@@ -64,7 +64,7 @@ namespace DnDTracker.Tests.Configuration
             // Setup
             var appConfig = Singleton.Get<AppConfig>();
             var startTime = DateTime.Now;
-            appConfig.TimeOfRetrieveal = new Dictionary<string, DateTime>()
+            appConfig.TimeOfRetrieval = new Dictionary<string, DateTime>()
             {
                 {
                     ConfigKeys.System.PersistLogs.Name,
@@ -80,8 +80,8 @@ namespace DnDTracker.Tests.Configuration
                 _ => _.Get<ConfigKeyObject>(
                     It.IsAny<Guid>()),
                 Times.Never);
-            Assert.IsTrue(appConfig.TimeOfRetrieveal.ContainsKey(ConfigKeys.System.PersistLogs.Name));
-            Assert.IsTrue(appConfig.TimeOfRetrieveal[ConfigKeys.System.PersistLogs.Name] == startTime);
+            Assert.IsTrue(appConfig.TimeOfRetrieval.ContainsKey(ConfigKeys.System.PersistLogs.Name));
+            Assert.IsTrue(appConfig.TimeOfRetrieval[ConfigKeys.System.PersistLogs.Name] == startTime);
             Assert.AreEqual(result, "true"); // Should pull from cache (which was populated by Scan()), which returns true
         }
 
@@ -92,7 +92,7 @@ namespace DnDTracker.Tests.Configuration
             // Setup
             var appConfig = Singleton.Get<AppConfig>();
             var startTime = DateTime.Now - new TimeSpan(1, 0, 0);
-            appConfig.TimeOfRetrieveal = new Dictionary<string, DateTime>()
+            appConfig.TimeOfRetrieval = new Dictionary<string, DateTime>()
             {
                 {
                     ConfigKeys.System.PersistLogs.Name,
@@ -108,8 +108,8 @@ namespace DnDTracker.Tests.Configuration
                 _ => _.Get<ConfigKeyObject>(
                     It.Is<Guid>(g => g == ConfigKeys.System.PersistLogs.Guid)),
                 Times.Once);
-            Assert.IsTrue(appConfig.TimeOfRetrieveal.ContainsKey(ConfigKeys.System.PersistLogs.Name));
-            Assert.IsTrue(appConfig.TimeOfRetrieveal[ConfigKeys.System.PersistLogs.Name] != startTime);
+            Assert.IsTrue(appConfig.TimeOfRetrieval.ContainsKey(ConfigKeys.System.PersistLogs.Name));
+            Assert.IsTrue(appConfig.TimeOfRetrieval[ConfigKeys.System.PersistLogs.Name] != startTime);
             Assert.AreEqual(result, "false"); // Should pull from Get(), which returns false
         }
     }

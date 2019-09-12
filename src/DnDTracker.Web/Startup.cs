@@ -19,10 +19,10 @@ namespace DnDTracker.Web
             var appConfig = Singleton.Get<AppConfig>();
             app.Run(context =>
             {
-                return context.Response.WriteAsync(appConfig[ConfigKeys.System.WelcomeMessage].ToString());
+                return context.Response.WriteAsync(appConfig[ConfigKeys.System.WelcomeMessage]);
             });
 
-            Log.Info(appConfig[ConfigKeys.System.WelcomeMessage].ToString());
+            Log.Info(appConfig[ConfigKeys.System.WelcomeMessage]);
         }
     }
 }

@@ -16,8 +16,8 @@ namespace DnDTracker.Web.Persisters
 {
     public class DynamoDbPersister
     {
-        public DynamoDBContext Context { get; private set; }
-        public AmazonDynamoDBClient Client { get; private set; }
+        public DynamoDBContext Context { get; }
+        public AmazonDynamoDBClient Client { get; }
 
         public DynamoDbPersister()
         {

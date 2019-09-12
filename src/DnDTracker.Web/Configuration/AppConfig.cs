@@ -12,12 +12,12 @@ namespace DnDTracker.Web.Configuration
     public class AppConfig
     {
         public const int CacheExpirationSeconds = 30;
-        public Dictionary<string, DateTime> TimeOfRetrieveal;
+        public Dictionary<string, DateTime> TimeOfRetrieval;
         public Dictionary<string, string> ConfigCache;
 
         public AppConfig()
         {
-            TimeOfRetrieveal = new Dictionary<string, DateTime>();
+            TimeOfRetrieval = new Dictionary<string, DateTime>();
             ConfigCache = new Dictionary<string, string>();
 
             Load();
@@ -34,8 +34,8 @@ namespace DnDTracker.Web.Configuration
                     var value = configKey.Value;
                     if (!ConfigCache.ContainsKey(key))
                         ConfigCache.Add(key, value);
-                    if (!TimeOfRetrieveal.ContainsKey(key))
-                        TimeOfRetrieveal.Add(key, DateTime.Now);
+                    if (!TimeOfRetrieval.ContainsKey(key))
+                        TimeOfRetrieval.Add(key, DateTime.Now);
                 }
         }
 
@@ -45,17 +45,17 @@ namespace DnDTracker.Web.Configuration
             {
                 var key = configKey.Name;
                 // Has this been retrieved before?
-                if (TimeOfRetrieveal.ContainsKey(key) && ConfigCache.ContainsKey(key))
+                if (TimeOfRetrieval.ContainsKey(key) && ConfigCache.ContainsKey(key))
                 {
-                    var seconds = (DateTime.Now - TimeOfRetrieveal[key]).TotalSeconds;
+                    var seconds = (DateTime.Now - TimeOfRetrieval[key]).TotalSeconds;
                     // Has our cached value NOT expired?
                     if (seconds < CacheExpirationSeconds)
                         return ConfigCache[key];
                     else
-                        TimeOfRetrieveal[key] = DateTime.Now;
+                        TimeOfRetrieval[key] = DateTime.Now;
                 }
                 else
-                    TimeOfRetrieveal.Add(key, DateTime.Now);
+                    TimeOfRetrieval.Add(key, DateTime.Now);
 
                 var persister = Singleton.Get<DynamoDbPersister>();
                 var result = persister.Get<ConfigKeyObject>(configKey.Guid);
@@ -65,7 +65,7 @@ namespace DnDTracker.Web.Configuration
                         ConfigCache[key] = result.Value;
                     else
                         ConfigCache.Add(key, result.Value);
-                return result.Value;
+                return result?.Value;
             }
         }
     }

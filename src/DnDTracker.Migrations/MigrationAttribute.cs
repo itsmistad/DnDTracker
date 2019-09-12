@@ -9,15 +9,15 @@ namespace DnDTracker.Migrations
         /// <summary>
         /// The type of migration.
         /// </summary>
-        public MigrationType Type { get; private set; }
+        public MigrationType Type { get; }
         /// <summary>
         /// The name of the migration script.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
         /// <summary>
         /// The epoch timestamp of creation. Refer to https://www.epochconverter.com/
         /// </summary>
-        public long EpochTimeStamp { get; private set; }
+        public long EpochTimeStamp { get; }
 
         /// <summary>
         /// The attribute the <see cref="MigrationRunner"/> uses to find migrations.
