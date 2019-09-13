@@ -1,6 +1,7 @@
 DnDTracker
 =====
 **CSCE 3444 Team Name:** Silicon Valley
+
 Read our [Project Description](https://github.com/itsmistad/DnDTracker/blob/develop/Project%20Description.pdf).
 
 `master`    
