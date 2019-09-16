@@ -1,0 +1,25 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    font-family: 'Montserrat', Arial;
+    font-size: 16px;
+    margin: 0;
+}
+.container {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+.text-center {
+    text-align: center;
+}
+.full-center-align {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

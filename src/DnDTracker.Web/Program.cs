@@ -10,6 +10,7 @@ using System.IO;
 using DnDTracker.Web.Persisters;
 using DnDTracker.Web.Configuration;
 using DnDTracker.Web.Logging;
+using Microsoft.AspNetCore;
 
 namespace DnDTracker.Web
 {
@@ -27,16 +28,14 @@ namespace DnDTracker.Web
 
             Log.Debug("Global instances registered.");
 
-            Log.Debug("Setting up WebHostBuilder...");
-            var host = new WebHostBuilder()
-              .UseKestrel()
-              .UseContentRoot(Directory.GetCurrentDirectory())
-              .UseIISIntegration()
-              .UseStartup<Startup>()
-              .Build();
-
-            Log.Debug("Starting WebHost...");
-            host.Run();
+            Log.Debug("Setting up WebHost...");
+            CreateWebHostBuilder().Build().Run();
         }
+        public static IWebHostBuilder CreateWebHostBuilder() =>
+            WebHost.CreateDefaultBuilder()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseKestrel()
+                .UseIISIntegration()
+                .UseStartup<Startup>();
     }
 }
