@@ -37,7 +37,7 @@ namespace DnDTracker.Web.Persisters
         /// </summary>
         /// <typeparam name="T">The type of IObject.</typeparam>
         /// <param name="scanFilter">The optional scan filter (look into AWS ScanFilter documentation).</param>
-        public virtual List<T> Scan<T>(ScanFilter scanFilter = null) where T: IObject
+        public virtual List<T> Scan<T>(ScanFilter scanFilter = null) where T : IObject
         {
             return Task.Run(async () => await ScanAsync<T>(scanFilter)).Result;
         }
