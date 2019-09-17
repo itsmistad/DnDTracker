@@ -1,0 +1,26 @@
+﻿@using DnDTracker.Web
+@using DnDTracker.Web.Configuration
+
+@{
+    // Every .cshtml page should have their "Title" set at the top.
+    ViewData["Title"] = "Home";
+    var appConfig = Singleton.Get<AppConfig>();
+    var envConfig = Singleton.Get<EnvironmentConfig>();
+    var welcomeMessage = appConfig[ConfigKeys.System.WelcomeMessage];
+}
+
+<!-- This is the container for the Index page ("index-page"). Please follow this standard. -->
+<div id="index-page" class="full-center-align text-center">
+    <p>@welcomeMessage</p>
+    <p>Environment: @envConfig.Current</p>
+</div>
+
+@{/* Every .cshtml page can have a Scripts section. It is not required. */}
+@section Scripts
+{
+    <script>
+        $(function() {
+            // Document is now ready. You can now use jQuery (or plain Javascript).
+        })
+    </script>
+}
