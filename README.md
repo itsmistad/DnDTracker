@@ -84,7 +84,7 @@ Alternatively, you could just use Visual Studio 😉
 
 ## Publishing
 
-This script requires the bash `zip` command. This is natively available in unix environments, but not on Windows. You can download it [here](https://sourceforge.net/projects/infozip/).
+This script requires the bash `zip` command. This is natively available in unix environments, but not on Windows. You can download it [here](https://github.com/bmatzelle/gow/wiki).
 
 You can create an AWS ElasticBeanstalk-ready zip file by running this command in `./scripts` AFTER adding credentials to the script file:
 > `./create-deployable.sh`
