@@ -20,4 +20,8 @@
     <None Include="web.config" CopyToPublishDirectory="Always" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 </Project>
