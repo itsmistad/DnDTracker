@@ -14,7 +14,7 @@ jobs:
         - dotnet publish ./src/DnDTracker.Web/DnDTracker.Web.csproj -c Release -o $TRAVIS_BUILD_DIR/dndtracker-app
         - cd $TRAVIS_BUILD_DIR/dndtracker-app
         - echo $ENV_FILE >> env.json
-        - zip -r dndtracker-app.zip *
+        - zip -r ../dndtracker-app.zip *
         - cd ..
         - zip deploy.zip ./dndtracker-app.zip ./aws-windows-deployment-manifest.json
       deploy:
