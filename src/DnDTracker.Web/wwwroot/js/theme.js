@@ -4,7 +4,7 @@ $(function () {
     var resize = function () {
         var contentContainerHeight = $('#main-content').height();
         var totalHeight = $(document).innerHeight();
-        var fillHeight = totalHeight - headerBarHeight - footerBarHeight;
+        var fillHeight = totalHeight - headerBarHeight - footerBarHeight - 1;
         if (contentContainerHeight < fillHeight)
             $('#main-content').css('height', `${fillHeight}px`);
     }
