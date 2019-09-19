@@ -86,8 +86,6 @@ namespace DnDTracker.Web.Configuration
                     default:
                         return "//localhost:57124";
                 }
-
-                return "";
             }
         }
 

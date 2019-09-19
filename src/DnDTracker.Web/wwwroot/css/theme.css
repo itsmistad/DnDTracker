@@ -1,9 +1,7 @@
 html, body {
-    height: 100%;
     width: 100%;
     top: 0;
     left: 0;
-    position: absolute;
     font-family: 'Montserrat', Arial;
     font-size: 16px;
     margin: 0;
@@ -25,7 +23,6 @@ body {
 .full-width {
     width: 100%;
     left: 0;
-    min-height: 40px;
 }
 .page-padding {
     padding: 0 40px;
@@ -58,10 +55,10 @@ a:hover {
     z-index: 1000;
 }
 #main-header {
-    min-height: 90px;
+    height: 90px;
 }
 #main-footer {
-    min-height: 50px;
+    height: 50px;
     background-color: #eee;
     font-family: 'Roboto', Tahoma;
 }
@@ -70,7 +67,6 @@ a:hover {
     position: relative;
     box-shadow: 0 0 30px -20px rgba(0,0,0,0.8);
     font-family: 'Roboto', Tahoma;
-    min-height: 60%;
 }
 
 
