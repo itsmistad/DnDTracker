@@ -72,6 +72,25 @@ namespace DnDTracker.Web.Configuration
         /// </summary>
         public string Current => _configPairs["env"].ToString();
 
+        public string CurrentHomeUrl
+        {
+            get
+            {
+                switch (Current)
+                {
+                    case Environments.Development:
+                        return "//dev.dnd.mistad.net";
+                    case Environments.Production:
+                        return "//dnd.mistad.net";
+                    case Environments.Local:
+                    default:
+                        return "//localhost:57124";
+                }
+
+                return "";
+            }
+        }
+
         /// <summary>
         /// Retrieves the value of a specified config key.
         /// </summary>
@@ -92,8 +111,8 @@ namespace DnDTracker.Web.Configuration
     
     public class Environments
     {
-        public static string Local = "local";
-        public static string Development = "dev";
-        public static string Production = "prod";
+        public const string Local = "local";
+        public const string Development = "dev";
+        public const string Production = "prod";
     }
 }
