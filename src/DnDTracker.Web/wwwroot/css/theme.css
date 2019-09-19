@@ -15,6 +15,13 @@ body {
 .text-center {
     text-align: center;
 }
+.full-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
 .full-width {
     width: 100%;
     left: 0;
@@ -61,11 +68,9 @@ a:hover {
 #main-content {
     background-color: #F6E1AC;
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     box-shadow: 0 0 30px -20px rgba(0,0,0,0.8);
     font-family: 'Roboto', Tahoma;
+    min-height: 60%;
 }
 
 
@@ -111,15 +116,16 @@ a:hover {
 .main-footer__item {
     border-top: 3px solid #ddd;
     transform: translate(0, -3px);
+    overflow-y: hidden;
 }
 .main-footer__item:hover {
     transform: translate(0, -5px);
     border-top: 5px solid #7777ff;
     color: inherit;
     background-color: #ddd;
+    overflow-y: hidden;
 }
-.main-footer .main-footer__item,
-.main-footer p {
+.main-footer {
     margin: 0;
     font-size: 12px;
 }
