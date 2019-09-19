@@ -21,7 +21,7 @@ body {
     min-height: 40px;
 }
 .page-padding {
-    padding: 0 60px;
+    padding: 0 40px;
 }
 .page-margin {
     margin: 0 80px;
@@ -38,7 +38,7 @@ a {
     transition: 0.2s ease-in-out;
 }
 a:hover {
-    color: #aaa;
+    color: #7777ff;
 }
 
 
@@ -54,16 +54,18 @@ a:hover {
     min-height: 90px;
 }
 #main-footer {
-    min-height: 60px;
+    min-height: 50px;
+    background-color: #eee;
+    font-family: 'Roboto', Tahoma;
 }
 #main-content {
-    background-color: white;
+    background-color: #F6E1AC;
     position: relative;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 0 40px -20px rgba(0,0,0,0.3);
+    box-shadow: 0 0 30px -20px rgba(0,0,0,0.8);
+    font-family: 'Roboto', Tahoma;
 }
 
 
@@ -76,6 +78,7 @@ a:hover {
     width: 100%;
     height: 100%;
 }
+.main-footer__buttons,
 .main-header__buttons {
     display: flex;
     justify-content: flex-end;
@@ -86,20 +89,36 @@ a:hover {
     justify-content: flex-start;
     height: 100%;
 }
+.main-header__logo:hover .main-header__item {
+    text-shadow: 3px 3px 0 #aaa;
+}
+.main-footer__item,
 .main-header__item {
     height: 100%;
     padding: 0 20px;
-    border-bottom: 3px solid #ddd;
     transition: 0.2s ease-in-out;
     display: flex;
     align-items: center;
 }
+.main-header__item {
+    border-bottom: 3px solid #ddd;
+}
 .main-header__item:hover {
     border-bottom: 5px solid #7777ff;
-}
-a.main-header__item:hover {
     color: inherit;
+    background-color: #eee;
 }
+.main-footer__item {
+    border-top: 3px solid #ddd;
+    transform: translate(0, -3px);
+}
+.main-footer__item:hover {
+    transform: translate(0, -5px);
+    border-top: 5px solid #7777ff;
+    color: inherit;
+    background-color: #ddd;
+}
+.main-footer .main-footer__item,
 .main-footer p {
     margin: 0;
     font-size: 12px;

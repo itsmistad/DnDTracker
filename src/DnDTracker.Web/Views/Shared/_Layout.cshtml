@@ -1,30 +1,42 @@
 ﻿<!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>@ViewData["Title"] - DnDTracker</title>
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
-        <link rel="stylesheet" href="~/css/theme.css" />
-        <script src="~/js/theme.js" asp-append-version="true"></script>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DnDTracker</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/theme.css" />
+    <script src="~/js/theme.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
             integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
             crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <!-- Header -->
-        @{ await Html.RenderPartialAsync("/Views/Shared/Snippets/_Header.cshtml"); }
+</head>
+<body>
+    <!-- Header -->
+    @{ await Html.RenderPartialAsync("/Views/Shared/Snippets/_Header.cshtml"); }
 
-        <div id="main-content" class="page-margin">
-            @RenderBody()
-        </div>
+    <div id="main-content" class="page-margin">
+        @RenderBody()
+    </div>
 
-        <!-- Footer -->
-        @{ await Html.RenderPartialAsync("/Views/Shared/Snippets/_Footer.cshtml"); }
+    <!-- Footer -->
+    @{ await Html.RenderPartialAsync("/Views/Shared/Snippets/_Footer.cshtml"); }
 
-        @RenderSection("Scripts", required: false)
-    </body>
+    <script>
+        $(function () {
+            var headerBarHeight = $('#main-header').height();
+            var footerBarHeight = $('#main-footer').height();
+            var contentContainerHeight = $('#main-content').height();
+            var totalHeight = $(document).innerHeight();
+            var fillHeight = totalHeight - headerBarHeight - footerBarHeight;
+            if (contentContainerHeight < fillHeight)
+                $('#main-content').css('height', `${fillHeight}px`);
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
 </html>
