@@ -1,3 +1,12 @@
+/*
+    Theme colors:
+    - Neutral: #fff
+    - Background: #F6E1AC
+    - Accent: #7777ff
+    - Darker Accent: #39397c
+*/
+
+/* Shared Class Styles */
 html, body {
     width: 100%;
     top: 0;
@@ -15,6 +24,7 @@ body {
 }
 .full-center {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -44,8 +54,45 @@ a {
 a:hover {
     color: #7777ff;
 }
+button {
+    margin: 10px 20px;
+    padding: 10px 20px;
+    font-family: Montserrat, Arial;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    border: none;
+    transition: 0.2s ease-out, 0.05s transform;
+    cursor: pointer;
+}
+button.thick { /* Had to settle on this because "slim t h i c c" gave me CSS pre-processor errors. */
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+button.medium { /* Buttons are "small" by default. */
+    padding-left: 40px;
+    padding-right: 40px;
+}
+button.large {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+button:hover {
+    background-color: #7777ff;
+}
+button:active {
+    background-color: #39397c;
+    transform: translate(0, 2px);
+}
+button:active, button:focus {
+    outline: none;
+}
 
-
+/* Shared Section Styles */
+/* ID-Specific */
 #main-footer,
 #main-header {
     position: relative;
@@ -69,7 +116,7 @@ a:hover {
     font-family: 'Roboto', Tahoma;
 }
 
-
+/* Class-Specific */
 .main-footer,
 .main-header {
     display: flex;

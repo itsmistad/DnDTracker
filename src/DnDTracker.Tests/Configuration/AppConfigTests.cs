@@ -21,7 +21,7 @@ namespace DnDTracker.Tests.Configuration
         {
             _persister = new Mock<DynamoDbPersister>();
             _persister.Setup(
-                _ => _.Scan<ConfigKeyObject>(It.IsAny<ScanFilter>()))
+                _ => _.Scan<ConfigKeyObject>(It.IsAny<Expression>()))
                 .Returns(new List<ConfigKeyObject>()
                 {
                     new ConfigKeyObject(ConfigKeys.System.PersistLogs, "true")

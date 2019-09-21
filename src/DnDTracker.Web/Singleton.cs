@@ -80,7 +80,6 @@ namespace DnDTracker.Web
             var type = typeof(T);
             if (_instance?._instances?.ContainsKey(type) ?? false)
                 return (T)_instance._instances[type];
-            Log.Error($"Tried retrieving an unregistered instance! Type: {type.Name}");
             return default;
         }
     }

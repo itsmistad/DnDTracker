@@ -4,28 +4,31 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>@ViewData["Title"] - DnDTracker</title>
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-        <link rel="stylesheet" href="~/css/theme.css" />
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-                integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-                crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-                integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-                crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet"> <!-- Load the Montserrat font -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet"> <!-- Load the Roboto font -->
+        <link rel="stylesheet" href="~/css/theme.css" /> <!-- Load the primary theme stylesheet -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" 
+                        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+                        crossorigin="anonymous"></script> <!-- Load the jQuery library -->
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" 
+                        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+                            crossorigin="anonymous"></script> <!-- Load the jQuery UI library -->
+        <script src="~/lib/signalr/dist/browser/signalr.js"></script> <!-- Load the SignalR client library -->
+        @RenderSection("Head", required: false)
     </head>
     <body>
         <!-- Header -->
-        @{ await Html.RenderPartialAsync("/Views/Shared/Snippets/_Header.cshtml"); }
+        @await Html.PartialAsync("/Views/Shared/Snippets/_Header.cshtml")
 
+        <!-- Page Content -->
         <div id="main-content" class="page-margin">
             @RenderBody()
         </div>
 
         <!-- Footer -->
-        @{ await Html.RenderPartialAsync("/Views/Shared/Snippets/_Footer.cshtml"); }
+        @await Html.PartialAsync("/Views/Shared/Snippets/_Footer.cshtml")
 
-        <script src="~/js/theme.js"  asp-append-version="true"></script>
+        <script src="~/js/theme.js" asp-append-version="true"></script> <!-- Load the primary theme script -->
         @RenderSection("Scripts", required: false)
     </body>
 </html>

@@ -29,10 +29,15 @@ namespace DnDTracker.Web.Logging
             };
 
             var log = $"[{createDate}]\t[{formattedTag}]\t{message} ({originTypeName}.{originMethodName})";
-            if (formattedTag == "DEBUG" && Singleton.Get<EnvironmentConfig>()?.Current != Environments.Local)
+            var envConfig = Singleton.Get<EnvironmentConfig>();
+            if (formattedTag == "DEBUG" && (envConfig?.Current ?? Environments.Local) != Environments.Local)
                 return;
 
             System.Diagnostics.Debug.WriteLine(log);
+            Console.WriteLine(log);
+
+            if (envConfig == null)
+                return;
 
             foreach (var t in disallowedTypeNameWords)
                 if (originTypeName.Contains(t))

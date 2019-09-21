@@ -1,7 +1,4 @@
-﻿@using DnDTracker.Web
-@using DnDTracker.Web.Configuration
-
-@{
+﻿@{
     // Every .cshtml page should have their "Title" set at the top.
     ViewData["Title"] = "Home";
     var appConfig = Singleton.Get<AppConfig>();
@@ -11,10 +8,10 @@
 
 <!-- This is the container for the Index page ("index-page"). Please follow this standard. -->
 <div id="index-page" class="full-center">
-    <span class="text-center">
+    <div class="text-center">
         <p>@welcomeMessage</p>
         <p>Environment: @envConfig.Current</p>
-    </span>
+    </div>
 </div>
 
 @{/* Every .cshtml page can have a Scripts section. It is not required. */}

@@ -1,0 +1,13 @@
+﻿<!-- The Google Sign-Out widget is in it's own partial because it may be used in multiple locations. -->
+
+<button id="sign-out" class="thick large" onclick="signOut();">Sign Out</button>
+
+<script>
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            console.log('Successfully signed out.');
+            if (logoutCallback) logoutCallback();
+        });
+    }
+</script>
