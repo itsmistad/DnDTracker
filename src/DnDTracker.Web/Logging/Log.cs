@@ -13,6 +13,8 @@ namespace DnDTracker.Web.Logging
 {
     public class Log
     {
+        public static bool IgnoreLogs = false;
+        
         private static void WithTag(string tag, string message, MethodBase caller, Exception ex)
         {
             var formattedTag = $"{tag.Trim().ToUpper()}";
@@ -36,7 +38,7 @@ namespace DnDTracker.Web.Logging
             System.Diagnostics.Debug.WriteLine(log);
             Console.WriteLine(log);
 
-            if (envConfig == null)
+            if (envConfig == null || IgnoreLogs)
                 return;
 
             foreach (var t in disallowedTypeNameWords)

@@ -1,5 +1,6 @@
 ﻿using DnDTracker.Web;
 using DnDTracker.Web.Configuration;
+using DnDTracker.Web.Logging;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace DnDTracker.Tests
         {
             MockSingleton = Singleton.Initialize()
                 .Add<EnvironmentConfig>(new EnvironmentConfig());
+
+            Log.IgnoreLogs = true;
         }
 
         [OneTimeTearDown]
