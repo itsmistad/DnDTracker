@@ -1,127 +1,122 @@
-html, body {
-    width: 100%;
-    top: 0;
-    left: 0;
-    font-family: 'Montserrat', Arial;
-    font-size: 16px;
-    margin: 0;
-}
-body {
-    display: flex;
-    flex-direction: column;
-}
-.text-center {
-    text-align: center;
-}
-.full-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
-.full-width {
-    width: 100%;
-    left: 0;
-}
-.page-padding {
-    padding: 0 40px;
-}
-.page-margin {
-    margin: 0 80px;
-}
-.border-bottom {
-    border-bottom: 1px solid #eee;
-}
-.border-top {
-    border-top: 1px solid #eee;
-}
-a {
-    text-decoration: none;
-    color: inherit;
-    transition: 0.2s ease-in-out;
-}
-a:hover {
-    color: #7777ff;
-}
+﻿html, body {
+  width: 100%;
+  top: 0;
+  left: 0;
+  font-family: 'Montserrat', Arial;
+  font-size: 16px;
+  margin: 0; }
 
+body {
+  display: flex;
+  flex-direction: column; }
+
+.text-center {
+  text-align: center; }
+
+.full-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%; }
+
+.full-width {
+  width: 100%;
+  left: 0; }
+
+.page-padding {
+  padding: 0 40px; }
+
+.page-margin {
+  margin: 0 80px; }
+
+.border-bottom {
+  border-bottom: 1px solid #eee; }
+
+.border-top {
+  border-top: 1px solid #eee; }
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: 0.2s ease-in-out; }
+
+a:hover {
+  color: #7777ff; }
 
 #main-footer,
 #main-header {
-    position: relative;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    z-index: 1000;
-}
-#main-header {
-    height: 90px;
-}
-#main-footer {
-    height: 50px;
-    background-color: #eee;
-    font-family: 'Roboto', Tahoma;
-}
-#main-content {
-    background-color: #F6E1AC;
-    position: relative;
-    box-shadow: 0 0 30px -20px rgba(0,0,0,0.8);
-    font-family: 'Roboto', Tahoma;
-}
+  position: relative;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  z-index: 1000; }
 
+#main-header {
+  height: 90px; }
+
+#main-footer {
+  height: 50px;
+  background-color: #eee;
+  font-family: 'Roboto', Tahoma; }
+
+#main-content {
+  background-color: #F6E1AC;
+  position: relative;
+  box-shadow: 0 0 30px -20px rgba(0, 0, 0, 0.8);
+  font-family: 'Roboto', Tahoma; }
 
 .main-footer,
 .main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
 .main-footer__buttons,
 .main-header__buttons {
-    display: flex;
-    justify-content: flex-end;
-    height: 100%;
-}
+  display: flex;
+  justify-content: flex-end;
+  height: 100%; }
+
 .main-header__logo {
-    display: flex;
-    justify-content: flex-start;
-    height: 100%;
-}
+  display: flex;
+  justify-content: flex-start;
+  height: 100%; }
+
 .main-header__logo:hover .main-header__item {
-    text-shadow: 3px 3px 0 #aaa;
-}
+  text-shadow: 3px 3px 0 #aaa; }
+
 .main-footer__item,
 .main-header__item {
-    height: 100%;
-    padding: 0 20px;
-    transition: 0.2s ease-in-out;
-    display: flex;
-    align-items: center;
-}
+  height: 100%;
+  padding: 0 20px;
+  transition: 0.2s ease-in-out;
+  display: flex;
+  align-items: center; }
+
 .main-header__item {
-    border-bottom: 3px solid #ddd;
-}
+  border-bottom: 3px solid #ddd; }
+
 .main-header__item:hover {
-    border-bottom: 5px solid #7777ff;
-    color: inherit;
-    background-color: #eee;
-}
+  border-bottom: 5px solid #7777ff;
+  color: inherit;
+  background-color: #eee; }
+
 .main-footer__item {
-    border-top: 3px solid #ddd;
-    transform: translate(0, -3px);
-    overflow-y: hidden;
-}
+  border-top: 3px solid #ddd;
+  transform: translate(0, -3px);
+  overflow-y: hidden; }
+
 .main-footer__item:hover {
-    transform: translate(0, -5px);
-    border-top: 5px solid #7777ff;
-    color: inherit;
-    background-color: #ddd;
-    overflow-y: hidden;
-}
+  transform: translate(0, -5px);
+  border-top: 5px solid #7777ff;
+  color: inherit;
+  background-color: #ddd;
+  overflow-y: hidden; }
+
 .main-footer {
-    margin: 0;
-    font-size: 12px;
-}
+  margin: 0;
+  font-size: 12px; }
