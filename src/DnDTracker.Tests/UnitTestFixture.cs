@@ -18,8 +18,6 @@ namespace DnDTracker.Tests
         {
             MockSingleton = Singleton.Initialize()
                 .Add<EnvironmentConfig>(new EnvironmentConfig());
-
-            Log.IgnoreLogs = true;
         }
 
         [OneTimeTearDown]

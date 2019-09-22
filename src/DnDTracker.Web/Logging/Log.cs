@@ -13,8 +13,12 @@ namespace DnDTracker.Web.Logging
 {
     public class Log
     {
-        public static bool IgnoreLogs = false;
-        
+        /// <summary>
+        /// Forces a persisting attempt regardless of any blocking conditions.
+        /// This is only intended for use within test cases.
+        /// </summary>
+        public static bool ForcePersist = false;
+
         private static void WithTag(string tag, string message, MethodBase caller, Exception ex)
         {
             var formattedTag = $"{tag.Trim().ToUpper()}";
@@ -38,7 +42,8 @@ namespace DnDTracker.Web.Logging
             System.Diagnostics.Debug.WriteLine(log);
             Console.WriteLine(log);
 
-            if (envConfig == null || IgnoreLogs)
+            // Don't persist logs while running tests.
+            if (Assembly.GetEntryAssembly().GetName().Name.ToLower().Contains("test") && !ForcePersist)
                 return;
 
             foreach (var t in disallowedTypeNameWords)
@@ -48,7 +53,7 @@ namespace DnDTracker.Web.Logging
                 if (originMethodName.Contains(t))
                     return;
 
-            if (bool.TryParse(Singleton.Get<AppConfig>()[ConfigKeys.System.PersistLogs], out var persistLogs) && persistLogs)
+            if (ForcePersist || (bool.TryParse(Singleton.Get<AppConfig>()[ConfigKeys.System.PersistLogs], out var persistLogs) && persistLogs))
             {
                 var dynamo = Singleton.Get<DynamoDbPersister>();
                 dynamo?.Save(new LogObject(formattedTag, message, caller, ex));
