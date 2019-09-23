@@ -11,6 +11,8 @@ using DnDTracker.Web.Persisters;
 using DnDTracker.Web.Configuration;
 using DnDTracker.Web.Logging;
 using Microsoft.AspNetCore;
+using DnDTracker.Web.Services.Auth;
+using DnDTracker.Web.Services.Session;
 
 namespace DnDTracker.Web
 {
@@ -23,6 +25,8 @@ namespace DnDTracker.Web
                 .Add<TableMap>(new TableMap())
                 .Add<DynamoDbPersister>(new DynamoDbPersister())
                 .Add<AppConfig>(new AppConfig())
+                .Add<AuthService>(new AuthService())
+                .Add<SessionService>(new SessionService())
                 // Add more global instances here
                 ;
 

@@ -1,5 +1,6 @@
 ﻿using DnDTracker.Web;
 using DnDTracker.Web.Configuration;
+using DnDTracker.Web.Logging;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

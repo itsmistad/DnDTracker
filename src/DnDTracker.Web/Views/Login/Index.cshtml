@@ -1,11 +1,66 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Login";
+    var session = Singleton.Get<SessionService>();
+}
+
+@section Head
+{
+    <script src="~/js/network.js"></script>
+    <link rel="stylesheet" href="~/css/login.css" />
 }
 
 <div id="login-page" class="full-center">
-    <span class="text-center">
-        <p>Now hold on, this ain't implemented!</p>
-        <p>🤯</p>
-    </span>
+    <img id="profile-img" />
+    @await Html.PartialAsync("~/Views/Shared/Snippets/_GoogleSignIn.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/Snippets/_GoogleSignOut.cshtml")
+    <div id="callback-message"></div>
 </div>
+
+@section Scripts
+{
+    <script>
+        // user has:
+        // fullName, firstName, lastName, imageUrl, email, token
+        // loginCallback is an expected function for the _GoogleSignIn partial when a sign-in is successful.
+        function loginCallback(user) {
+            // Only attempt to authenticate if we're not logged in on our current session.
+            if ('@session.Get("UserGuid", "", HttpContextAccessor)' === '') {
+                network.post('/Login/Auth', user, json => { // Wait for an AuthCallback event from the server.
+                    var callbackText = $('#callback-message');
+                    callbackText.text(json.message);
+                    switch (json.response) {
+                        case "ok":
+                            console.log(json.message);
+                            callbackText.css('color', '#777');
+                            $('main-header__login').hide();
+                            // Show whatever header button goes in place of "Login" once the user signs in.
+                            break;
+                        case "err":
+                            console.error(json.message);
+                            callbackText.css('color', '#D40E0E');
+                            break;
+                    }
+                    callbackText.slideDown('slow');
+                });
+                $('#profile-img').attr('src', user.ImageUrl);
+            }
+
+            $('#sign-in').hide();
+            $('#sign-out').show();
+        }
+
+        // logout is an expected function for the _GoogleSignOut partial when a sign-out is successful.
+        function logoutCallback() {
+            network.post('/Login/SignOut', '', () => {
+                window.location.href = '/'; // Redirect to the landing page.
+            });
+        }
+        
+        // If we're still logged in on our current session
+        if ('@session.Get("UserGuid", "", HttpContextAccessor)' !== '') {
+            $('#profile-img').attr('src', '@session.Get("UserImageUrl", "", HttpContextAccessor)');
+            $('#sign-in').hide();
+            $('#sign-out').show();
+        }
+    </script>
+}

@@ -36,36 +36,54 @@ namespace DnDTracker.Web.Persisters
         /// Synchronously retrieves all the objects of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type of IObject.</typeparam>
-        /// <param name="scanFilter">The optional scan filter (look into AWS ScanFilter documentation).</param>
-        public virtual List<T> Scan<T>(ScanFilter scanFilter = null) where T : IObject
+        /// <param name="expression">The optional expression (look into AWS Expression documentation).</param>
+        public virtual List<T> Scan<T>(Expression expression = null) where T : IObject
         {
-            return Task.Run(async () => await ScanAsync<T>(scanFilter)).Result;
+            return Task.Run(async () => await ScanAsync<T>(expression)).Result;
         }
 
         /// <summary>
         /// Asynchronously retrieves all the objects of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The type of IObject.</typeparam>
-        /// <param name="scanFilter">The optional scan filter (look into AWS ScanFilter documentation).</param>
-        public virtual async Task<List<T>> ScanAsync<T>(ScanFilter scanFilter = null) where T : IObject
+        /// <param name="expression">The optional expression (look into AWS Expression documentation).</param>
+        public virtual async Task<List<T>> ScanAsync<T>(Expression expression = null) where T : IObject
         {
             var tableMap = Singleton.Get<TableMap>();
             var tableName = tableMap[typeof(T)];
             Table table = Table.LoadTable(Client, tableName);
-            Search search = table.Scan(scanFilter ?? new ScanFilter());
+            Search search;
+            if (expression != null)
+                search = table.Scan(expression);
+            else
+                search = table.Scan(new ScanFilter());
             List<T> results = new List<T>();
             do
             {
                 List<Document> documents = await search.GetNextSetAsync();
                 foreach (var document in documents) // for each row
                 {
-                    T t = (T)typeof(T).GetMethod("FromDocument", BindingFlags.Public | BindingFlags.Static)?.Invoke(null, new[] { document });
+                    T t = (T)Activator.CreateInstance(typeof(T));
+                    t.FromDocument(document);
                     if (t != null)
                         results.Add(t);
                 }
             } while (!search.IsDone);
 
             return results;
+        }
+
+        /// <summary>
+        /// Asynchronously deletes the object of type <typeparamref name="T"/> with the specified <paramref name="guid"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of IObject.</typeparam>
+        /// <param name="guid">The <see cref="Guid"/> of the persistable object.</param>
+        public virtual async void Delete<T>(Guid guid) where T : IObject
+        {
+            var tableMap = Singleton.Get<TableMap>();
+            var tableName = tableMap[typeof(T)];
+            Table table = Table.LoadTable(Client, tableName);
+            await table.DeleteItemAsync(new Primitive(guid.ToString()));
         }
 
         /// <summary>

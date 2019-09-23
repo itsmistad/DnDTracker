@@ -98,15 +98,21 @@ namespace DnDTracker.Migrations.Helpers
             }
         }
 
+        public static void Delete<T>(Guid guid) where T : IObject
+        {
+            if (TableExists<T>())
+                Persister.Delete<T>(guid);
+        }
+
         public static void Save<T>(T obj) where T : IObject
         {
             if (TableExists<T>() && Get<T>(obj.Guid) == null)
                 Persister.Save(obj);
         }
 
-        public static List<T> Scan<T>(ScanFilter scanFilter = null) where T : IObject
+        public static List<T> Scan<T>(Expression expression = null) where T : IObject
         {
-            return TableExists<T>() ? Persister.Scan<T>(scanFilter) : new List<T>();
+            return TableExists<T>() ? Persister.Scan<T>(expression) : new List<T>();
         }
 
         public static T Get<T>(Guid guid) where T : IObject

@@ -1,6 +1,4 @@
-﻿@using DnDTracker.Web
-@using DnDTracker.Web.Configuration
-
+﻿
 @{ 
     var homeUrl = Singleton.Get<EnvironmentConfig>().CurrentHomeUrl;
 }
@@ -16,8 +14,16 @@
             <a href="/About" class="main-header__item">
                 About
             </a>
-            <a href="/Login" class="main-header__item">
-                <!-- Here, we'll need to replace the functionality and text with the user's profile -->
+            @{ 
+                /*
+                * Here, we'll need to add the <a> and text that directs to the user's profile.
+                * See AuthService.Authenticate for more information.
+                * Todo: Replicate "main-header-login" for "Account", "Profile", "<FirstName>", or "<Email>" if !string.IsNullOrEmpty(userEmail).
+                * Todo: Hide button by default in theme.(s)css
+                * Todo: Show button on successful login in /Views/Login/Index.cshtml
+                */
+            }
+            <a id="main-header__login" href="/Login" class="main-header__item">
                 Login
             </a>
         </div>

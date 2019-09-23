@@ -1,0 +1,44 @@
+﻿<!-- The Google Sign-In widget is in it's own partial because it may.. or may not be used in multiple locations. -->
+
+@{
+    ViewData["HasLoginWidget"] = true;
+    var appConfig = Singleton.Get<AppConfig>();
+}
+
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id" content="@appConfig[ConfigKeys.System.Google.SignInId]">
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+<div id="sign-in"></div>
+<script>
+    function onSuccess(googleUser) {
+        // Useful data for your client-side scripts:
+        var user = {};
+        var profile = googleUser.getBasicProfile();
+        user.FullName = profile.getName();
+        user.FirstName = profile.getGivenName();
+        user.LastName = profile.getFamilyName();
+        user.ImageUrl = profile.getImageUrl();
+        user.Email = profile.getEmail();
+        user.Token = googleUser.getAuthResponse().id_token;
+        console.log(user);
+
+        if (loginCallback) loginCallback(user);
+    }
+
+    function onFailure(err) {
+        console.error(err);
+    }
+
+    function renderButton() {
+        gapi.signin2.render('sign-in', {
+            'scope': 'profile email',
+            'width': 240,
+            'height': 50,
+            'longtitle': true,
+            'theme': 'dark',
+            'onsuccess': onSuccess,
+            'onfailure': onFailure
+        });
+    }
+</script>

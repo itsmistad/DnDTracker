@@ -31,6 +31,7 @@ namespace DnDTracker.Web.Configuration
                 Log.Error($"Failed to locate {envPath}. Using default settings.");
                 return;
             }
+            Log.Debug($"Found {envPath}.");
 
             try
             {

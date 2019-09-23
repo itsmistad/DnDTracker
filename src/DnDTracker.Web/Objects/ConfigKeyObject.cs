@@ -24,7 +24,7 @@ namespace DnDTracker.Web.Objects
             Value = value;
         }
 
-        public new void FromDocument(Document document)
+        public override void FromDocument(Document document)
         {
             base.FromDocument(document);
 

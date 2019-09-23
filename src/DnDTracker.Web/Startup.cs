@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using DnDTracker.Web.Services.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,8 +31,18 @@ namespace DnDTracker.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromHours(4);
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
+            });
+            services.AddHttpContextAccessor();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSignalR();
         }
 
 
@@ -41,7 +52,11 @@ namespace DnDTracker.Web
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseSession();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<GenericHub>("/hub");
+            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

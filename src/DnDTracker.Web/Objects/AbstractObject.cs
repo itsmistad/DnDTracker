@@ -35,13 +35,13 @@ namespace DnDTracker.Web.Objects
         /// You do not need to override this if the object is write-only. Be sure to call base.FromDocument();
         /// </summary>
         /// <param name="document">The dynamo document "row".</param>
-        public void FromDocument(Document document)
+        public virtual void FromDocument(Document document)
         {
             Guid = document.TryGetValue("Guid", out var entry) ?
                 entry.AsGuid() :
                 Guid.NewGuid();
             CreateDate = (document.TryGetValue("CreateDate", out entry) ?
-                entry.AsDateTime() :
+                Convert.ToDateTime(entry.AsString()) :
                 DateTime.Now).ToString("s");
         }
     }
