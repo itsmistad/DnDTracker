@@ -9,14 +9,30 @@ namespace DnDTracker.Web.Objects
 {
     public class UserObject : AbstractObject
     {
+        /// <summary>
+        /// !! DO NOT MODIFY !!
+        /// The user's Google email address.
+        /// </summary>
         [DynamoDBProperty]
         public string Email { get; set; }
+        /// <summary>
+        /// The user's full name.
+        /// </summary>
         [DynamoDBProperty]
         public string FullName { get; set; }
+        /// <summary>
+        /// The user's first name.
+        /// </summary>
         [DynamoDBProperty]
         public string FirstName { get; set; }
+        /// <summary>
+        /// The user's last name.
+        /// </summary>
         [DynamoDBProperty]
         public string LastName { get; set; }
+        /// <summary>
+        /// The URL to the user's profile image.
+        /// </summary>
         [DynamoDBProperty]
         public string ImageUrl { get; set; }
 
