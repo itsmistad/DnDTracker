@@ -11,11 +11,13 @@ namespace DnDTracker.Web.Objects
     public abstract class AbstractObject : IObject
     {
         /// <summary>
+        /// !! DO NOT MODIFY !!
         /// The unique identifier for an IObject.
         /// </summary>
         [DynamoDBHashKey]
         public Guid Guid { get; set; }
         /// <summary>
+        /// !! DO NOT MODIFY !!
         /// The date of creation for an IObject.
         /// </summary>
         [DynamoDBProperty]

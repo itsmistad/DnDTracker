@@ -55,7 +55,7 @@ namespace DnDTracker.Web
             app.UseSession();
             app.UseSignalR(routes =>
             {
-                routes.MapHub<GenericHub>("/hub");
+                routes.MapHub<GenericHub>("/Hub");
             });
             app.UseMvc(routes =>
             {

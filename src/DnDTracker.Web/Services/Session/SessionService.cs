@@ -20,7 +20,7 @@ namespace DnDTracker.Web.Services.Session
         /// <param name="key">The key of the variable.</param>
         /// <param name="accessor">The context accessor provided by the calling View.</param>
         /// <param name="controller">The calling controller instance.</param>
-        public JToken Get(string key, IHttpContextAccessor accessor = null, Controller controller = null)
+        public JToken GetJson(string key, IHttpContextAccessor accessor = null, Controller controller = null)
         {
             var session = GetSession(accessor, controller);
             var state = GetCurrentAppState(session);
