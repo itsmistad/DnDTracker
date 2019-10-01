@@ -50,24 +50,46 @@ body {
     border: none;
     transition: 0.2s ease-out, 0.05s transform;
     cursor: pointer; }
-  body button.thick {
-    /* Had to settle on this because "slim t h i c c" gave me CSS pre-processor errors. */
-    padding-top: 20px;
-    padding-bottom: 20px; }
-  body button.medium {
-    /* Buttons are "small" by default. */
-    padding-left: 40px;
-    padding-right: 40px; }
-  body button.large {
-    padding-left: 40px;
-    padding-right: 40px; }
-  body button:hover {
-    background-color: #7777ff; }
-  body button:active {
-    background-color: #39397c;
-    transform: translate(0, 2px); }
-  body button:active, body button:focus {
-    outline: none; }
+    body button.thick {
+      /* Had to settle on this because "slim t h i c c" gave me CSS pre-processor errors. */
+      padding-top: 20px;
+      padding-bottom: 20px; }
+    body button.medium {
+      /* Buttons are "small" by default. */
+      padding-left: 40px;
+      padding-right: 40px; }
+    body button.large {
+      padding-left: 40px;
+      padding-right: 40px; }
+    body button:hover {
+      background-color: #7777ff; }
+    body button:active {
+      background-color: #39397c;
+      transform: translate(0, 2px); }
+    body button:active, body button:focus {
+      outline: none; }
+  body .banner {
+    background-color: #ACC1F6;
+    min-height: 200px;
+    width: 100%;
+    margin-bottom: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px -4.5px rgba(0, 0, 0, 0.7); }
+    body .banner .banner-text p {
+      margin: 0;
+      padding: 30px;
+      line-height: 24px; }
+    body .banner:nth-of-type(2n+1) {
+      background-color: #f6e1ac; }
+  body .column-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 20px;
+    padding-top: 20px; }
+    body .column-container .column {
+      width: 100%;
+      padding: 30px; }
 
 /* Footer + Header shared classes*/
 #main-footer, #main-header {
@@ -114,7 +136,8 @@ body {
   #main-header .main-header .main-header__logo {
     display: flex;
     justify-content: flex-start;
-    height: 100%; }
+    height: 100%;
+    font-family: 'MedievalSharp'; }
     #main-header .main-header .main-header__logo:hover .main-header__item {
       text-shadow: 3px 3px 0 #aaa; }
   #main-header .main-header .main-header__item {
@@ -126,7 +149,6 @@ body {
 
 /* Content container classes */
 #main-content {
-  background-color: #f6e1ac;
   position: relative;
   box-shadow: 0 0 30px -20px rgba(0, 0, 0, 0.8);
   font-family: 'Roboto', Tahoma; }

@@ -1,6 +1,8 @@
 $color_background: #f6e1ac;
 $color_accent: #7777ff;
 $color_darker_accent: #39397c;
+$banner_color: #ACC1F6;
+$second_banner_color: #F6BCAC;
 
 /* Base container */
 html, body {
@@ -74,34 +76,66 @@ body {
         border: none;
         transition: 0.2s ease-out, 0.05s transform;
         cursor: pointer;
+
+        &.thick { /* Had to settle on this because "slim t h i c c" gave me CSS pre-processor errors. */
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        &.medium { /* Buttons are "small" by default. */
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        &.large {
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        &:hover {
+            background-color: $color_accent;
+        }
+
+        &:active {
+            background-color: $color_darker_accent;
+            transform: translate(0, 2px);
+        }
+
+        &:active, &:focus {
+            outline: none;
+        }
     }
 
-    button.thick { /* Had to settle on this because "slim t h i c c" gave me CSS pre-processor errors. */
-        padding-top: 20px;
+    .banner {
+        background-color: $banner_color;
+        min-height: 200px;
+        width: 100%;
+        margin-bottom: 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px -4.5px rgba(0,0,0,0.7);
+
+        .banner-text p {
+            margin: 0;
+            padding: 30px;
+            line-height: 24px;
+        }
+
+        &:nth-of-type(2n+1) {
+            background-color: $color_background;
+        }
+    }
+
+    .column-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
         padding-bottom: 20px;
-    }
+        padding-top: 20px;
 
-    button.medium { /* Buttons are "small" by default. */
-        padding-left: 40px;
-        padding-right: 40px;
-    }
-
-    button.large {
-        padding-left: 40px;
-        padding-right: 40px;
-    }
-
-    button:hover {
-        background-color: $color_accent;
-    }
-
-    button:active {
-        background-color: $color_darker_accent;
-        transform: translate(0, 2px);
-    }
-
-    button:active, button:focus {
-        outline: none;
+        .column {
+            width: 100%;
+            padding: 30px;
+        }
     }
 }
 
@@ -149,10 +183,11 @@ body {
             display: flex;
             justify-content: flex-start;
             height: 100%;
+            font-family: 'MedievalSharp';
 
             &:hover {
                 .main-header__item {
-                text-shadow: 3px 3px 0 #aaa;
+                    text-shadow: 3px 3px 0 #aaa;
                 }
             }
         }
@@ -171,7 +206,6 @@ body {
 
 /* Content container classes */
 #main-content {
-    background-color: $color_background;
     position: relative;
     box-shadow: 0 0 30px -20px rgba(0,0,0,0.8);
     font-family: 'Roboto', Tahoma;
