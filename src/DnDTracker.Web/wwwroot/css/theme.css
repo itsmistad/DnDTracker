@@ -1,4 +1,10 @@
-﻿/* Base container */
+﻿/*=============================================
+=             Screen Size Mixins              =
+=============================================*/
+/*=============================================
+=                   End Mixins                =
+=============================================*/
+/* Base container */
 html, body {
   width: 100%;
   top: 0;
@@ -10,7 +16,8 @@ html, body {
 /* Shared classes */
 body {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  background-image: url("/assets/cubes.svg"); }
   body .text-center {
     text-align: center; }
   body .full-center {
@@ -23,14 +30,12 @@ body {
   body .full-width {
     width: 100%;
     left: 0; }
-  body .page-padding {
+  body .page-width-padding {
     padding: 0 40px; }
-  body .page-margin {
-    margin: 0 80px; }
   body .border-bottom {
-    border-bottom: 1px solid #eee; }
+    border-bottom: 1px solid #eeeeee; }
   body .border-top {
-    border-top: 1px solid #eee; }
+    border-top: 1px solid #eeeeee; }
   body a {
     text-decoration: none;
     color: inherit;
@@ -71,25 +76,31 @@ body {
   body .banner {
     background-color: #ACC1F6;
     min-height: 200px;
+    max-width: 600px;
     width: 100%;
-    margin-bottom: 40px;
     border-radius: 10px;
-    box-shadow: 0 0 15px -4.5px rgba(0, 0, 0, 0.7); }
-    body .banner .banner-text p {
+    box-shadow: 0 4px 8px -3px rgba(0, 0, 0, 0.7); }
+    body .banner .banner-content {
       margin: 0;
       padding: 30px;
-      line-height: 24px; }
-    body .banner:nth-of-type(2n+1) {
+      line-height: 24px;
+      width: 100%;
+      max-width: 400px;
+      font-size: 0.8125em; }
+    body .banner.second {
       background-color: #f6e1ac; }
   body .column-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding-bottom: 20px;
-    padding-top: 20px; }
+    padding: 30px 0; }
+    body .column-container.no-gutters {
+      padding: 0; }
     body .column-container .column {
       width: 100%;
-      padding: 30px; }
+      padding: 0 30px; }
+      body .column-container .column.no-gutters {
+        padding: 0; }
 
 /* Footer + Header shared classes*/
 #main-footer, #main-header {
@@ -128,7 +139,8 @@ body {
       padding: 0 20px;
       transition: 0.2s ease-in-out;
       display: flex;
-      align-items: center; }
+      align-items: center;
+      user-select: none; }
 
 /* Header classes */
 #main-header {
@@ -151,7 +163,23 @@ body {
 #main-content {
   position: relative;
   box-shadow: 0 0 30px -20px rgba(0, 0, 0, 0.8);
-  font-family: 'Roboto', Tahoma; }
+  font-family: 'Roboto', Tahoma;
+  background-color: white;
+  max-width: 1320px;
+  /* If the screen size is >= 1440px... */
+  left: 50%;
+  transform: translateX(-50%);
+  /* Else... */ }
+  @media only screen and (max-width: 1439.9px) {
+    #main-content {
+      left: unset;
+      transform: none;
+      margin: 0 60px; } }
+  @media only screen and (max-width: 1439.9px) {
+    #main-content {
+      left: unset;
+      transform: none;
+      margin: 0 60px; } }
 
 /* Footer classes */
 #main-footer {
@@ -160,7 +188,7 @@ body {
   font-family: 'Roboto', Tahoma; }
   #main-footer .main-footer {
     margin: 0;
-    font-size: 12px; }
+    font-size: 0.75em; }
     #main-footer .main-footer .main-footer__item {
       border-top: 3px solid #ddd;
       transform: translate(0, -3px);
@@ -171,3 +199,28 @@ body {
         color: inherit;
         background-color: #ddd;
         overflow-y: hidden; }
+
+#index-page #home-logo {
+  margin: 100px 0; }
+  #index-page #home-logo h1 {
+    font-size: 4.375em;
+    font-family: 'MedievalSharp';
+    font-weight: bold;
+    margin-bottom: 0px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out; }
+    #index-page #home-logo h1:hover {
+      text-shadow: 3px 3px 0 #aaa;
+      color: black; }
+  #index-page #home-logo hr {
+    margin: 0 0 20px 0;
+    width: 100px;
+    border: 1px solid #999; }
+  #index-page #home-logo p {
+    font-size: 0.75em;
+    color: #999;
+    letter-spacing: 0.5px; }
+
+#index-page hr {
+  border: 1px solid #eeeeee;
+  margin: 20px 40px; }

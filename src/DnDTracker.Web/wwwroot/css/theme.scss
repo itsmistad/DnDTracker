@@ -1,8 +1,35 @@
-$color_background: #f6e1ac;
+$color_background: #fff;
 $color_accent: #7777ff;
 $color_darker_accent: #39397c;
-$banner_color: #ACC1F6;
-$second_banner_color: #F6BCAC;
+$color_home_desc: #999;
+$color_banner: #ACC1F6;
+$color_second_banner: #f6e1ac;
+$color_border: #eeeeee;
+$font_base_size: 16px;
+
+@function strip-units($value) {
+    @return ($value / ($value * 0 + 1));
+}
+
+@function em($px) {
+    @if not unitless($px) {
+        $pxval: strip-units($px);
+    }
+    @return ($px / strip-units($font_base_size)) * 1em;
+}
+
+/*=============================================
+=             Screen Size Mixins              =
+=============================================*/
+
+@mixin for-laptop-down {
+    @media only screen and (max-width: 1439.9px) {
+        @content;
+    }
+}
+/*=============================================
+=                   End Mixins                =
+=============================================*/
 
 /* Base container */
 html, body {
@@ -10,7 +37,7 @@ html, body {
     top: 0;
     left: 0;
     font-family: 'Montserrat', Arial;
-    font-size: 16px;
+    font-size: $font_base_size;
     margin: 0;
 }
 
@@ -18,6 +45,7 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+    background-image: url("/assets/cubes.svg");
 
     .text-center {
         text-align: center;
@@ -37,20 +65,16 @@ body {
         left: 0;
     }
 
-    .page-padding {
+    .page-width-padding {
         padding: 0 40px;
     }
 
-    .page-margin {
-        margin: 0 80px;
-    }
-
     .border-bottom {
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid $color_border;
     }
 
     .border-top {
-        border-top: 1px solid #eee;
+        border-top: 1px solid $color_border;
     }
 
     a {
@@ -107,21 +131,24 @@ body {
     }
 
     .banner {
-        background-color: $banner_color;
+        background-color: $color_banner;
         min-height: 200px;
+        max-width: 600px;
         width: 100%;
-        margin-bottom: 40px;
         border-radius: 10px;
-        box-shadow: 0 0 15px -4.5px rgba(0,0,0,0.7);
+        box-shadow: 0 4px 8px -3px rgba(0,0,0,0.7);
 
-        .banner-text p {
+        .banner-content {
             margin: 0;
             padding: 30px;
             line-height: 24px;
+            width: 100%;
+            max-width: 400px;
+            font-size: em(13);
         }
 
-        &:nth-of-type(2n+1) {
-            background-color: $color_background;
+        &.second {
+            background-color: $color_second_banner;
         }
     }
 
@@ -129,12 +156,19 @@ body {
         display: flex;
         justify-content: space-between;
         width: 100%;
-        padding-bottom: 20px;
-        padding-top: 20px;
+        padding: 30px 0;
+
+        &.no-gutters {
+            padding: 0;
+        }
 
         .column {
             width: 100%;
-            padding: 30px;
+            padding: 0 30px;
+
+            &.no-gutters {
+                padding: 0;
+            }
         }
     }
 }
@@ -170,6 +204,7 @@ body {
             transition: 0.2s ease-in-out;
             display: flex;
             align-items: center;
+            user-select: none;
         }
     }
 }
@@ -209,6 +244,23 @@ body {
     position: relative;
     box-shadow: 0 0 30px -20px rgba(0,0,0,0.8);
     font-family: 'Roboto', Tahoma;
+    background-color: white;
+    max-width: 1320px;
+    /* If the screen size is >= 1440px... */
+    left: 50%;
+    transform: translateX(-50%);
+    /* Else... */
+    @include for-laptop-down {
+        left: unset;
+        transform: none;
+        margin: 0 60px;
+    }
+
+    @include for-laptop-down {
+        left: unset;
+        transform: none;
+        margin: 0 60px;
+    }
 }
 
 /* Footer classes */
@@ -219,7 +271,7 @@ body {
 
     .main-footer {
         margin: 0;
-        font-size: 12px;
+        font-size: em(12);
 
         .main-footer__item {
             border-top: 3px solid #ddd;
@@ -237,3 +289,39 @@ body {
     }
 }
 
+#index-page {
+    #home-logo {
+        margin: 100px 0;
+
+        h1 {
+            font-size: em(70);
+            font-family: 'MedievalSharp';
+            font-weight: bold;
+            margin-bottom: 0px;
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+
+            &:hover {
+                text-shadow: 3px 3px 0 #aaa;
+                color: black;
+            }
+        }
+
+        hr {
+            margin: 0 0 20px 0;
+            width: 100px;
+            border: 1px solid $color_home_desc;
+        }
+
+        p {
+            font-size: em(12);
+            color: $color_home_desc;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    hr {
+        border: 1px solid $color_border;
+        margin: 20px 40px;
+    }
+}
