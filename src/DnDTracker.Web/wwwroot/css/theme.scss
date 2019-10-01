@@ -255,12 +255,6 @@ body {
         transform: none;
         margin: 0 60px;
     }
-
-    @include for-laptop-down {
-        left: unset;
-        transform: none;
-        margin: 0 60px;
-    }
 }
 
 /* Footer classes */

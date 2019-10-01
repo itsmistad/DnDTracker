@@ -175,11 +175,6 @@ body {
       left: unset;
       transform: none;
       margin: 0 60px; } }
-  @media only screen and (max-width: 1439.9px) {
-    #main-content {
-      left: unset;
-      transform: none;
-      margin: 0 60px; } }
 
 /* Footer classes */
 #main-footer {
