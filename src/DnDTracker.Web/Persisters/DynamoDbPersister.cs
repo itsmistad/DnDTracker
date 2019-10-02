@@ -39,7 +39,17 @@ namespace DnDTracker.Web.Persisters
         /// <param name="expression">The optional expression (look into AWS Expression documentation).</param>
         public virtual List<T> Scan<T>(Expression expression = null) where T : IObject
         {
-            return Task.Run(async () => await ScanAsync<T>(expression)).Result;
+            try
+            {
+                return Task.Run(async () => await ScanAsync<T>(expression)).Result;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to Scan through DynamoDbPersister. " +
+                    (Singleton.Get<EnvironmentConfig>().Current == Environments.Local ?
+                        "\n\nDid you run ./start-dynamodb.sh?\n\n" : ""), ex);
+                return new List<T>();
+            }
         }
 
         /// <summary>
@@ -49,28 +59,38 @@ namespace DnDTracker.Web.Persisters
         /// <param name="expression">The optional expression (look into AWS Expression documentation).</param>
         public virtual async Task<List<T>> ScanAsync<T>(Expression expression = null) where T : IObject
         {
-            var tableMap = Singleton.Get<TableMap>();
-            var tableName = tableMap[typeof(T)];
-            Table table = Table.LoadTable(Client, tableName);
-            Search search;
-            if (expression != null)
-                search = table.Scan(expression);
-            else
-                search = table.Scan(new ScanFilter());
-            List<T> results = new List<T>();
-            do
+            try
             {
-                List<Document> documents = await search.GetNextSetAsync();
-                foreach (var document in documents) // for each row
+                var tableMap = Singleton.Get<TableMap>();
+                var tableName = tableMap[typeof(T)];
+                Table table = Table.LoadTable(Client, tableName);
+                Search search;
+                if (expression != null)
+                    search = table.Scan(expression);
+                else
+                    search = table.Scan(new ScanFilter());
+                List<T> results = new List<T>();
+                do
                 {
-                    T t = (T)Activator.CreateInstance(typeof(T));
-                    t.FromDocument(document);
-                    if (t != null)
-                        results.Add(t);
-                }
-            } while (!search.IsDone);
+                    List<Document> documents = await search.GetNextSetAsync();
+                    foreach (var document in documents) // for each row
+                    {
+                        T t = (T)Activator.CreateInstance(typeof(T));
+                        t.FromDocument(document);
+                        if (t != null)
+                            results.Add(t);
+                    }
+                } while (!search.IsDone);
 
-            return results;
+                return results;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to ScanAsync through DynamoDbPersister. " +
+                    (Singleton.Get<EnvironmentConfig>().Current == Environments.Local ?
+                        "\n\nDid you run ./start-dynamodb.sh?\n\n" : ""), ex);
+                return new List<T>();
+            }
         }
 
         /// <summary>
@@ -80,10 +100,17 @@ namespace DnDTracker.Web.Persisters
         /// <param name="guid">The <see cref="Guid"/> of the persistable object.</param>
         public virtual async void Delete<T>(Guid guid) where T : IObject
         {
-            var tableMap = Singleton.Get<TableMap>();
-            var tableName = tableMap[typeof(T)];
-            Table table = Table.LoadTable(Client, tableName);
-            await table.DeleteItemAsync(new Primitive(guid.ToString()));
+            try
+            {
+                var tableMap = Singleton.Get<TableMap>();
+                var tableName = tableMap[typeof(T)];
+                Table table = Table.LoadTable(Client, tableName);
+                await table.DeleteItemAsync(new Primitive(guid.ToString()));
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to Delete through DynamoDbPersister. ", ex);
+            }
         }
 
         /// <summary>
@@ -93,7 +120,15 @@ namespace DnDTracker.Web.Persisters
         /// <param name="guid">The guid of the IObject.</param>
         public virtual T Get<T>(Guid guid) where T : IObject
         {
-            return Task.Run(async () => await GetAsync<T>(guid)).Result;
+            try
+            {
+                return Task.Run(async () => await GetAsync<T>(guid)).Result;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to Get through DynamoDbPersister. ", ex);
+                return default;
+            }
         }
 
         /// <summary>
@@ -103,24 +138,26 @@ namespace DnDTracker.Web.Persisters
         /// <param name="guid">The guid of the IObject.</param>
         public virtual async Task<T> GetAsync<T>(Guid guid) where T : IObject
         {
-            var tableMap = Singleton.Get<TableMap>();
-            var tableName = tableMap[typeof(T)];
-            if (string.IsNullOrEmpty(tableName))
-            {
-                Log.Error($"Tried to retrieve an IObject {typeof(T).Name} without an entry in TableMap.");
-                return default;
-            }
             try
             {
+                var tableMap = Singleton.Get<TableMap>();
+                var tableName = tableMap[typeof(T)];
+                if (string.IsNullOrEmpty(tableName))
+                {
+                    Log.Error($"Tried to retrieve an IObject {typeof(T).Name} without an entry in TableMap.");
+                    return default;
+                }
                 var result = await Context.LoadAsync<T>(guid, new DynamoDBOperationConfig()
                 {
                     OverrideTableName = tableName
                 });
                 return result;
             }
-            catch (Exception) { }
-
-            return default;
+            catch (Exception ex)
+            {
+                Log.Error("Failed to GetAsync through DynamoDbPersister. ", ex);
+                return default;
+            }
         }
 
         /// <summary>
@@ -130,17 +167,24 @@ namespace DnDTracker.Web.Persisters
         /// <param name="obj">The persistable object.</param>
         public virtual async void Save<T>(T obj) where T : IObject
         {
-            var tableMap = Singleton.Get<TableMap>();
-            var tableName = tableMap[typeof(T)];
-            if (string.IsNullOrEmpty(tableName))
+            try
             {
-                Log.Error($"Tried to save an IObject {typeof(T).Name} without an entry in TableMap.");
-                return;
+                var tableMap = Singleton.Get<TableMap>();
+                var tableName = tableMap[typeof(T)];
+                if (string.IsNullOrEmpty(tableName))
+                {
+                    Log.Error($"Tried to save an IObject {typeof(T).Name} without an entry in TableMap.");
+                    return;
+                }
+                await Context.SaveAsync(obj, new DynamoDBOperationConfig()
+                {
+                    OverrideTableName = tableName
+                });
             }
-            await Context.SaveAsync(obj, new DynamoDBOperationConfig()
+            catch (Exception ex)
             {
-                OverrideTableName = tableName
-            });
+                Log.Error("Failed to Save through DynamoDbPersister. ", ex);
+            }
         }
     }
 }

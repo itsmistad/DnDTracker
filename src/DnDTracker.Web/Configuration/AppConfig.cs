@@ -12,6 +12,7 @@ namespace DnDTracker.Web.Configuration
     public class AppConfig
     {
         public const int CacheExpirationSeconds = 30;
+        public readonly bool CanContinue = false;
         public Dictionary<string, DateTime> TimeOfRetrieval;
         public Dictionary<string, string> ConfigCache;
 
@@ -20,14 +21,15 @@ namespace DnDTracker.Web.Configuration
             TimeOfRetrieval = new Dictionary<string, DateTime>();
             ConfigCache = new Dictionary<string, string>();
 
-            Load();
+            CanContinue = Load();
         }
 
-        private void Load()
+        private bool Load()
         {
             var persister = Singleton.Get<DynamoDbPersister>();
             var results = persister.Scan<ConfigKeyObject>();
-            if (results != null)
+            if (results.Any())
+            {
                 foreach (var configKey in results)
                 {
                     var key = configKey.Key;
@@ -37,6 +39,10 @@ namespace DnDTracker.Web.Configuration
                     if (!TimeOfRetrieval.ContainsKey(key))
                         TimeOfRetrieval.Add(key, DateTime.Now);
                 }
+                return true;
+            }
+            else
+                return false;
         }
 
         public virtual string this[ConfigKey configKey]
@@ -54,7 +60,7 @@ namespace DnDTracker.Web.Configuration
                     else
                         TimeOfRetrieval[key] = DateTime.Now;
                 }
-                else
+                else if (!TimeOfRetrieval.ContainsKey(key))
                     TimeOfRetrieval.Add(key, DateTime.Now);
 
                 var persister = Singleton.Get<DynamoDbPersister>();
