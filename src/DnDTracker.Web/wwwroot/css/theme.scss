@@ -22,8 +22,73 @@ $font_base_size: 16px;
 =             Screen Size Mixins              =
 =============================================*/
 
+@mixin for-custom-down($custom) {
+    @if unitless($custom) {
+        $custom: #{$custom}px;
+    }
+
+    @media only screen and (max-width: $custom) {
+        @content;
+    }
+}
+@mixin for-custom-up($custom) {
+    @if unitless($custom) {
+        $custom: #{$custom}px;
+    }
+
+    @media only screen and (min-width: $custom) {
+        @content;
+    }
+}
+
+
+@mixin for-phone-only {
+    @media only screen and (max-width: 539.9px) {
+        @content;
+    }
+}
+@mixin for-small-tablet-up {
+    @media only screen and (min-width: 540px) {
+        @content;
+    }
+}
+@mixin for-small-tablet-down {
+    @media only screen and (max-width: 799.9px) {
+        @content;
+    }
+}
+@mixin for-large-tablet-up {
+    @media only screen and (min-width: 800px) {
+        @content;
+    }
+}
+@mixin for-large-tablet-down {
+    @media only screen and (max-width: 999.9px) {
+        @content;
+    }
+}
+@mixin for-laptop-up {
+    @media only screen and (min-width: 1000px) {
+        @content;
+    }
+}
 @mixin for-laptop-down {
     @media only screen and (max-width: 1439.9px) {
+        @content;
+    }
+}
+@mixin for-desktop-up {
+    @media only screen and (min-width: 1440px) {
+        @content;
+    }
+}
+@mixin for-desktop-down {
+    @media only screen and (max-width: 1920px) {
+        @content;
+    }
+}
+@mixin for-ultrawide-only {
+    @media only screen and (min-width: 1920.1px) {
         @content;
     }
 }
@@ -134,17 +199,30 @@ body {
         background-color: $color_banner;
         min-height: 200px;
         max-width: 600px;
-        width: 100%;
         border-radius: 10px;
         box-shadow: 0 4px 8px -3px rgba(0,0,0,0.7);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
 
         .banner-content {
             margin: 0;
             padding: 30px;
             line-height: 24px;
-            width: 100%;
+            height: 100%;
             max-width: 500px;
             font-size: em(16);
+
+            &.full-center {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+            }
         }
 
         &.second {
@@ -245,15 +323,19 @@ body {
     box-shadow: 0 0 30px -20px rgba(0,0,0,0.8);
     font-family: 'Roboto', Tahoma;
     background-color: white;
-    max-width: 1320px;
-    /* If the screen size is >= 1440px... */
-    left: 50%;
-    transform: translateX(-50%);
-    /* Else... */
-    @include for-laptop-down {
-        left: unset;
-        transform: none;
+    max-width: 1480px;
+
+    @include for-custom-up(1600px) {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    @include for-custom-down(1599.9px) {
         margin: 0 60px;
+    }
+
+    @include for-large-tablet-down {
+        margin: 0;
     }
 }
 
