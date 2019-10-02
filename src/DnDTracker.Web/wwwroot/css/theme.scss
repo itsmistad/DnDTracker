@@ -1,6 +1,100 @@
-$color_background: #f6e1ac;
+$color_background: #fff;
 $color_accent: #7777ff;
 $color_darker_accent: #39397c;
+$color_home_desc: #999;
+$color_banner: #ACC1F6;
+$color_second_banner: #f6e1ac;
+$color_border: #eeeeee;
+$font_base_size: 16px;
+
+@function strip-units($value) {
+    @return ($value / ($value * 0 + 1));
+}
+
+@function em($px) {
+    @if not unitless($px) {
+        $pxval: strip-units($px);
+    }
+    @return ($px / strip-units($font_base_size)) * 1em;
+}
+
+/*=============================================
+=             Screen Size Mixins              =
+=============================================*/
+
+@mixin for-custom-down($custom) {
+    @if unitless($custom) {
+        $custom: #{$custom}px;
+    }
+
+    @media only screen and (max-width: $custom) {
+        @content;
+    }
+}
+@mixin for-custom-up($custom) {
+    @if unitless($custom) {
+        $custom: #{$custom}px;
+    }
+
+    @media only screen and (min-width: $custom) {
+        @content;
+    }
+}
+
+
+@mixin for-phone-only {
+    @media only screen and (max-width: 539.9px) {
+        @content;
+    }
+}
+@mixin for-small-tablet-up {
+    @media only screen and (min-width: 540px) {
+        @content;
+    }
+}
+@mixin for-small-tablet-down {
+    @media only screen and (max-width: 799.9px) {
+        @content;
+    }
+}
+@mixin for-large-tablet-up {
+    @media only screen and (min-width: 800px) {
+        @content;
+    }
+}
+@mixin for-large-tablet-down {
+    @media only screen and (max-width: 999.9px) {
+        @content;
+    }
+}
+@mixin for-laptop-up {
+    @media only screen and (min-width: 1000px) {
+        @content;
+    }
+}
+@mixin for-laptop-down {
+    @media only screen and (max-width: 1439.9px) {
+        @content;
+    }
+}
+@mixin for-desktop-up {
+    @media only screen and (min-width: 1440px) {
+        @content;
+    }
+}
+@mixin for-desktop-down {
+    @media only screen and (max-width: 1920px) {
+        @content;
+    }
+}
+@mixin for-ultrawide-only {
+    @media only screen and (min-width: 1920.1px) {
+        @content;
+    }
+}
+/*=============================================
+=                   End Mixins                =
+=============================================*/
 
 /* Base container */
 html, body {
@@ -8,7 +102,7 @@ html, body {
     top: 0;
     left: 0;
     font-family: 'Montserrat', Arial;
-    font-size: 16px;
+    font-size: $font_base_size;
     margin: 0;
 }
 
@@ -16,6 +110,7 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+    background-image: url("/assets/cubes.svg");
 
     .text-center {
         text-align: center;
@@ -35,20 +130,16 @@ body {
         left: 0;
     }
 
-    .page-padding {
+    .page-width-padding {
         padding: 0 40px;
     }
 
-    .page-margin {
-        margin: 0 80px;
-    }
-
     .border-bottom {
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid $color_border;
     }
 
     .border-top {
-        border-top: 1px solid #eee;
+        border-top: 1px solid $color_border;
     }
 
     a {
@@ -74,34 +165,89 @@ body {
         border: none;
         transition: 0.2s ease-out, 0.05s transform;
         cursor: pointer;
+
+        &.thick { /* Had to settle on this because "slim t h i c c" gave me CSS pre-processor errors. */
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        &.medium { /* Buttons are "small" by default. */
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        &.large {
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        &:hover {
+            background-color: $color_accent;
+        }
+
+        &:active {
+            background-color: $color_darker_accent;
+            transform: translate(0, 2px);
+        }
+
+        &:active, &:focus {
+            outline: none;
+        }
     }
 
-    button.thick { /* Had to settle on this because "slim t h i c c" gave me CSS pre-processor errors. */
-        padding-top: 20px;
-        padding-bottom: 20px;
+    .banner {
+        background-color: $color_banner;
+        min-height: 200px;
+        max-width: 600px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px -3px rgba(0,0,0,0.7);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+        .banner-content {
+            margin: 0;
+            padding: 30px;
+            line-height: 24px;
+            height: 100%;
+            max-width: 500px;
+            font-size: em(16);
+
+            &.full-center {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+            }
+        }
+
+        &.second {
+            background-color: $color_second_banner;
+        }
     }
 
-    button.medium { /* Buttons are "small" by default. */
-        padding-left: 40px;
-        padding-right: 40px;
-    }
+    .column-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: 30px 0;
 
-    button.large {
-        padding-left: 40px;
-        padding-right: 40px;
-    }
+        &.no-gutters {
+            padding: 0;
+        }
 
-    button:hover {
-        background-color: $color_accent;
-    }
+        .column {
+            width: 100%;
+            padding: 0 30px;
 
-    button:active {
-        background-color: $color_darker_accent;
-        transform: translate(0, 2px);
-    }
-
-    button:active, button:focus {
-        outline: none;
+            &.no-gutters {
+                padding: 0;
+            }
+        }
     }
 }
 
@@ -136,6 +282,7 @@ body {
             transition: 0.2s ease-in-out;
             display: flex;
             align-items: center;
+            user-select: none;
         }
     }
 }
@@ -149,10 +296,11 @@ body {
             display: flex;
             justify-content: flex-start;
             height: 100%;
+            font-family: 'MedievalSharp';
 
             &:hover {
                 .main-header__item {
-                text-shadow: 3px 3px 0 #aaa;
+                    text-shadow: 3px 3px 0 #aaa;
                 }
             }
         }
@@ -171,10 +319,24 @@ body {
 
 /* Content container classes */
 #main-content {
-    background-color: $color_background;
     position: relative;
     box-shadow: 0 0 30px -20px rgba(0,0,0,0.8);
     font-family: 'Roboto', Tahoma;
+    background-color: white;
+    max-width: 1480px;
+
+    @include for-custom-up(1600px) {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    @include for-custom-down(1599.9px) {
+        margin: 0 60px;
+    }
+
+    @include for-large-tablet-down {
+        margin: 0;
+    }
 }
 
 /* Footer classes */
@@ -185,7 +347,7 @@ body {
 
     .main-footer {
         margin: 0;
-        font-size: 12px;
+        font-size: em(12);
 
         .main-footer__item {
             border-top: 3px solid #ddd;
@@ -203,3 +365,39 @@ body {
     }
 }
 
+#index-page {
+    #home-logo {
+        margin: 100px 0;
+
+        h1 {
+            font-size: em(70);
+            font-family: 'MedievalSharp';
+            font-weight: bold;
+            margin-bottom: 0px;
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+
+            &:hover {
+                text-shadow: 3px 3px 0 #aaa;
+                color: black;
+            }
+        }
+
+        hr {
+            margin: 0 0 20px 0;
+            width: 100px;
+            border: 1px solid $color_home_desc;
+        }
+
+        p {
+            font-size: em(12);
+            color: $color_home_desc;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    hr {
+        border: 1px solid $color_border;
+        margin: 20px 40px;
+    }
+}
