@@ -13,9 +13,16 @@ $font_base_size: 16px;
 
 @function em($px) {
     @if not unitless($px) {
-        $pxval: strip-units($px);
+        $px: strip-units($px);
     }
     @return ($px / strip-units($font_base_size)) * 1em;
+}
+
+@function scale($px, $factor) {
+    @if not unitless($px) {
+        $px: strip-units($px);
+    }
+    @return #{$px * $factor}px;
 }
 
 /*=============================================
@@ -104,6 +111,10 @@ html, body {
     font-family: 'Montserrat', Arial;
     font-size: $font_base_size;
     margin: 0;
+
+    @include for-small-tablet-down {
+        font-size: scale($font_base_size, 0.8);
+    }
 }
 
 /* Shared classes */
@@ -249,6 +260,12 @@ body {
             }
         }
     }
+
+    .hide-on-phones {
+        @include for-phone-only {
+            display: none;
+        }
+    }
 }
 
 /* Footer + Header shared classes*/
@@ -314,6 +331,26 @@ body {
                 background-color: #eee;
             }
         }
+    }
+}
+
+#not-supported {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: white;
+    z-index: 999999;
+    overflow: hidden;
+
+    h4 {
+        word-wrap: break-word;
+    }
+
+    @include for-custom-down(380px) {
+        display: block;
     }
 }
 
