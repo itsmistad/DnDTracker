@@ -21,6 +21,14 @@
     <body>
         <!-- Header -->
         @await Html.PartialAsync("/Views/Shared/Snippets/_Header.cshtml")
+        
+        <div id="not-supported">
+            <div class="full-center text-center">
+                <h4>
+                    Your device is not supported by DnDTracker.
+                </h4>
+            </div>
+        </div>
 
         <!-- Page Content -->
         <div id="main-content">
@@ -32,5 +40,14 @@
 
         <script src="~/js/theme.js" asp-append-version="true"></script> <!-- Load the primary theme script -->
         @RenderSection("Scripts", required: false)
+        <script>
+            $(function() {
+                if ($('#not-supported').is(':visible')) {
+                    $('#main-header').hide();
+                    $('#main-content').hide();
+                    $('#main-footer').hide();
+                }
+            })
+        </script>
     </body>
 </html>
