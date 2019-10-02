@@ -109,7 +109,7 @@ namespace DnDTracker.Web.Persisters
             }
             catch (Exception ex)
             {
-                Log.Error("Failed to Delete through DynamoDbPersister. ", ex);
+                Log.Error("Failed to Delete through DynamoDbPersister.", ex);
             }
         }
 
@@ -126,7 +126,7 @@ namespace DnDTracker.Web.Persisters
             }
             catch (Exception ex)
             {
-                Log.Error("Failed to Get through DynamoDbPersister. ", ex);
+                Log.Error("Failed to Get through DynamoDbPersister.", ex);
                 return default;
             }
         }
@@ -155,7 +155,7 @@ namespace DnDTracker.Web.Persisters
             }
             catch (Exception ex)
             {
-                Log.Error("Failed to GetAsync through DynamoDbPersister. ", ex);
+                Log.Error("Failed to GetAsync through DynamoDbPersister.", ex);
                 return default;
             }
         }
@@ -183,7 +183,7 @@ namespace DnDTracker.Web.Persisters
             }
             catch (Exception ex)
             {
-                Log.Error("Failed to Save through DynamoDbPersister. ", ex);
+                Log.Error("Failed to Save through DynamoDbPersister.", ex);
             }
         }
     }
