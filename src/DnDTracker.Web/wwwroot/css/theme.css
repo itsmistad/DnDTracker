@@ -230,12 +230,12 @@ body {
         overflow-y: hidden; }
 
 #index-page #home-logo {
-  margin: 100px 0; }
+  margin: 200px 0; }
   #index-page #home-logo h1 {
     font-size: 4.375em;
     font-family: 'MedievalSharp';
     font-weight: bold;
-    margin-bottom: 0px;
+    margin: 0px;
     cursor: pointer;
     transition: 0.2s ease-in-out; }
     #index-page #home-logo h1:hover {
@@ -244,12 +244,14 @@ body {
   #index-page #home-logo hr {
     margin: 0 0 20px 0;
     width: 100px;
-    border: 1px solid #999; }
+    border: none;
+    border-top: 1px solid #999; }
   #index-page #home-logo p {
     font-size: 0.75em;
     color: #999;
     letter-spacing: 0.5px; }
 
 #index-page hr {
-  border: 1px solid #eeeeee;
+  border: none;
+  border-top: 1px solid #eeeeee;
   margin: 20px 40px; }

@@ -30,6 +30,8 @@ namespace DnDTracker.Web
                 // Add more global instances here
                 ;
 
+            if (!Singleton.Get<AppConfig>().CanContinue) return;
+
             Log.Debug("Global instances registered.");
 
             Log.Debug("Setting up WebHost...");

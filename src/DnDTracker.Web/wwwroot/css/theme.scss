@@ -404,13 +404,13 @@ body {
 
 #index-page {
     #home-logo {
-        margin: 100px 0;
+        margin: 200px 0;
 
         h1 {
             font-size: em(70);
             font-family: 'MedievalSharp';
             font-weight: bold;
-            margin-bottom: 0px;
+            margin: 0px;
             cursor: pointer;
             transition: 0.2s ease-in-out;
 
@@ -423,7 +423,8 @@ body {
         hr {
             margin: 0 0 20px 0;
             width: 100px;
-            border: 1px solid $color_home_desc;
+            border: none;
+            border-top: 1px solid $color_home_desc;
         }
 
         p {
@@ -434,7 +435,8 @@ body {
     }
 
     hr {
-        border: 1px solid $color_border;
+        border: none;
+        border-top: 1px solid $color_border;
         margin: 20px 40px;
     }
 }
