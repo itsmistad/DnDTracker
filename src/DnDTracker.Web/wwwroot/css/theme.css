@@ -161,7 +161,7 @@ body {
 
 /* Header classes */
 #main-header {
-  height: 90px; }
+    height: 90px; }
   #main-header .main-header .main-header__logo {
     display: flex;
     justify-content: flex-start;

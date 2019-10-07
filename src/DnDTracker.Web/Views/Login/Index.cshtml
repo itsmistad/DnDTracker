@@ -31,8 +31,7 @@
                         case "ok":
                             console.log(json.message);
                             callbackText.css('color', '#777');
-                            $('main-header__login').hide();
-                            // Show whatever header button goes in place of "Login" once the user signs in.
+                            window.location.href = '/UserDash'; //Redirect to the user dashboard
                             break;
                         case "err":
                             console.error(json.message);

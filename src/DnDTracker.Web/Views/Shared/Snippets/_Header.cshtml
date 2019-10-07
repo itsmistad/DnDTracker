@@ -1,6 +1,8 @@
 ﻿
 @{ 
     var homeUrl = Singleton.Get<EnvironmentConfig>().CurrentHomeUrl;
+    var session = Singleton.Get<SessionService>();
+
 }
 
 <div id="main-header" class="page-width-padding border-bottom">
@@ -14,18 +16,20 @@
             <a href="/About" class="main-header__item">
                 About
             </a>
-            @{ 
-                /*
-                * Here, we'll need to add the <a> and text that directs to the user's profile.
-                * See AuthService.Authenticate for more information.
-                * Todo: Replicate "main-header-login" for "Account", "Profile", "<FirstName>", or "<Email>" if !string.IsNullOrEmpty(userEmail).
-                * Todo: Hide button by default in theme.(s)css
-                * Todo: Show button on successful login in /Views/Login/Index.cshtml
-                */
+
+            @if (@session.Get("UserGuid", "", HttpContextAccessor) != "")
+            { //Only show user item if logged in
+                <a id="main-header__user" href="UserDash" class="main-header__item">
+                    User
+                </a>
             }
-            <a id="main-header__login" href="/Login" class="main-header__item">
-                Login
-            </a>
+
+            @if (session.Get("UserGuid", "", HttpContextAccessor) == "")
+            { //Only show login item if not logged in
+                <a id="main-header__login" href="/Login" class="main-header__item">
+                    Login
+                </a>
+            }
         </div>
     </div>
 </div>
