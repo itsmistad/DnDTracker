@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDTracker.Web", "src\DnDTr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDTracker.Tests", "src\DnDTracker.Tests\DnDTracker.Tests.csproj", "{7F61C1D2-96FD-43EA-A177-8BE382FEA587}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnDTracker.Migrations", "src\DnDTracker.Migrations\DnDTracker.Migrations.csproj", "{AF3B4911-9300-4ED3-915C-BF2EC007B766}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDTracker.Migrations", "src\DnDTracker.Migrations\DnDTracker.Migrations.csproj", "{AF3B4911-9300-4ED3-915C-BF2EC007B766}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
