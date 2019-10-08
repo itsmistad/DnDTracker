@@ -1,0 +1,17 @@
+﻿#profile-img {
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s ease-out;
+    margin: 10px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.6);
+}
+#profile-img:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 6px 2px rgba(0,0,0,0.5);
+}
+#sign-out {
+    display: none;
+}
+#callback-message {
+    display: none;
+}
