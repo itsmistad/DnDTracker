@@ -57,13 +57,7 @@
                 signInRedirectHandle = null;
             }
             network.post('/Login/SignOut', '', () => {
-                var callbackText = $('#callback-message');
-                callbackText.text('Signed out.');
-                callbackText.css('color', '#777');
-                callbackText.slideDown('slow');
-                $('#profile-img').attr('src', '');
-                $('#sign-in').show();
-                $('#sign-out').hide();
+                window.location.href = window.location.href; // Reload this page.
             });
         }
         
