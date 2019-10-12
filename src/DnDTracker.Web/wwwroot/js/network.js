@@ -22,14 +22,14 @@ var network = new function() {
 
     obj.init = route => {
         if (!connection)
-            connection = new signalR.HubConnectionBuilder().withUrl(`/${route}`).build();
+            connection = new signalR.HubConnectionBuilder().withUrl(`${window.location.origin}${route}`).build();
     };
 
     obj.on = (event, func) => {
         if (connection)
             connection.on(event, json => {
-                console.log(`Received ${event}: ${json}`);
-                func(JSON.parse(json));
+                console.log(`Received ${event}: ${JSON.stringify(json)}`);
+                func(json);
             });
     };
 
@@ -62,7 +62,7 @@ var network = new function() {
         }
         var str = JSON.stringify(json);
         console.log(`Sending ${event}: ${str}`);
-        connection.invoke(event, str).catch(err => {
+        connection.invoke(event, json).catch(err => {
             if (errCallback) errCallback(err.toString());
         });
     };

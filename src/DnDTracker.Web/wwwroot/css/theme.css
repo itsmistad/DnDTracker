@@ -48,7 +48,7 @@ body {
   body span.underline {
     text-decoration: underline; }
   body button {
-    margin: 10px 20px;
+    margin: 2px 6px 4px;
     padding: 10px 20px;
     font-family: Montserrat, Arial;
     text-transform: uppercase;
@@ -78,6 +78,13 @@ body {
       transform: translate(0, 2px); }
     body button:active, body button:focus {
       outline: none; }
+  body h1,
+  body h2,
+  body h3,
+  body h4,
+  body h5,
+  body h6 {
+    font-family: 'Montserrat', Arial; }
   body .banner {
     background-color: #ACC1F6;
     min-height: 200px;
@@ -134,13 +141,71 @@ body {
     body .hide-on-phones {
       display: none; } }
 
+/* Notification shared classes */
+.notify-corner-queue-container {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 2000; }
+  .notify-corner-queue-container .notify-popup.botleft-corner {
+    position: relative;
+    transform: unset;
+    left: 0;
+    top: 0;
+    min-width: unset;
+    text-align: left;
+    padding: 20px 20px;
+    margin-top: 20px;
+    border-radius: 16px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.7); }
+    .notify-corner-queue-container .notify-popup.botleft-corner .header {
+      margin-bottom: 20px; }
+
+.notify-popup {
+  position: absolute;
+  min-width: 250px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 20px 20px;
+  background-color: white;
+  border-radius: 4px;
+  font-family: 'Montserrat'; }
+  .notify-popup .header {
+    font-size: 1.5em;
+    margin: 0 20px; }
+  .notify-popup .subheader {
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.75em;
+    margin: 0 20px;
+    margin-bottom: 10px; }
+  .notify-popup .body {
+    font-size: 0.875em;
+    font-family: 'Roboto';
+    margin: 0 20px;
+    text-align: left;
+    margin-bottom: 10px; }
+  .notify-popup .buttons {
+    width: 100%; }
+  .notify-popup .close {
+    font-size: 0.875em;
+    font-weight: bold;
+    cursor: pointer;
+    color: #ddd;
+    text-align: right;
+    padding: 15px 10px 15px 10px;
+    transform: translate(20px, -20px);
+    float: right;
+    line-height: 0; }
+
 /* Footer + Header shared classes*/
 #main-footer, #main-header {
   position: relative;
   background-color: white;
   display: flex;
-  align-items: center;
-  z-index: 1000; }
+  align-items: center; }
   #main-footer .main-footer,
   #main-footer .main-header, #main-header .main-footer,
   #main-header .main-header {
@@ -176,6 +241,7 @@ body {
 
 /* Header classes */
 #main-header {
+  z-index: 1000000;
   height: 90px; }
   #main-header .main-header .main-header__logo {
     display: flex;
@@ -273,3 +339,21 @@ body {
 
 #about-page {
   height: 100%; }
+
+#create-character-page {
+  background-color: #f6e1ac;
+  width: 100%;
+  height: 100%; }
+  #create-character-page .buttons-container {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    bottom: 10px; }
+    @media only screen and (max-width: 1599.9px) {
+      #create-character-page .buttons-container {
+        right: 80px; } }
+    @media only screen and (max-width: 999.9px) {
+      #create-character-page .buttons-container {
+        right: 5px; } }

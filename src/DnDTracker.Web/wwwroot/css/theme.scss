@@ -170,7 +170,7 @@ body {
     }
 
     button {
-        margin: 10px 20px;
+        margin: 2px 6px 4px;
         padding: 10px 20px;
         font-family: Montserrat, Arial;
         text-transform: uppercase;
@@ -210,6 +210,15 @@ body {
         &:active, &:focus {
             outline: none;
         }
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: 'Montserrat', Arial;
     }
 
     .banner {
@@ -298,13 +307,88 @@ body {
     }
 }
 
+/* Notification shared classes */
+
+.notify-corner-queue-container {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 2000;
+
+    .notify-popup.botleft-corner {
+        position: relative;
+        transform: unset;
+        left: 0;
+        top: 0;
+        min-width: unset;
+        text-align: left;
+        padding: 20px 20px;
+        margin-top: 20px;
+        border-radius: 16px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.7);
+
+        .header {
+            margin-bottom: 20px;
+        }
+    }
+}
+
+.notify-popup {
+    position: absolute;
+    min-width: 250px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 20px 20px;
+    background-color: white;
+    border-radius: 4px;
+    font-family: 'Montserrat';
+
+    .header {
+        font-size: em(24);
+        margin: 0 20px;
+    }
+
+    .subheader {
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-size: em(12);
+        margin: 0 20px;
+        margin-bottom: 10px;
+    }
+
+    .body {
+        font-size: em(14);
+        font-family: 'Roboto';
+        margin: 0 20px;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    .buttons {
+        width: 100%;
+    }
+
+    .close {
+        font-size: em(14);
+        font-weight: bold;
+        cursor: pointer;
+        color: #ddd;
+        text-align: right;
+        padding: 15px 10px 15px 10px;
+        transform: translate(20px, -20px);
+        float: right;
+        line-height: 0;
+    }
+}
+
 /* Footer + Header shared classes*/
 #main-footer, #main-header {
     position: relative;
     background-color: white;
     display: flex;
     align-items: center;
-    z-index: 1000;
 
     .main-footer,
     .main-header {
@@ -336,6 +420,7 @@ body {
 
 /* Header classes */
 #main-header {
+    z-index: 1000000;
     height: 90px;
 
     .main-header {
@@ -473,4 +558,26 @@ body {
 
 #about-page {
     height: 100%;
+}
+
+#create-character-page {
+    background-color: $color_second_banner;
+    width: 100%;
+    height: 100%;
+    .buttons-container {
+        position: fixed;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        bottom: 10px;
+
+        @include for-custom-down(1599.9px) {
+            right: 80px;
+        }
+
+        @include for-large-tablet-down {
+            right: 5px;
+        }
+    }
 }

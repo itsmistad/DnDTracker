@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Create a Character";
+}
+
+<div id="create-character-page">
+    <div class="column-container full-height">
+        <div class="column">
+        </div>
+        <div class="column no-gutters">
+        </div>
+    </div>
+    <div class="buttons-container">
+        <button id="export-button" class="medium">
+            Export
+        </button>
+        <button id="create-button" class="medium">
+            Create
+        </button>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            var footer = $('.main-footer');
+            var buttons = $('.buttons-container');
+            var exportBtn = $('#export-button');
+            var createBtn = $('#create-button');
+
+            var footerHeight = footer.outerHeight();
+            var handleScroll = () => {
+                var bottom = $(document).height() - ($(document).scrollTop() + $(window).height());
+                if (bottom > footerHeight) {
+                    if (buttons.css('transform') !== 'unset') {
+                        buttons.css({
+                            transform: 'unset'
+                        });
+                    }
+                } else {
+                    buttons.css({
+                        transform: `translateY(-${footerHeight - bottom}px)`
+                    });
+                }
+            };
+            handleScroll();
+            $(document).scroll(handleScroll);
+
+            exportBtn.click(function () {
+                var notification = notify.me({
+                    header: 'Test Notification',
+                    subheader: 'This is a test',
+                    body: 'This is a test!',
+                    onStartClose: () => {
+                        notify.overlay(false);
+                    },
+                    closeButton: true
+                });
+                notify.overlay(true);
+            });
+            createBtn.click(function () {
+                notify.me({
+                    class: 'notify-popup botleft-corner',
+                    header: 'Test Notification',
+                    subheader: 'Test Notification',
+                    body: 'This is a test corner notification that will expire.',
+                    forceOnTop: true,
+                    buttons: [],
+                    timeout: 3000,
+                    targetSelector: '.notify-corner-queue-container',
+                    targetMethod: 'prepend'
+                });
+                notify.me({
+                    class: 'notify-popup botleft-corner',
+                    header: 'Test Notification',
+                    subheader: 'Test Notification',
+                    body: 'This is a test corner notification that WON\'T expire.',
+                    forceOnTop: true,
+                    buttons: [],
+                    targetSelector: '.notify-corner-queue-container',
+                    targetMethod: 'prepend'
+                });
+            });
+        });
+    </script>
+}

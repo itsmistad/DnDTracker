@@ -19,7 +19,7 @@
 
             @if (@session.Get("UserGuid", "", HttpContextAccessor) != "")
             { //Only show user item if logged in
-                <a id="main-header__user" href="UserDash" class="main-header__item">
+                <a id="main-header__user" href="/UserDash" class="main-header__item">
                     User
                 </a>
             }

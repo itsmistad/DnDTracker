@@ -16,6 +16,24 @@
                             crossorigin="anonymous"></script> <!-- Load the jQuery UI library -->
         <script src="~/lib/signalr/dist/browser/signalr.js"></script> <!-- Load the SignalR client library -->
         <script src="~/js/network.js"></script> <!-- Load the network.js library -->
+        <script src="~/js/notify.js"></script> <!-- Load the notify.js library -->
+        <script>
+            @{ 
+                var session = Singleton.Get<SessionService>();
+                var userGuid = session.Get("UserGuid", "", HttpContextAccessor);
+                var userEmail = session.Get("UserEmail", "", HttpContextAccessor);
+                var userFirstName = session.Get("UserFirstName", "", HttpContextAccessor);
+                var userImageUrl = session.Get("UserImageUrl", "", HttpContextAccessor);
+            }
+            var currentUser = {
+                guid: '@userGuid',
+                imageUrl: '@userEmail',
+                firstName: '@userFirstName',
+                imageUrl: '@userImageUrl'
+            };
+            if ('@userGuid' === '') currentUser = null;
+            notify.initNetwork();
+        </script>
         @RenderSection("Head", required: false)
     </head>
     <body>
@@ -37,6 +55,9 @@
 
         <!-- Footer -->
         @await Html.PartialAsync("/Views/Shared/Snippets/_Footer.cshtml")
+
+        <!-- Corner Notification Queue -->
+        <div class="notify-corner-queue-container"></div>
 
         <script src="~/js/theme.js" asp-append-version="true"></script> <!-- Load the primary theme script -->
         @RenderSection("Scripts", required: false)
