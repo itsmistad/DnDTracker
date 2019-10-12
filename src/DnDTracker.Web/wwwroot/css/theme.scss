@@ -182,6 +182,7 @@ body {
         border: none;
         transition: 0.2s ease-out, 0.05s transform;
         cursor: pointer;
+        user-select: none;
 
         &.thick { /* Had to settle on this because "slim t h i c c" gave me CSS pre-processor errors. */
             padding-top: 20px;
@@ -325,7 +326,7 @@ body {
         padding: 20px 20px;
         margin-top: 20px;
         border-radius: 16px;
-        box-shadow: 0 0 5px rgba(0,0,0,0.7);
+        box-shadow: 0 0 15px -6px rgba(0,0,0,0.7);
 
         .header {
             margin-bottom: 20px;
@@ -380,6 +381,7 @@ body {
         transform: translate(20px, -20px);
         float: right;
         line-height: 0;
+        user-select: none;
     }
 }
 
@@ -564,6 +566,7 @@ body {
     background-color: $color_second_banner;
     width: 100%;
     height: 100%;
+
     .buttons-container {
         position: fixed;
         display: flex;
@@ -571,6 +574,7 @@ body {
         justify-content: flex-end;
         align-items: flex-end;
         bottom: 10px;
+        right: 10px;
 
         @include for-custom-down(1599.9px) {
             right: 80px;

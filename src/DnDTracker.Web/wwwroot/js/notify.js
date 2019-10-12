@@ -41,6 +41,8 @@ var notify = new function() {
         forceOnTop: false, // Toggles forcing the notification to the top layer
         onStartClose: () => { }, // The event that gets called when the notification starts closing 
         onClose: () => { }, // The event that gets called when the notification is fully closed
+        handleAsStack: false, // Toggles handling FIFO notification stacks by sliding down the notifications after an older sibling is closed
+        maxInStack: 4, // The maximum amount of notifications that can be added to the stack at once when "handleAsStack" is true
         buttons: [
             {
                 text: 'OK',
@@ -50,6 +52,7 @@ var notify = new function() {
             }
         ]
     };
+    var stacks = [];
 
     // Initializes a connection to the NotificationHub if the user is logged in
     obj.initNetwork = () => {
@@ -127,6 +130,10 @@ var notify = new function() {
         var id = idPrefix + idSuffix;
         var target = $(mergedOptions.targetSelector);
 
+        if (mergedOptions.handleAsStack &&
+            stacks.filter(_ => _.containerSelector === mergedOptions.targetSelector).length >= mergedOptions.maxInStack)
+            return null;
+
         if (target.length) {
             var elementOptions = {
                 id,
@@ -159,10 +166,30 @@ var notify = new function() {
                 result.$ = $('#' + id);
                 result.options = mergedOptions;
                 result.close = () => {
-                    if (result.options.timeoutHandle)
-                        clearTimeout(result.options.timeoutHandle);
+                    var stackItem;
+                    if (mergedOptions.timeoutHandle)
+                        clearTimeout(mergedOptions.timeoutHandle);
                     if (!ignoreFunctions)
                         mergedOptions.onStartClose();
+                    if (mergedOptions.handleAsStack && stacks.length) {
+                        stackItem = stacks.findIndex(_ => _.notification.id === result.id);
+                        var wait = true;
+                        for (var item of stacks.filter(_ => _.containerSelector === mergedOptions.targetSelector)) {
+                            var n = item.notification;
+                            if (n.id === result.id) {
+                                wait = false;
+                                stacks.splice(stackItem ? stackItem : 0, 1);
+                                continue;
+                            } else if (!wait) {
+                                n._triggerStackSlide(result.$.outerHeight(true));
+                            }
+                        }
+                        var first = stacks.find(_ => _.containerSelector === mergedOptions.targetSelector && _.notification.options.timeout > 0);
+                        if (first) {
+                            var firstNotification = first.notification;
+                            firstNotification.options.timeoutHandle = setTimeout(firstNotification.close, firstNotification.options.timeout);
+                        }
+                    }
                     result.$.fadeOut(mergedOptions.fadeOutDuration, function () {
                         $(this).remove();
                         if (!ignoreFunctions)
@@ -170,8 +197,42 @@ var notify = new function() {
                     });
                 };
 
+                result._currentAnimation = null;
+                result._currentDistance = 0;
+                result._totalDistance = 0;
+                result._triggerStackSlide = targetDistance => {
+                    result._totalDistance += targetDistance;
+                    var translation = result._totalDistance;
+                    if (result._currentAnimation)
+                        result._currentAnimation.stop();
+                    result._currentAnimation = $({ translation: result._currentDistance });
+                    result._currentAnimation.animate({
+                            translation
+                        },
+                        {
+                            duration: result.options.fadeOutDuration,
+                            easing: 'swing',
+                            step: function() {
+                                result.$.css('transform', `translateY(${this.translation}px)`);
+                                result._currentDistance = this.translation;
+                            },
+                            complete: function () {
+                                result.$.css('transform', 'none');
+                                result._currentAnimation = null;
+                                result._currentDistance = 0;
+                                result._totalDistance = 0;
+                            }
+                        });
+                };
+
                 return result;
             };
+
+            if (mergedOptions.handleAsStack) 
+                stacks.push({
+                    containerSelector: mergedOptions.targetSelector,
+                    notification: ret
+                });
 
             var jQ = ret.$;
             jQ.css('z-index', mergedOptions.forceOnTop ? defaultTopLayer : mergedOptions.layer);
@@ -202,7 +263,7 @@ var notify = new function() {
             });
 
             jQ.fadeIn(mergedOptions.fadeInDuration, () => {
-                if (mergedOptions.timeout > 0)
+                if (mergedOptions.timeout > 0 && (!mergedOptions.handleAsStack || stacks.filter(_ => _.notification.options.timeout > 0)[0].notification.id === ret.id))
                     mergedOptions.timeoutHandle = setTimeout(ret.close, mergedOptions.timeout);
             });
 
