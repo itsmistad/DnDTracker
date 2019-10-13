@@ -13,7 +13,7 @@ namespace DnDTracker.Migrations.Migrations.Dynamo
     {
         public new void Up()
         {
-            DynamoDbHelper.Save(new ConfigKeyObject(ConfigKeys.System.Notification.CornerPopupClasses, "notify-popup botleft-corner"));
+            DynamoDbHelper.Save(new ConfigKeyObject(ConfigKeys.System.Notification.CornerPopupClasses, "notify-popup corner"));
             DynamoDbHelper.Save(new ConfigKeyObject(ConfigKeys.System.Notification.CenterPopupClasses, "notify-popup"));
             var welcomeMessage = DynamoDbHelper.Get<ConfigKeyObject>(ConfigKeys.System.WelcomeMessage.Guid);
             welcomeMessage.Value = "Please forgive any issues you encounter while the app is still in development.<br/>Be sure to check out our <a href=\"https://github.com/itsmistad/DnDTracker\">GitHub</a> for updates.";
