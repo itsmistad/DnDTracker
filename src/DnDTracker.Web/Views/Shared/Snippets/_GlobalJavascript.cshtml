@@ -1,0 +1,21 @@
+﻿<script>
+    @{ 
+        var session = Singleton.Get<SessionService>();
+        var appConfig = Singleton.Get<AppConfig>();
+        var userGuid = session.Get("UserGuid", "", HttpContextAccessor);
+        var userEmail = session.Get("UserEmail", "", HttpContextAccessor);
+        var userFirstName = session.Get("UserFirstName", "", HttpContextAccessor);
+        var userImageUrl = session.Get("UserImageUrl", "", HttpContextAccessor);
+    }
+    var currentUser = {
+        guid: '@userGuid',
+        imageUrl: '@userEmail',
+        firstName: '@userFirstName',
+        imageUrl: '@userImageUrl'
+    };
+    if ('@userGuid' === '') currentUser = null;
+    notify.initNetwork();
+    notify.initSound('default', '/assets/notify.mp3');
+    var cornerPopupClasses = '@appConfig[ConfigKeys.System.Notification.CornerPopupClasses]';
+    var centerPopupClasses = '@appConfig[ConfigKeys.System.Notification.CenterPopupClasses]';
+</script>

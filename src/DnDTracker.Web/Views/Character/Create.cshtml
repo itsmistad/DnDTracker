@@ -49,6 +49,7 @@
 
             exportBtn.click(function() {
                 var notification = notify.me({
+                    class: centerPopupClasses,
                     header: 'Test Notification',
                     subheader: 'This is a test',
                     body: 'This is a test!',
@@ -61,31 +62,20 @@
             });
             createBtn.click(function() {
                 notify.me({
-                    class: 'notify-popup botleft-corner',
-                    header: 'Test Notification',
-                    subheader: 'Test Notification',
-                    body: 'This is a test corner notification that will expire.',
-                    forceOnTop: true,
+                    class: cornerPopupClasses,
+                    header: 'Oh, hey...',
+                    subheader: 'This is awkward.',
+                    body: 'Go back! You shouldn\'t be here!',
                     handleAsStack: true,
-                    buttons: [],
+                    buttons: [{
+                        text: 'Oh, ok',
+                        action: () => window.location.href = '@(Singleton.Get<EnvironmentConfig>().CurrentHomeUrl)'
+                    }],
                     fadeInDuration: 200,
                     fadeOutDuration: 300,
-                    timeout: 2000,
-                    targetSelector: '.notify-corner-queue-container',
-                    targetMethod: 'prepend'
-                });
-                notify.me({
-                    class: 'notify-popup botleft-corner',
-                    header: 'Test Notification',
-                    subheader: 'Test Notification',
-                    body: 'This is a test corner notification that WON\'T expire.',
-                    forceOnTop: true,
-                    handleAsStack: true,
-                    fadeInDuration: 200,
-                    fadeOutDuration: 300,
-                    buttons: [],
-                    targetSelector: '.notify-corner-queue-container',
-                    targetMethod: 'prepend'
+                    targetSelector: '#notification-queue',
+                    targetMethod: 'prepend',
+                    sound: 'default'
                 });
             });
         });

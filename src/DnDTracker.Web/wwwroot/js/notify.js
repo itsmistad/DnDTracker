@@ -10,7 +10,7 @@
 
 var notify = new function() {
 
-    var obj = {};
+    var obj = {}, stacks = [], audio = [];
     var idPrefix = 'notify-popup-';
     var popupElement = options =>
         `<div id="${options.id}" class="${options.class}" style="display:none;">
@@ -21,7 +21,6 @@ var notify = new function() {
     <div class="buttons"></div>
 </div>
 `;
-    var defaultTopLayer = 999999;
     var defaultNotificationLayer = 2000;
     var defaultOverlayLayer = 1999;
     var defaultOptions = {
@@ -38,11 +37,11 @@ var notify = new function() {
         fadeOutDuration: 400, // How long (in ms) does the fade out animation last
         fadeInDuration: 800, // How long (in ms) does the fade in animation last
         layer: defaultNotificationLayer, // The z-index layer of the notification
-        forceOnTop: false, // Toggles forcing the notification to the top layer
         onStartClose: () => { }, // The event that gets called when the notification starts closing 
         onClose: () => { }, // The event that gets called when the notification is fully closed
         handleAsStack: false, // Toggles handling FIFO notification stacks by sliding down the notifications after an older sibling is closed
         maxInStack: 4, // The maximum amount of notifications that can be added to the stack at once when "handleAsStack" is true
+        sound: '', // The sound name that was specified with "notify.initSound(name, file)"
         buttons: [
             {
                 text: 'OK',
@@ -52,7 +51,13 @@ var notify = new function() {
             }
         ]
     };
-    var stacks = [];
+
+    obj.initSound = (name, file) => {
+        audio.push({
+            name,
+            audio: new Audio(file)
+        });
+    };
 
     // Initializes a connection to the NotificationHub if the user is logged in
     obj.initNetwork = () => {
@@ -235,7 +240,7 @@ var notify = new function() {
                 });
 
             var jQ = ret.$;
-            jQ.css('z-index', mergedOptions.forceOnTop ? defaultTopLayer : mergedOptions.layer);
+            jQ.css('z-index', mergedOptions.layer);
             if (elementOptions.header === '')
                 jQ.find('.header').hide();
             if (elementOptions.subheader === '')
@@ -262,6 +267,16 @@ var notify = new function() {
                 ret.close();
             });
 
+            if (mergedOptions.sound) {
+                var sound = audio.find(_ => _.name === mergedOptions.sound).audio.play();
+                if (sound !== undefined) {
+                    sound.then(_ => {
+                        // Do... nothing?
+                    }).catch(err => {
+                        console.error(`😞 notify.me failed to play the "${mergedOptions.sound}" sound because the user hasn't interacted with the page yet.`);
+                    });
+                }
+            }
             jQ.fadeIn(mergedOptions.fadeInDuration, () => {
                 if (mergedOptions.timeout > 0 && (!mergedOptions.handleAsStack || stacks.filter(_ => _.notification.options.timeout > 0)[0].notification.id === ret.id))
                     mergedOptions.timeoutHandle = setTimeout(ret.close, mergedOptions.timeout);

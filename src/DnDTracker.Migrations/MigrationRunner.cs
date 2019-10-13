@@ -1,4 +1,5 @@
-﻿using DnDTracker.Migrations.Migrations;
+﻿using DnDTracker.Migrations.Helpers;
+using DnDTracker.Migrations.Migrations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace DnDTracker.Migrations
         /// Runs Up() migrations up to and including the timestamp and Down() migrations after and excluding the timestamp.
         /// </summary>
         /// <param name="targetTimeStamp"></param>
-        public static void Start(long? targetTimeStamp = null)
+        public static void Start(long? targetTimeStamp = null, bool forceSave = false)
         {
             var migrationTypes = Assembly.GetExecutingAssembly()
                 .GetTypes()
@@ -28,6 +29,11 @@ namespace DnDTracker.Migrations
                 .ToDictionary(
                     _ => _.Key,
                     _ => _.ToList().OrderBy(x => ((MigrationAttribute)x.GetCustomAttribute(typeof(MigrationAttribute))).EpochTimeStamp));
+
+            if (forceSave)
+            {
+                DynamoDbHelper.EnableForceSave = true;
+            }
 
             Console.WriteLine($"Found {migrationTypes.Count} migration types.");
             foreach(var migrationType in migrationTypes)

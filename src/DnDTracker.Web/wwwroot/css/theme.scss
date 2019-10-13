@@ -309,27 +309,42 @@ body {
 }
 
 /* Notification shared classes */
-
-.notify-corner-queue-container {
+#notification-queue {
     position: fixed;
-    left: 20px;
-    bottom: 20px;
-    z-index: 2000;
+    left: 0;
+    bottom: 0;
+    padding: 0 20px 20px;
 
     .notify-popup.botleft-corner {
         position: relative;
         transform: unset;
         left: 0;
         top: 0;
-        min-width: unset;
         text-align: left;
         padding: 20px 20px;
         margin-top: 20px;
         border-radius: 16px;
         box-shadow: 0 0 15px -6px rgba(0,0,0,0.7);
+        min-width: 200px;
 
-        .header {
-            margin-bottom: 20px;
+        a {
+            font-weight: bold;
+        }
+
+        .subheader {
+            font-size: em(14);
+        }
+
+        .body {
+            font-size: em(12);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            button {
+                font-size: em(10);
+            }
         }
     }
 }
@@ -345,26 +360,26 @@ body {
     background-color: white;
     border-radius: 4px;
     font-family: 'Montserrat';
+    display: flex;
+    flex-direction: column;
 
     .header {
         font-size: em(24);
-        margin: 0 20px;
+        padding: 0 0 10px;
     }
 
     .subheader {
         text-transform: uppercase;
         letter-spacing: 1.5px;
         font-size: em(12);
-        margin: 0 20px;
-        margin-bottom: 10px;
+        padding: 0 10px 10px;
     }
 
     .body {
         font-size: em(14);
         font-family: 'Roboto';
-        margin: 0 20px;
+        padding: 0 10px 10px;
         text-align: left;
-        margin-bottom: 10px;
     }
 
     .buttons {
@@ -372,16 +387,20 @@ body {
     }
 
     .close {
-        font-size: em(14);
+        font-size: .875em;
         font-weight: bold;
         cursor: pointer;
         color: #ddd;
-        text-align: right;
-        padding: 15px 10px 15px 10px;
-        transform: translate(20px, -20px);
-        float: right;
-        line-height: 0;
+        text-align: center;
+        width: 30px;
+        height: 30px;
+        position: absolute;
         user-select: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        right: 0;
+        top: 0;
     }
 }
 

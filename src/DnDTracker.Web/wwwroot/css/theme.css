@@ -143,24 +143,33 @@ body {
       display: none; } }
 
 /* Notification shared classes */
-.notify-corner-queue-container {
+#notification-queue {
   position: fixed;
-  left: 20px;
-  bottom: 20px;
-  z-index: 2000; }
-  .notify-corner-queue-container .notify-popup.botleft-corner {
+  left: 0;
+  bottom: 0;
+  padding: 0 20px 20px; }
+  #notification-queue .notify-popup.botleft-corner {
     position: relative;
     transform: unset;
     left: 0;
     top: 0;
-    min-width: unset;
     text-align: left;
     padding: 20px 20px;
     margin-top: 20px;
     border-radius: 16px;
-    box-shadow: 0 0 15px -6px rgba(0, 0, 0, 0.7); }
-    .notify-corner-queue-container .notify-popup.botleft-corner .header {
-      margin-bottom: 20px; }
+    box-shadow: 0 0 15px -6px rgba(0, 0, 0, 0.7);
+    min-width: 200px; }
+    #notification-queue .notify-popup.botleft-corner a {
+      font-weight: bold; }
+    #notification-queue .notify-popup.botleft-corner .subheader {
+      font-size: 0.875em; }
+    #notification-queue .notify-popup.botleft-corner .body {
+      font-size: 0.75em; }
+    #notification-queue .notify-popup.botleft-corner .buttons {
+      display: flex;
+      justify-content: flex-end; }
+      #notification-queue .notify-popup.botleft-corner .buttons button {
+        font-size: 0.625em; }
 
 .notify-popup {
   position: absolute;
@@ -172,35 +181,39 @@ body {
   padding: 20px 20px;
   background-color: white;
   border-radius: 4px;
-  font-family: 'Montserrat'; }
+  font-family: 'Montserrat';
+  display: flex;
+  flex-direction: column; }
   .notify-popup .header {
     font-size: 1.5em;
-    margin: 0 20px; }
+    padding: 0 0 10px; }
   .notify-popup .subheader {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-size: 0.75em;
-    margin: 0 20px;
-    margin-bottom: 10px; }
+    padding: 0 10px 10px; }
   .notify-popup .body {
     font-size: 0.875em;
     font-family: 'Roboto';
-    margin: 0 20px;
-    text-align: left;
-    margin-bottom: 10px; }
+    padding: 0 10px 10px;
+    text-align: left; }
   .notify-popup .buttons {
     width: 100%; }
   .notify-popup .close {
-    font-size: 0.875em;
+    font-size: .875em;
     font-weight: bold;
     cursor: pointer;
     color: #ddd;
-    text-align: right;
-    padding: 15px 10px 15px 10px;
-    transform: translate(20px, -20px);
-    float: right;
-    line-height: 0;
-    user-select: none; }
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 0;
+    top: 0; }
 
 /* Footer + Header shared classes*/
 #main-footer, #main-header {
