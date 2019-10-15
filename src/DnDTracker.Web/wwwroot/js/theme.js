@@ -18,7 +18,6 @@ notify.initNetwork(() => {
         switch (json.response) {
         case 'ok':
             console.log(json.message);
-            obj.connected = true;
             break;
         case 'err':
             console.error(json.message);

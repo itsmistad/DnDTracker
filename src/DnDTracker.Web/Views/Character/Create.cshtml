@@ -2,82 +2,111 @@
     ViewData["Title"] = "Create a Character";
 }
 
-<div id="create-character-page">
+<form id="create-character-page">
     <div class="column-container full-height">
-        <div class="column">
+        <div class="column full-center">
+            <div class="banner second with-top-bot-margins full-height">
+                <div class="banner-content">
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                    <h4>Question Placeholder</h4>
+                    <input type="text" />
+                </div>
+            </div>
         </div>
-        <div class="column no-gutters">
+        <div id="character-summary" class="column full-center">
+            <div class="banner second with-rows">
+                <div class="banner-content">
+                    <div class="banner-row text-center">
+                        <h4>Character Summary</h4>
+                    </div>
+                    <hr />
+                    <div class="banner-row">
+                        <div class="column-container full-height">
+                            <div class="column no-gutters full-center">
+                                <img class="character-summary__profile-img" src="~/assets/missing_profile_img.png" />
+                                <input class="character-summary__profile-img-browse" type="file" name="pic" accept="image/*">
+                            </div>
+                            <div class="column no-gutters">
+                                <h5>Name</h5>
+                                <div id="character-summary__name" class="character-summary__line-item"></div>
+                                <h5>Gender</h5>
+                                <div id="character-summary__gender" class="character-summary__line-item"></div>
+                                <h5>Race</h5>
+                                <div id="character-summary__race" class="character-summary__line-item"></div>
+                                <h5>Class</h5>
+                                <div id="character-summary__class" class="character-summary__line-item"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-row">
+                        <div class="column-container full-height">
+                            <div class="column">
+                                <div class="column-container full-height">
+                                    <div class="column no-gutters">
+                                        <h5>STAT</h5>
+                                        <h5>STAT</h5>
+                                        <h5>STAT</h5>
+                                        <h5>STAT</h5>
+                                    </div>
+                                    <div class="column no-gutters text-right">
+                                        ...<br/>
+                                        ...<br/>
+                                        ...<br/>
+                                        ...
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <h5>Quick Links</h5>
+                                <ul id="character-summary__quick-links">
+                                    <a href="#"><li>Background</li></a>
+                                    <a href="#"><li>Skills</li></a>
+                                    <a href="#"><li>Test 3</li></a>
+                                    <a href="#"><li>Test 4</li></a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-row">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="buttons-container">
-        <button id="export-button" class="medium">
+        <button id="export-button" class="medium" type="button">
             Export
         </button>
-        <button id="create-button" class="medium">
+        <button id="create-button" class="medium" type="button">
             Create
         </button>
     </div>
-</div>
+</form>
 
 @section Scripts
 {
-    <script>
-        $(function() {
-            var footer = $('.main-footer');
-            var buttons = $('.buttons-container');
-            var exportBtn = $('#export-button');
-            var createBtn = $('#create-button');
-
-            var footerHeight = footer.outerHeight();
-            var handleScroll = () => {
-                var bottom = $(document).height() - ($(document).scrollTop() + $(window).height());
-                if (bottom > footerHeight || $(document).width() >= 1600 && $(document).height() === $(window).height()) {
-                    if (buttons.css('transform') !== 'none') {
-                        buttons.css({
-                            transform: 'none'
-                        });
-                    }
-                } else {
-                    buttons.css({
-                        transform: `translateY(-${footerHeight - bottom}px)`
-                    });
-                }
-            };
-            handleScroll();
-            $(document).scroll(handleScroll);
-            $(window).resize(handleScroll);
-
-            exportBtn.click(function() {
-                var notification = notify.me({
-                    class: centerPopupClasses,
-                    header: 'Test Notification',
-                    subheader: 'This is a test',
-                    body: 'This is a test!',
-                    onStartClose: () => {
-                        notify.overlay(false);
-                    },
-                    closeButton: true
-                });
-                notify.overlay(true);
-            });
-            createBtn.click(function() {
-                notify.me({
-                    class: cornerPopupClasses,
-                    header: 'Oh, hey...',
-                    subheader: 'This is awkward.',
-                    body: 'Go back! You shouldn\'t be here!',
-                    handleAsStack: true,
-                    buttons: [{
-                        text: 'Oh, ok',
-                        action: () => window.location.href = '@(Singleton.Get<EnvironmentConfig>().CurrentHomeUrl)'
-                    }],
-                    fadeInDuration: 200,
-                    fadeOutDuration: 300,
-                    targetSelector: '#notification-queue',
-                    targetMethod: 'prepend',
-                    sound: 'default'
-                });
-            });
-        });
-    </script>
+    <script src="~/js/createcharacter.js"></script>
 }
