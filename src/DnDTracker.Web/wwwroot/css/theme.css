@@ -119,16 +119,20 @@ body {
     body .hide-on-phones {
       display: none; } }
 
-/* Footer + Header shared classes*/
-#main-footer, #main-header {
+/* Footer + Header + Taskbar shared classes*/
+#main-footer, #main-header, #taskbar {
   position: relative;
   background-color: white;
   display: flex;
   align-items: center;
   z-index: 1000; }
   #main-footer .main-footer,
-  #main-footer .main-header, #main-header .main-footer,
-  #main-header .main-header {
+  #main-footer .main-header,
+  #main-footer .taskbar, #main-header .main-footer,
+  #main-header .main-header,
+  #main-header .taskbar, #taskbar .main-footer,
+  #taskbar .main-header,
+  #taskbar .taskbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -137,21 +141,57 @@ body {
     height: 100%; }
     #main-footer .main-footer .main-footer__buttons,
     #main-footer .main-footer .main-header__buttons,
+    #main-footer .main-footer .taskbar__buttons,
     #main-footer .main-header .main-footer__buttons,
-    #main-footer .main-header .main-header__buttons, #main-header .main-footer .main-footer__buttons,
+    #main-footer .main-header .main-header__buttons,
+    #main-footer .main-header .taskbar__buttons,
+    #main-footer .taskbar .main-footer__buttons,
+    #main-footer .taskbar .main-header__buttons,
+    #main-footer .taskbar .taskbar__buttons, #main-header .main-footer .main-footer__buttons,
     #main-header .main-footer .main-header__buttons,
+    #main-header .main-footer .taskbar__buttons,
     #main-header .main-header .main-footer__buttons,
-    #main-header .main-header .main-header__buttons {
+    #main-header .main-header .main-header__buttons,
+    #main-header .main-header .taskbar__buttons,
+    #main-header .taskbar .main-footer__buttons,
+    #main-header .taskbar .main-header__buttons,
+    #main-header .taskbar .taskbar__buttons, #taskbar .main-footer .main-footer__buttons,
+    #taskbar .main-footer .main-header__buttons,
+    #taskbar .main-footer .taskbar__buttons,
+    #taskbar .main-header .main-footer__buttons,
+    #taskbar .main-header .main-header__buttons,
+    #taskbar .main-header .taskbar__buttons,
+    #taskbar .taskbar .main-footer__buttons,
+    #taskbar .taskbar .main-header__buttons,
+    #taskbar .taskbar .taskbar__buttons {
       display: flex;
       justify-content: flex-end;
       height: 100%; }
     #main-footer .main-footer .main-footer__item,
     #main-footer .main-footer .main-header__item,
+    #main-footer .main-footer .taskbar__item,
     #main-footer .main-header .main-footer__item,
-    #main-footer .main-header .main-header__item, #main-header .main-footer .main-footer__item,
+    #main-footer .main-header .main-header__item,
+    #main-footer .main-header .taskbar__item,
+    #main-footer .taskbar .main-footer__item,
+    #main-footer .taskbar .main-header__item,
+    #main-footer .taskbar .taskbar__item, #main-header .main-footer .main-footer__item,
     #main-header .main-footer .main-header__item,
+    #main-header .main-footer .taskbar__item,
     #main-header .main-header .main-footer__item,
-    #main-header .main-header .main-header__item {
+    #main-header .main-header .main-header__item,
+    #main-header .main-header .taskbar__item,
+    #main-header .taskbar .main-footer__item,
+    #main-header .taskbar .main-header__item,
+    #main-header .taskbar .taskbar__item, #taskbar .main-footer .main-footer__item,
+    #taskbar .main-footer .main-header__item,
+    #taskbar .main-footer .taskbar__item,
+    #taskbar .main-header .main-footer__item,
+    #taskbar .main-header .main-header__item,
+    #taskbar .main-header .taskbar__item,
+    #taskbar .taskbar .main-footer__item,
+    #taskbar .taskbar .main-header__item,
+    #taskbar .taskbar .taskbar__item {
       height: 100%;
       padding: 0 20px;
       transition: 0.2s ease-in-out;
@@ -161,7 +201,7 @@ body {
 
 /* Header classes */
 #main-header {
-    height: 90px; }
+  height: 90px; }
   #main-header .main-header .main-header__logo {
     display: flex;
     justify-content: flex-start;
@@ -173,6 +213,23 @@ body {
     border-bottom: 3px solid #ddd; }
     #main-header .main-header .main-header__item:hover {
       border-bottom: 5px solid #7777ff;
+      color: inherit;
+      background-color: #eee; }
+
+/* Taskbar Classes */
+#taskbar {
+  height: 45px; }
+  #taskbar .taskbar .taskbar__logo {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    font-family: 'MedievalSharp'; }
+    #taskbar .taskbar .taskbar__logo:hover .taskbar__item {
+      text-shadow: 1px 1px 0 #aaa; }
+  #taskbar .taskbar .taskbar__item {
+    border-bottom: 1px solid #ddd; }
+    #taskbar .taskbar .taskbar__item:hover {
+      border-bottom: 3px solid #7777ff;
       color: inherit;
       background-color: #eee; }
 
