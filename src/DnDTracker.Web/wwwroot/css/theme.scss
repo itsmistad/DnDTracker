@@ -356,7 +356,10 @@ body {
 /* Header classes */
 #main-header {
     height: 90px;
-    padding-bottom: 5px;
+
+    .with-padding {
+        padding-bottom: 5px;
+    }
 
     .main-header {
         .main-header__logo {

@@ -279,8 +279,9 @@ body {
 
 /* Header classes */
 #main-header {
-  height: 90px;
-  padding-bottom: 5px; }
+  height: 90px; }
+  #main-header .with-padding {
+    padding-bottom: 5px; }
   #main-header .main-header .main-header__logo {
     display: flex;
     justify-content: flex-start;

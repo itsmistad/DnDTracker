@@ -3,7 +3,7 @@
     var homeUrl = Singleton.Get<EnvironmentConfig>().CurrentHomeUrl;
     var session = Singleton.Get<SessionService>();
     var isLoggedIn = session.Get("UserGuid", "", HttpContextAccessor) != "";
-    var borderBottom = isLoggedIn ? "" : "border-bottom";
+    var borderBottom = isLoggedIn ? "with-padding" : "border-bottom";
     var loginButtonText = isLoggedIn ? "Logout" : "Login";
 }
 
