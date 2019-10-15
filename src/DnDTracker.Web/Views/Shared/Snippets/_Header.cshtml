@@ -2,7 +2,9 @@
 @{ 
     var homeUrl = Singleton.Get<EnvironmentConfig>().CurrentHomeUrl;
     var session = Singleton.Get<SessionService>();
-    var borderBottom = session.Get("UserGuid", "", HttpContextAccessor) != "" ? "" : "border-bottom";
+    var isLoggedIn = session.Get("UserGuid", "", HttpContextAccessor) != "";
+    var borderBottom = isLoggedIn ? "" : "border-bottom";
+    var loginButtonText = isLoggedIn ? "Logout" : "Login";
 }
 
 <div id="main-header" class="page-width-padding @borderBottom">
@@ -16,20 +18,9 @@
             <a href="/About" class="main-header__item">
                 <h4>About</h4>
             </a>
-
-            @if (session.Get("UserGuid", "", HttpContextAccessor) != "")
-            { //Only show user item if logged in
-                <a id="main-header__logout" href="/Login" class="main-header__item">
-                    <h4>Logout</h4>
-                </a>
-            }
-
-            @if (session.Get("UserGuid", "", HttpContextAccessor) == "")
-            { //Only show login item if not logged in
-                <a id="main-header__login" href="/Login" class="main-header__item">
-                    <h4>Login</h4>
-                </a>
-            }
+            <a href="/Login" class="main-header__item">
+                <h4>@loginButtonText</h4>
+            </a>
         </div>
     </div>
 </div>
