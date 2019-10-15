@@ -21,7 +21,7 @@
     <body>
         <!-- Header -->
         @await Html.PartialAsync("/Views/Shared/Snippets/_Header.cshtml")
-        
+
         <div id="not-supported">
             <div class="full-center text-center">
                 <h4>
@@ -29,6 +29,9 @@
                 </h4>
             </div>
         </div>
+
+        <!-- Taskbar -->
+        @await Html.PartialAsync("/Views/Shared/Snippets/_Taskbar.cshtml")
 
         <!-- Page Content -->
         <div id="main-content">
@@ -41,7 +44,7 @@
         <script src="~/js/theme.js" asp-append-version="true"></script> <!-- Load the primary theme script -->
         @RenderSection("Scripts", required: false)
         <script>
-            $(function() {
+            $(function () {
                 if ($('#not-supported').is(':visible')) {
                     $('#main-header').hide();
                     $('#main-content').hide();

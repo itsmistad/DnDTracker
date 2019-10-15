@@ -1,0 +1,29 @@
+@{ 
+    var homeUrl = Singleton.Get<EnvironmentConfig>().CurrentHomeUrl;
+    var session = Singleton.Get<SessionService>();
+ }
+	@if (@session.Get("UserGuid", "", HttpContextAccessor) != "")
+    { //Only show user item if logged in
+
+    <div id="main-header" class="page-width-padding border-bottom">
+        <div class="main-header">
+            <div class="main-header__logo">
+            <a id="main-header__user" heref="..." class="main-header__item">
+            <h2 style="font-weight: bold">Start Campaign</h2>
+            </a>
+            <a id="main-header__user" heref="..." class="main-header__item">
+            <h2 style="font-weight: bold">Join Campaign</h2>
+            </a>
+            <a id="main-header__user" heref="..." class="main-header__item">
+            <h2 style="font-weight: bold">Create Character</h2>
+            </a>
+            <a id="main-header__user" heref="..." class="main-header__item">
+            <h2 style="font-weight: bold">View Character</h2>
+            </a>
+            <a id="main-header__user" href="/Login" class="main-header__item">
+            <h2 style="font-weight: bold">Logout</h2>
+            </a>
+            </div>
+        </div>
+    </div>
+	}
