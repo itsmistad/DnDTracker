@@ -299,16 +299,17 @@ body {
 }
 
 /* Footer + Header + Taskbar shared classes*/
-#main-footer, #main-header, #taskbar{
+#main-footer, #main-header, #main-taskbar {
     position: relative;
     background-color: white;
     display: flex;
     align-items: center;
     z-index: 1000;
+    font-family: 'MedievalSharp';
 
     .main-footer,
     .main-header,
-    .taskbar{
+    .main-taskbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -318,7 +319,7 @@ body {
 
         .main-footer__buttons,
         .main-header__buttons,
-        .taskbar__buttons {
+        .main-taskbar__buttons {
             display: flex;
             justify-content: flex-end;
             height: 100%;
@@ -326,36 +327,21 @@ body {
 
         .main-footer__item,
         .main-header__item,
-        .taskbar__item {
+        .main-taskbar__item {
             height: 100%;
             padding: 0 20px;
             transition: 0.2s ease-in-out;
             display: flex;
             align-items: center;
             user-select: none;
-        }
-    }
-}
-
-/* Header classes */
-#main-header {
-    height: 90px;
-
-    .main-header {
-        .main-header__logo {
-            display: flex;
-            justify-content: flex-start;
-            height: 100%;
-            font-family: 'MedievalSharp';
 
             &:hover {
-                .main-header__item {
-                    text-shadow: 3px 3px 0 #aaa;
-                }
+                text-shadow: 1px 1px 0 #aaa;
             }
         }
 
-        .main-header__item {
+        .main-header__item,
+        .main-taskbar__item {
             border-bottom: 3px solid #ddd;
 
             &:hover {
@@ -367,31 +353,41 @@ body {
     }
 }
 
-/* Taskbar Classes */
-#taskbar {
-    height: 45px;
+/* Header classes */
+#main-header {
+    height: 90px;
+    padding-bottom: 5px;
 
-    .taskbar {
-        .taskbar__logo {
+    .main-header {
+        .main-header__logo {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             height: 100%;
-            font-family: 'MedievalSharp';
 
             &:hover {
-                .taskbar__item {
-                    text-shadow: 1px 1px 0 #aaa;
+                .main-header__item {
+                    text-shadow: 3px 3px 0 #aaa;
                 }
             }
         }
+    }
+}
 
-        .taskbar__item {
-            border-bottom: 1px solid #ddd;
+/* Taskbar Classes */
+#main-taskbar {
+    height: 45px;
 
-            &:hover {
-                border-bottom: 3px solid $color_accent;
-                color: inherit;
-                background-color: #eee;
+    .main-taskbar {
+        .main-taskbar__buttons {
+            justify-content: space-between;
+            width: 100%;
+
+            .main-taskbar__item {
+                border-bottom-width: 1px;
+
+                &:hover {
+                    border-bottom-width: 3px;
+                }
             }
         }
     }

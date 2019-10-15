@@ -2,28 +2,28 @@
     var homeUrl = Singleton.Get<EnvironmentConfig>().CurrentHomeUrl;
     var session = Singleton.Get<SessionService>();
  }
-	@if (@session.Get("UserGuid", "", HttpContextAccessor) != "")
-    { //Only show user item if logged in
+@if (@session.Get("UserGuid", "", HttpContextAccessor) != "")
+{ //Only show user item if logged in
 
-    <div id="taskbar" class="page-width-padding border-bottom">
-        <div class="taskbar">
-            <div class="taskbar__logo">
-            <a id="taskbar__user" heref="..." class="taskbar__item">
-            <h2 style="font-weight: bold">Start Campaign</h2>
+<div id="main-taskbar" class="page-width-padding border-bottom">
+    <div class="main-taskbar">
+        <div class="main-taskbar__buttons">
+            <a href="/UserDash" class="main-taskbar__item">
+                <h4>Dashboard</h4>
             </a>
-            <a id="taskbar__user" heref="..." class="taskbar__item">
-            <h2 style="font-weight: bold">Join Campaign</h2>
+            <a href="#" class="main-taskbar__item">
+                <h4>Start Campaign</h4>
             </a>
-            <a id="taskbar__user" heref="..." class="taskbar__item">
-            <h2 style="font-weight: bold">Create Character</h2>
+            <a href="#" class="main-taskbar__item">
+                <h4>Join Campaign</h4>
             </a>
-            <a id="taskbar__user" heref="..." class="taskbar__item">
-            <h2 style="font-weight: bold">View Character</h2>
+            <a href="#" class="main-taskbar__item">
+                <h4>Create Character</h4>
             </a>
-            <a id="taskbar__user" href="/Login" class="taskbar__item">
-            <h2 style="font-weight: bold">Logout</h2>
+            <a href="#" class="main-taskbar__item">
+                <h4>View Characters</h4>
             </a>
-            </div>
         </div>
     </div>
-	}
+</div>
+}
