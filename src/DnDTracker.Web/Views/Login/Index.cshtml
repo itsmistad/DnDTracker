@@ -5,19 +5,21 @@
 
 @section Head
 {
-    <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="~/css/login.css?@(new Random().Next())" />
 }
 
 <div id="login-page" class="full-center">
     <img id="profile-img" />
     @await Html.PartialAsync("~/Views/Shared/Snippets/_GoogleSignIn.cshtml")
     @await Html.PartialAsync("~/Views/Shared/Snippets/_GoogleSignOut.cshtml")
-    <div id="callback-message"></div>
+    <div id="callback-message" class="text-center"></div>
 </div>
 
 @section Scripts
 {
     <script>
+        var signInRedirectHandle;
+
         // user has:
         // fullName, firstName, lastName, imageUrl, email, token
         // loginCallback is an expected function for the _GoogleSignIn partial when a sign-in is successful.
@@ -28,15 +30,16 @@
                     var callbackText = $('#callback-message');
                     callbackText.text(json.message);
                     switch (json.response) {
-                        case "ok":
-                            console.log(json.message);
-                            callbackText.css('color', '#777');
-                            window.location.href = '/UserDash'; //Redirect to the user dashboard
-                            break;
-                        case "err":
-                            console.error(json.message);
-                            callbackText.css('color', '#D40E0E');
-                            break;
+                    case "ok":
+                        console.log(json.message);
+                        callbackText.css('color', '#777');
+                        callbackText.append('<br/>Redirecting in 2 seconds...');
+                        signInRedirectHandle = setTimeout(() => window.location.href = '/UserDash', 2000); //Redirect to the user dashboard
+                        break;
+                    case "err":
+                        console.error(json.message);
+                        callbackText.css('color', '#D40E0E');
+                        break;
                     }
                     callbackText.slideDown('slow');
                 });
@@ -49,8 +52,12 @@
 
         // logout is an expected function for the _GoogleSignOut partial when a sign-out is successful.
         function logoutCallback() {
+            if (signInRedirectHandle) {
+                clearTimeout(signInRedirectHandle);
+                signInRedirectHandle = null;
+            }
             network.post('/Login/SignOut', '', () => {
-                window.location.href = '/'; // Redirect to the landing page.
+                window.location.href = window.location.href; // Reload this page.
             });
         }
         
