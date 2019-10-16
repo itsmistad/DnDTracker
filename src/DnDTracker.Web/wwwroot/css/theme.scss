@@ -15,6 +15,7 @@ $font_base_size: 16px;
     @if not unitless($px) {
         $px: strip-units($px);
     }
+
     @return ($px / strip-units($font_base_size)) * 1em;
 }
 
@@ -22,6 +23,7 @@ $font_base_size: 16px;
     @if not unitless($px) {
         $px: strip-units($px);
     }
+
     @return #{$px * $factor}px;
 }
 
@@ -38,6 +40,7 @@ $font_base_size: 16px;
         @content;
     }
 }
+
 @mixin for-custom-up($custom) {
     @if unitless($custom) {
         $custom: #{$custom}px;
@@ -54,46 +57,55 @@ $font_base_size: 16px;
         @content;
     }
 }
+
 @mixin for-small-tablet-up {
     @media only screen and (min-width: 540px) {
         @content;
     }
 }
+
 @mixin for-small-tablet-down {
     @media only screen and (max-width: 799.9px) {
         @content;
     }
 }
+
 @mixin for-large-tablet-up {
     @media only screen and (min-width: 800px) {
         @content;
     }
 }
+
 @mixin for-large-tablet-down {
     @media only screen and (max-width: 999.9px) {
         @content;
     }
 }
+
 @mixin for-laptop-up {
     @media only screen and (min-width: 1000px) {
         @content;
     }
 }
+
 @mixin for-laptop-down {
     @media only screen and (max-width: 1439.9px) {
         @content;
     }
 }
+
 @mixin for-desktop-up {
     @media only screen and (min-width: 1440px) {
         @content;
     }
 }
+
 @mixin for-desktop-down {
     @media only screen and (max-width: 1920px) {
         @content;
     }
 }
+
 @mixin for-ultrawide-only {
     @media only screen and (min-width: 1920.1px) {
         @content;
@@ -354,14 +366,17 @@ body {
 }
 
 /* Footer + Header shared classes*/
-#main-footer, #main-header {
+#main-footer, #main-header, #main-taskbar {
     position: relative;
     background-color: white;
     display: flex;
     align-items: center;
+    z-index: 1000;
+    font-family: 'MedievalSharp';
 
     .main-footer,
-    .main-header {
+    .main-header,
+    .main-taskbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -370,20 +385,37 @@ body {
         height: 100%;
 
         .main-footer__buttons,
-        .main-header__buttons {
+        .main-header__buttons,
+        .main-taskbar__buttons {
             display: flex;
             justify-content: flex-end;
             height: 100%;
         }
 
         .main-footer__item,
-        .main-header__item {
+        .main-header__item,
+        .main-taskbar__item {
             height: 100%;
             padding: 0 20px;
             transition: 0.2s ease-in-out;
             display: flex;
             align-items: center;
             user-select: none;
+
+            &:hover {
+                text-shadow: 1px 1px 0 #aaa;
+            }
+        }
+
+        .main-header__item,
+        .main-taskbar__item {
+            border-bottom: 3px solid #ddd;
+
+            &:hover {
+                border-bottom: 5px solid $color_accent;
+                color: inherit;
+                background-color: #eee;
+            }
         }
     }
 }
@@ -393,12 +425,15 @@ body {
     z-index: 1000000;
     height: 90px;
 
+    .with-padding {
+        padding-bottom: 5px;
+    }
+
     .main-header {
         .main-header__logo {
             display: flex;
             justify-content: flex-start;
             height: 100%;
-            font-family: 'MedievalSharp';
 
             &:hover {
                 .main-header__item {
@@ -406,14 +441,24 @@ body {
                 }
             }
         }
+    }
+}
 
-        .main-header__item {
-            border-bottom: 3px solid #ddd;
+/* Taskbar Classes */
+#main-taskbar {
+    height: 45px;
 
-            &:hover {
-                border-bottom: 5px solid $color_accent;
-                color: inherit;
-                background-color: #eee;
+    .main-taskbar {
+        .main-taskbar__buttons {
+            justify-content: space-between;
+            width: 100%;
+
+            .main-taskbar__item {
+                border-bottom-width: 1px;
+
+                &:hover {
+                    border-bottom-width: 3px;
+                }
             }
         }
     }
