@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Create a Campaign";
+}
+
+    <div id="create-campaign" class="full-center">
+        <div class="column-container full-height">
+            <div class="column">
+                <div class="banner with-top-bot-margins">
+                    <div class="banner-content">
+                        <p>This is the Create Campaign page.</p>
+                        <p>🤯</p>
+                    </div>
+
+                    <a href="/Login">
+                        Back to Login Page
+                    </a>
+
+
+                    <input id="create-campaign__name" type="text"/>
+                    <button id="submit-button" class="wide">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section Scripts
+{
+    <script>
+        $('#submit-button').click(function () {
+
+            // Disable all the input fields.
+
+            var createCampaignModel = {
+                Name: $('#create-campaign__name').val()
+            };
+            network.post('/Campaign/Create', createCampaignModel, json => {
+
+                // Enable all the input fields
+
+                switch (json.response) {
+                    case "ok":
+                        console.log(json.message);
+
+                        // Clear the input fields
+
+                        // Use notify.js to give the user a "success" notification
+
+                        break;
+                    case "err":
+                        console.error(json.message);
+
+                        // Use notify.js to give the user a "failure" notification
+
+                        break;
+                }
+            });
+        });  
+    </script>
+}
