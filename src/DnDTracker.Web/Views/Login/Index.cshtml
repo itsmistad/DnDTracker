@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/css/login.css?@(new Random().Next())" />
 }
 
-<div id="login-page" class="full-center">
+<div id="login-page" class="force-center">
     <img id="profile-img" />
     @await Html.PartialAsync("~/Views/Shared/Snippets/_GoogleSignIn.cshtml")
     @await Html.PartialAsync("~/Views/Shared/Snippets/_GoogleSignOut.cshtml")

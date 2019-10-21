@@ -32,6 +32,14 @@ body {
     align-items: center;
     width: 100%;
     height: 100%; }
+  body .force-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute; }
   body .full-width {
     width: 100%;
     left: 0; }
@@ -75,6 +83,8 @@ body {
       /* Had to settle on this because "slim t h i c c" gave me CSS pre-processor errors. */
       padding-top: 20px;
       padding-bottom: 20px; }
+    body button.full-width {
+      width: 100%; }
     body button.medium {
       /* Buttons are "small" by default. */
       padding-left: 40px;
@@ -142,9 +152,11 @@ body {
   body .column-container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     padding: 30px 0; }
+    body .column-container.center {
+      align-items: center; }
     body .column-container.no-gutters {
       padding: 0; }
     body .column-container.full-height {
@@ -152,17 +164,22 @@ body {
       padding: 0; }
     body .column-container .column {
       width: 100%;
-      padding: 0 30px; }
+      margin: 0 30px; }
       body .column-container .column.full-center {
         align-items: center;
         justify-content: center; }
+      body .column-container .column.full-height {
+        height: 100%; }
       body .column-container .column.no-gutters {
-        padding: 0; }
+        margin: 0; }
   @media only screen and (max-width: 539.9px) {
     body .hide-on-phones {
       display: none; } }
 
 /* Notification shared classes */
+#notify-queue {
+  z-index: 1800; }
+
 .notify-popup {
   font-family: 'Montserrat'; }
   .notify-popup .body {
@@ -176,6 +193,20 @@ body {
   align-items: center;
   z-index: 1000;
   font-family: 'MedievalSharp'; }
+  #main-footer h1,
+  #main-footer h2,
+  #main-footer h3,
+  #main-footer h4,
+  #main-footer h5, #main-header h1,
+  #main-header h2,
+  #main-header h3,
+  #main-header h4,
+  #main-header h5, #main-taskbar h1,
+  #main-taskbar h2,
+  #main-taskbar h3,
+  #main-taskbar h4,
+  #main-taskbar h5 {
+    font-family: 'MedievalSharp'; }
   #main-footer .main-footer,
   #main-footer .main-header,
   #main-footer .main-taskbar, #main-header .main-footer,
@@ -329,11 +360,16 @@ body {
   height: 45px; }
   #main-taskbar .main-taskbar .main-taskbar__buttons {
     justify-content: space-between;
+    text-align: center;
     width: 100%; }
     #main-taskbar .main-taskbar .main-taskbar__buttons .main-taskbar__item {
       border-bottom-width: 1px; }
       #main-taskbar .main-taskbar .main-taskbar__buttons .main-taskbar__item:hover {
         border-bottom-width: 3px; }
+      @media only screen and (max-width: 539.9px) {
+        #main-taskbar .main-taskbar .main-taskbar__buttons .main-taskbar__item {
+          padding: 0 8px;
+          font-size: 0.625em; } }
 
 #not-supported {
   display: none;
@@ -388,35 +424,34 @@ body {
         background-color: #ddd;
         overflow-y: hidden; }
 
-#index-page #home-logo {
-  margin: 200px 0; }
-  #index-page #home-logo h1 {
-    font-size: 4.375em;
-    font-family: 'MedievalSharp';
-    font-weight: bold;
-    margin: 0px;
-    cursor: pointer;
-    transition: 0.2s ease-in-out; }
-    #index-page #home-logo h1:hover {
-      text-shadow: 3px 3px 0 #aaa;
-      color: black; }
-  #index-page #home-logo hr {
-    margin: 0 0 20px 0;
-    width: 100px;
+#index-page {
+  height: 100%;
+  width: 100%; }
+  #index-page #home-logo {
+    margin: 200px 0; }
+    #index-page #home-logo h1 {
+      font-size: 4.375em;
+      font-family: 'MedievalSharp';
+      font-weight: bold;
+      margin: 0px;
+      cursor: pointer;
+      transition: 0.2s ease-in-out; }
+      #index-page #home-logo h1:hover {
+        text-shadow: 3px 3px 0 #aaa;
+        color: black; }
+    #index-page #home-logo hr {
+      margin: 0 0 20px 0;
+      width: 100px;
+      border: none;
+      border-top: 1px solid #999; }
+    #index-page #home-logo p {
+      font-size: 0.75em;
+      color: #999;
+      letter-spacing: 0.5px; }
+  #index-page hr {
     border: none;
-    border-top: 1px solid #999; }
-  #index-page #home-logo p {
-    font-size: 0.75em;
-    color: #999;
-    letter-spacing: 0.5px; }
-
-#index-page hr {
-  border: none;
-  border-top: 1px solid #eeeeee;
-  margin: 20px 40px; }
-
-#about-page {
-  height: 100%; }
+    border-top: 1px solid #eeeeee;
+    margin: 20px 40px; }
 
 #create-character-page {
   width: 100%;
@@ -430,6 +465,8 @@ body {
   @media only screen and (max-width: 799.9px) {
     #create-character-page #character-summary {
       display: none; } }
+  #create-character-page #character-summary .banner {
+    display: none; }
   #create-character-page #character-summary hr {
     border: none;
     border-top: 1px solid #bbb;
@@ -466,4 +503,43 @@ body {
         right: 80px; } }
     @media only screen and (max-width: 999.9px) {
       #create-character-page .buttons-container {
-        right: 5px; } }
+        right: 20px; } }
+    @media only screen and (max-width: 799.9px) {
+      #create-character-page .buttons-container {
+        display: none; } }
+  #create-character-page .mobile-buttons-container {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px; }
+    @media only screen and (max-width: 799.9px) {
+      #create-character-page .mobile-buttons-container {
+        display: flex; } }
+  #create-character-page .create-character__section {
+    margin: 20px 0;
+    min-height: unset;
+    user-select: none;
+    transition: 0.3s; }
+    #create-character-page .create-character__section.open .create-character__section-title .dropdown-arrow {
+      transform: rotate(-90deg); }
+    #create-character-page .create-character__section .create-character__section-title {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between; }
+      #create-character-page .create-character__section .create-character__section-title .dropdown-arrow {
+        height: 20px;
+        width: 20px;
+        padding: 5px;
+        transform: rotate(90deg);
+        border-radius: 50%;
+        transition: 0.3s ease-in-out; }
+    #create-character-page .create-character__section .create-character__section-content {
+      margin-top: 6px;
+      padding: 0 10px;
+      display: none;
+      text-align: center; }
+    #create-character-page .create-character__section .banner-content {
+      padding: 10px 30px; }

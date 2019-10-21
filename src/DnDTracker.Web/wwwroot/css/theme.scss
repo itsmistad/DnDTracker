@@ -152,6 +152,16 @@ body {
         height: 100%;
     }
 
+    .force-center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+    }
+
     .full-width {
         width: 100%;
         left: 0;
@@ -214,6 +224,10 @@ body {
         &.thick { /* Had to settle on this because "slim t h i c c" gave me CSS pre-processor errors. */
             padding-top: 20px;
             padding-bottom: 20px;
+        }
+
+        &.full-width {
+            width: 100%;
         }
 
         &.medium { /* Buttons are "small" by default. */
@@ -321,9 +335,13 @@ body {
     .column-container {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         width: 100%;
         padding: 30px 0;
+
+        &.center {
+            align-items: center;
+        }
 
         &.no-gutters {
             padding: 0;
@@ -336,15 +354,19 @@ body {
 
         .column {
             width: 100%;
-            padding: 0 30px;
+            margin: 0 30px;
 
             &.full-center {
                 align-items: center;
                 justify-content: center;
             }
 
+            &.full-height {
+                height: 100%;
+            }
+
             &.no-gutters {
-                padding: 0;
+                margin: 0;
             }
         }
     }
@@ -357,6 +379,10 @@ body {
 }
 
 /* Notification shared classes */
+#notify-queue {
+    z-index: 1800;
+}
+
 .notify-popup {
     font-family: 'Montserrat';
 
@@ -373,6 +399,14 @@ body {
     align-items: center;
     z-index: 1000;
     font-family: 'MedievalSharp';
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        font-family: 'MedievalSharp';
+    }
 
     .main-footer,
     .main-header,
@@ -451,6 +485,7 @@ body {
     .main-taskbar {
         .main-taskbar__buttons {
             justify-content: space-between;
+            text-align: center;
             width: 100%;
 
             .main-taskbar__item {
@@ -458,6 +493,11 @@ body {
 
                 &:hover {
                     border-bottom-width: 3px;
+                }
+
+                @include for-phone-only {
+                    padding: 0 8px;
+                    font-size: em(10);
                 }
             }
         }
@@ -533,6 +573,9 @@ body {
 }
 
 #index-page {
+    height: 100%;
+    width: 100%;
+
     #home-logo {
         margin: 200px 0;
 
@@ -571,9 +614,7 @@ body {
     }
 }
 
-#about-page {
-    height: 100%;
-}
+
 
 #create-character-page {
     //background-color: $color_second_banner;
@@ -592,6 +633,10 @@ body {
 
     #character-summary {
         @include for-small-tablet-down {
+            display: none;
+        }
+
+        .banner {
             display: none;
         }
 
@@ -645,7 +690,66 @@ body {
         }
 
         @include for-large-tablet-down {
-            right: 5px;
+            right: 20px;
+        }
+
+        @include for-small-tablet-down {
+            display: none;
+        }
+    }
+
+    .mobile-buttons-container {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 20px;
+
+        @include for-small-tablet-down {
+            display: flex;
+        }
+    }
+
+    .create-character__section {
+        margin: 20px 0;
+        min-height: unset;
+        user-select: none;
+        transition: 0.3s;
+
+        &.open {
+            .create-character__section-title {
+                .dropdown-arrow {
+                    transform: rotate(-90deg);
+                }
+            }
+        }
+
+        .create-character__section-title {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .dropdown-arrow {
+                height: 20px;
+                width: 20px;
+                padding: 5px;
+                transform: rotate(90deg);
+                border-radius: 50%;
+                transition: 0.3s ease-in-out;
+            }
+        }
+
+        .create-character__section-content {
+            margin-top: 6px;
+            padding: 0 10px;
+            display: none;
+            text-align: center;
+        }
+
+        .banner-content {
+            padding: 10px 30px;
         }
     }
 }
