@@ -1,0 +1,29 @@
+@{ 
+    var homeUrl = Singleton.Get<EnvironmentConfig>().CurrentHomeUrl;
+    var session = Singleton.Get<SessionService>();
+ }
+@if (@session.Get("UserGuid", "", HttpContextAccessor) != "")
+{ //Only show user item if logged in
+
+<div id="main-taskbar" class="page-width-padding border-bottom">
+    <div class="main-taskbar">
+        <div class="main-taskbar__buttons">
+            <a href="/UserDash" class="main-taskbar__item">
+                <h4>View Campaigns</h4>
+            </a>
+            <a href="#" class="main-taskbar__item">
+                <h4>Start Campaign</h4>
+            </a>
+            <a href="#" class="main-taskbar__item">
+                <h4>Join Campaign</h4>
+            </a>
+            <a href="#" class="main-taskbar__item">
+                <h4>Create Character</h4>
+            </a>
+            <a href="#" class="main-taskbar__item">
+                <h4>View Characters</h4>
+            </a>
+        </div>
+    </div>
+</div>
+}

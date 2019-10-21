@@ -298,16 +298,18 @@ body {
     }
 }
 
-/* Footer + Header shared classes*/
-#main-footer, #main-header {
+/* Footer + Header + Taskbar shared classes*/
+#main-footer, #main-header, #main-taskbar {
     position: relative;
     background-color: white;
     display: flex;
     align-items: center;
     z-index: 1000;
+    font-family: 'MedievalSharp';
 
     .main-footer,
-    .main-header {
+    .main-header,
+    .main-taskbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -316,20 +318,37 @@ body {
         height: 100%;
 
         .main-footer__buttons,
-        .main-header__buttons {
+        .main-header__buttons,
+        .main-taskbar__buttons {
             display: flex;
             justify-content: flex-end;
             height: 100%;
         }
 
         .main-footer__item,
-        .main-header__item {
+        .main-header__item,
+        .main-taskbar__item {
             height: 100%;
             padding: 0 20px;
             transition: 0.2s ease-in-out;
             display: flex;
             align-items: center;
             user-select: none;
+
+            &:hover {
+                text-shadow: 1px 1px 0 #aaa;
+            }
+        }
+
+        .main-header__item,
+        .main-taskbar__item {
+            border-bottom: 3px solid #ddd;
+
+            &:hover {
+                border-bottom: 5px solid $color_accent;
+                color: inherit;
+                background-color: #eee;
+            }
         }
     }
 }
@@ -338,12 +357,15 @@ body {
 #main-header {
     height: 90px;
 
+    .with-padding {
+        padding-bottom: 5px;
+    }
+
     .main-header {
         .main-header__logo {
             display: flex;
             justify-content: flex-start;
             height: 100%;
-            font-family: 'MedievalSharp';
 
             &:hover {
                 .main-header__item {
@@ -351,14 +373,24 @@ body {
                 }
             }
         }
+    }
+}
 
-        .main-header__item {
-            border-bottom: 3px solid #ddd;
+/* Taskbar Classes */
+#main-taskbar {
+    height: 45px;
 
-            &:hover {
-                border-bottom: 5px solid $color_accent;
-                color: inherit;
-                background-color: #eee;
+    .main-taskbar {
+        .main-taskbar__buttons {
+            justify-content: space-between;
+            width: 100%;
+
+            .main-taskbar__item {
+                border-bottom-width: 1px;
+
+                &:hover {
+                    border-bottom-width: 3px;
+                }
             }
         }
     }
