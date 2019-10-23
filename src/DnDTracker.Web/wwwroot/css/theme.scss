@@ -244,6 +244,11 @@ body {
             }
         }
 
+        &.left {
+            justify-content: left;
+            align-items: initial;
+        }
+
         .banner-content {
             margin: 0;
             padding: 30px;

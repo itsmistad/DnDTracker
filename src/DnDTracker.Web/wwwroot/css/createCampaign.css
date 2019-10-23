@@ -1,0 +1,28 @@
+﻿input[type=text] {
+    width: 100%;
+    padding: 5px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    align-self: inherit;
+    align-content: space-around;
+    transition: 0.5s ease-out;
+}
+
+input[type=text]:focus {
+    border: 3px solid #7777ff;
+    height: 350px;
+}
+
+textarea {
+    width: 100%;
+    padding: 5px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    transition: 1s ease-out;
+    resize: none;
+}
+
+textarea:focus {
+    border: 3px solid #7777ff;
+    height: 150px;
+}

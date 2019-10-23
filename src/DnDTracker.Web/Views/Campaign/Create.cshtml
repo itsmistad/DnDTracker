@@ -2,26 +2,36 @@
     ViewData["Title"] = "Create a Campaign";
 }
 
-    <div id="create-campaign" class="full-center">
-        <div class="column-container full-height">
-            <div class="column">
-                <div class="banner with-top-bot-margins">
-                    <div class="banner-content">
-                        <p>This is the Create Campaign page.</p>
-                        <p>🤯</p>
-                    </div>
+@section Head
+{
+    <link rel="stylesheet" href="~/css/createCampaign.css?@(new Random().Next())" />
+}
 
-                    <a href="/Login">
-                        Back to Login Page
-                    </a>
+<div id="create-campaign" class="full-center">
+    <div class="column-container full-height">
+        <div class="column">
+            <div class="banner with-top-bot-margins left">
+                <div class="banner-content">
 
+                    <p>Campaign name</p>
+                    <textarea id="create-campaign__name"
+                              maxlength="100"></textarea>
 
-                    <input id="create-campaign__name" type="text"/>
+                    <p>Campaign discription</p>
+                    <textarea id="create-campaign__discription"
+                              maxlength="300"></textarea>
+
+                    <p>Information for the players</p>
+                    <textarea id="create-campaign__npcs"
+                              maxlength="300" placeholder="Ex. avalibale races, what level to make characters, etc."></textarea>
+
+                    <p></p>
                     <button id="submit-button" class="wide">Create</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 @section Scripts
 {
@@ -31,7 +41,8 @@
             // Disable all the input fields.
 
             var createCampaignModel = {
-                Name: $('#create-campaign__name').val()
+                Name: $('#create-campaign__name').val(),
+
             };
             network.post('/Campaign/Create', createCampaignModel, json => {
 
@@ -54,6 +65,6 @@
                         break;
                 }
             });
-        });  
+        });
     </script>
 }
