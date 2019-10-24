@@ -23,6 +23,8 @@ body {
   background-image: url("/assets/cubes.svg"); }
   body .text-center {
     text-align: center; }
+  body .text-right {
+    text-align: right; }
   body .full-center {
     display: flex;
     flex-direction: column;
@@ -30,6 +32,14 @@ body {
     align-items: center;
     width: 100%;
     height: 100%; }
+  body .force-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute; }
   body .full-width {
     width: 100%;
     left: 0; }
@@ -45,10 +55,18 @@ body {
     transition: 0.2s ease-in-out; }
     body a:hover {
       color: #7777ff; }
+  body input {
+    font-size: 0.875em;
+    padding: 4px 10px;
+    border: none;
+    transition: 0.3s;
+    outline-color: transparent; }
+    body input:focus {
+      outline-color: #7777ff; }
   body span.underline {
     text-decoration: underline; }
   body button {
-    margin: 10px 20px;
+    margin: 2px 6px 4px;
     padding: 10px 20px;
     font-family: Montserrat, Arial;
     text-transform: uppercase;
@@ -59,11 +77,14 @@ body {
     border-radius: 4px;
     border: none;
     transition: 0.2s ease-out, 0.05s transform;
-    cursor: pointer; }
+    cursor: pointer;
+    user-select: none; }
     body button.thick {
       /* Had to settle on this because "slim t h i c c" gave me CSS pre-processor errors. */
       padding-top: 20px;
       padding-bottom: 20px; }
+    body button.full-width {
+      width: 100%; }
     body button.medium {
       /* Buttons are "small" by default. */
       padding-left: 40px;
@@ -78,19 +99,27 @@ body {
       transform: translate(0, 2px); }
     body button:active, body button:focus {
       outline: none; }
+  body h1,
+  body h2,
+  body h3,
+  body h4,
+  body h5,
+  body h6 {
+    font-family: 'Montserrat', Arial; }
   body .banner {
     background-color: #ACC1F6;
     min-height: 200px;
-    max-width: 600px;
     border-radius: 10px;
     box-shadow: 0 4px 8px -3px rgba(0, 0, 0, 0.7);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: stretch;
+    align-items: stretch;
     width: 100%;
     max-height: 100%; }
+    body .banner.full-height {
+      height: 100%; }
     body .banner.with-side-margins {
       margin-left: 20px;
       margin-right: 20px; }
@@ -106,20 +135,28 @@ body {
       padding: 30px;
       line-height: 24px;
       height: 100%;
-      max-width: 500px;
       font-size: 1em; }
+      body .banner .banner-content.full-width {
+        max-width: none;
+        width: 100%; }
       body .banner .banner-content.full-center {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        align-items: center; }
+        align-items: center;
+        width: unset; }
+        body .banner .banner-content.full-center p {
+          width: 100%; }
     body .banner:nth-of-type(2n), body .banner.second {
       background-color: #f6e1ac; }
   body .column-container {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     width: 100%;
     padding: 30px 0; }
+    body .column-container.center {
+      align-items: center; }
     body .column-container.no-gutters {
       padding: 0; }
     body .column-container.full-height {
@@ -127,14 +164,28 @@ body {
       padding: 0; }
     body .column-container .column {
       width: 100%;
-      padding: 0 30px; }
+      margin: 0 30px; }
+      body .column-container .column.full-center {
+        align-items: center;
+        justify-content: center; }
+      body .column-container .column.full-height {
+        height: 100%; }
       body .column-container .column.no-gutters {
-        padding: 0; }
+        margin: 0; }
   @media only screen and (max-width: 539.9px) {
     body .hide-on-phones {
       display: none; } }
 
-/* Footer + Header + Taskbar shared classes*/
+/* Notification shared classes */
+#notify-queue {
+  z-index: 1800; }
+
+.notify-popup {
+  font-family: 'Montserrat'; }
+  .notify-popup .body {
+    font-family: 'Roboto'; }
+
+/* Footer + Header shared classes*/
 #main-footer, #main-header, #main-taskbar {
   position: relative;
   background-color: white;
@@ -142,6 +193,20 @@ body {
   align-items: center;
   z-index: 1000;
   font-family: 'MedievalSharp'; }
+  #main-footer h1,
+  #main-footer h2,
+  #main-footer h3,
+  #main-footer h4,
+  #main-footer h5, #main-header h1,
+  #main-header h2,
+  #main-header h3,
+  #main-header h4,
+  #main-header h5, #main-taskbar h1,
+  #main-taskbar h2,
+  #main-taskbar h3,
+  #main-taskbar h4,
+  #main-taskbar h5 {
+    font-family: 'MedievalSharp'; }
   #main-footer .main-footer,
   #main-footer .main-header,
   #main-footer .main-taskbar, #main-header .main-footer,
@@ -279,6 +344,7 @@ body {
 
 /* Header classes */
 #main-header {
+  z-index: 1000000;
   height: 90px; }
   #main-header .with-padding {
     padding-bottom: 5px; }
@@ -294,11 +360,16 @@ body {
   height: 45px; }
   #main-taskbar .main-taskbar .main-taskbar__buttons {
     justify-content: space-between;
+    text-align: center;
     width: 100%; }
     #main-taskbar .main-taskbar .main-taskbar__buttons .main-taskbar__item {
       border-bottom-width: 1px; }
       #main-taskbar .main-taskbar .main-taskbar__buttons .main-taskbar__item:hover {
         border-bottom-width: 3px; }
+      @media only screen and (max-width: 539.9px) {
+        #main-taskbar .main-taskbar .main-taskbar__buttons .main-taskbar__item {
+          padding: 0 8px;
+          font-size: 0.625em; } }
 
 #not-supported {
   display: none;
@@ -353,32 +424,122 @@ body {
         background-color: #ddd;
         overflow-y: hidden; }
 
-#index-page #home-logo {
-  margin: 200px 0; }
-  #index-page #home-logo h1 {
-    font-size: 4.375em;
-    font-family: 'MedievalSharp';
-    font-weight: bold;
-    margin: 0px;
-    cursor: pointer;
-    transition: 0.2s ease-in-out; }
-    #index-page #home-logo h1:hover {
-      text-shadow: 3px 3px 0 #aaa;
-      color: black; }
-  #index-page #home-logo hr {
-    margin: 0 0 20px 0;
-    width: 100px;
+#index-page {
+  height: 100%;
+  width: 100%; }
+  #index-page #home-logo {
+    margin: 200px 0; }
+    #index-page #home-logo h1 {
+      font-size: 4.375em;
+      font-family: 'MedievalSharp';
+      font-weight: bold;
+      margin: 0px;
+      cursor: pointer;
+      transition: 0.2s ease-in-out; }
+      #index-page #home-logo h1:hover {
+        text-shadow: 3px 3px 0 #aaa;
+        color: black; }
+    #index-page #home-logo hr {
+      margin: 0 0 20px 0;
+      width: 100px;
+      border: none;
+      border-top: 1px solid #999; }
+    #index-page #home-logo p {
+      font-size: 0.75em;
+      color: #999;
+      letter-spacing: 0.5px; }
+  #index-page hr {
     border: none;
-    border-top: 1px solid #999; }
-  #index-page #home-logo p {
-    font-size: 0.75em;
-    color: #999;
-    letter-spacing: 0.5px; }
+    border-top: 1px solid #eeeeee;
+    margin: 20px 40px; }
 
-#index-page hr {
-  border: none;
-  border-top: 1px solid #eeeeee;
-  margin: 20px 40px; }
-
-#about-page {
+#create-character-page {
+  width: 100%;
   height: 100%; }
+  #create-character-page h4,
+  #create-character-page h5 {
+    margin: 0; }
+  #create-character-page input {
+    margin-bottom: 10px;
+    margin-left: 10px; }
+  @media only screen and (max-width: 799.9px) {
+    #create-character-page #character-summary {
+      display: none; } }
+  #create-character-page #character-summary .banner {
+    display: none; }
+  #create-character-page #character-summary hr {
+    border: none;
+    border-top: 1px solid #bbb;
+    margin: 4px 0 10px; }
+  #create-character-page #character-summary .character-summary__profile-img {
+    border-radius: 50%;
+    width: 128px;
+    height: 128px;
+    cursor: pointer;
+    transition: 0.3s ease-out;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.6); }
+    #create-character-page #character-summary .character-summary__profile-img:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 6px 2px rgba(0, 0, 0, 0.5); }
+  #create-character-page #character-summary .character-summary__profile-img-browse {
+    display: none; }
+  #create-character-page #character-summary .character-summary__line-item {
+    padding-left: 20px; }
+  #create-character-page #character-summary #character-summary__quick-links {
+    list-style-type: none;
+    padding-inline-start: 10px;
+    margin-block-start: 0;
+    margin-block-end: 0; }
+  #create-character-page .buttons-container {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    bottom: 10px;
+    right: 10px; }
+    @media only screen and (max-width: 1599.9px) {
+      #create-character-page .buttons-container {
+        right: 80px; } }
+    @media only screen and (max-width: 999.9px) {
+      #create-character-page .buttons-container {
+        right: 20px; } }
+    @media only screen and (max-width: 799.9px) {
+      #create-character-page .buttons-container {
+        display: none; } }
+  #create-character-page .mobile-buttons-container {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px; }
+    @media only screen and (max-width: 799.9px) {
+      #create-character-page .mobile-buttons-container {
+        display: flex; } }
+  #create-character-page .create-character__section {
+    margin: 20px 0;
+    min-height: unset;
+    user-select: none;
+    transition: 0.3s; }
+    #create-character-page .create-character__section.open .create-character__section-title .dropdown-arrow {
+      transform: rotate(-90deg); }
+    #create-character-page .create-character__section .create-character__section-title {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between; }
+      #create-character-page .create-character__section .create-character__section-title .dropdown-arrow {
+        height: 20px;
+        width: 20px;
+        padding: 5px;
+        transform: rotate(90deg);
+        border-radius: 50%;
+        transition: 0.3s ease-in-out; }
+    #create-character-page .create-character__section .create-character__section-content {
+      margin-top: 6px;
+      padding: 0 10px;
+      display: none;
+      text-align: center; }
+    #create-character-page .create-character__section .banner-content {
+      padding: 10px 30px; }

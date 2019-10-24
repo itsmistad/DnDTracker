@@ -17,6 +17,7 @@ namespace DnDTracker.Migrations.Helpers
     public class DynamoDbHelper
     {
         private static DynamoDbPersister Persister => Singleton.Get<DynamoDbPersister>();
+        public static bool EnableForceSave { get; set; }
 
         private static void WaitUntilActive(string tableName)
         {
@@ -106,7 +107,7 @@ namespace DnDTracker.Migrations.Helpers
 
         public static void Save<T>(T obj) where T : IObject
         {
-            if (TableExists<T>() && Get<T>(obj.Guid) == null)
+            if (TableExists<T>() && (Get<T>(obj.Guid) == null || EnableForceSave))
                 Persister.Save(obj);
         }
 
