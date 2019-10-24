@@ -15,7 +15,10 @@
                         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
                             crossorigin="anonymous"></script> <!-- Load the jQuery UI library -->
         <script src="~/lib/signalr/dist/browser/signalr.js"></script> <!-- Load the SignalR client library -->
-        <script src="~/js/network.js"></script> <!-- Load the network.js library -->
+        <script src="https://cdn.mistad.net/network.js"></script> <!-- Load the network.js library -->
+        <script src="https://cdn.mistad.net/notify.js"></script> <!-- Load the notify.js library -->
+        <link href="https://cdn.mistad.net/notify.min.css" rel="stylesheet" />
+        @await Html.PartialAsync("/Views/Shared/Snippets/_GlobalJavascript.cshtml")
         @RenderSection("Head", required: false)
     </head>
     <body>
@@ -41,7 +44,10 @@
         <!-- Footer -->
         @await Html.PartialAsync("/Views/Shared/Snippets/_Footer.cshtml")
 
-        <script src="~/js/theme.js" asp-append-version="true"></script> <!-- Load the primary theme script -->
+        <!-- Corner Notification Queue -->
+        <div id="notify-queue"></div>
+
+        <script src="~/js/theme.js"></script> <!-- Load the primary theme script -->
         @RenderSection("Scripts", required: false)
         <script>
             $(function () {

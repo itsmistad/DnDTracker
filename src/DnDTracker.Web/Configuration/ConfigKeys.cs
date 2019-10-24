@@ -15,6 +15,12 @@ namespace DnDTracker.Web.Configuration
             {
                 public static readonly ConfigKey SignInId = new ConfigKey("System.Google.SignInId", Guid.Parse("82bf1200-4e97-4542-8f83-92386eddf020"));
             }
+
+            public class Notification
+            {
+                public static readonly ConfigKey CornerPopupClasses = new ConfigKey("System.Notification.CornerPopupClasses", Guid.Parse("b1be84bb-8fad-4796-a565-ffd3e2c8a25e"));
+                public static readonly ConfigKey CenterPopupClasses = new ConfigKey("System.Notification.CenterPopupClasses", Guid.Parse("4f70467a-ebb5-47ca-aa5a-98a80b3bc340"));
+            }
         }
     }
 

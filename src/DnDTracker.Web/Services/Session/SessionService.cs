@@ -51,7 +51,7 @@ namespace DnDTracker.Web.Services.Session
                     return val.ToObject<T>();
                 }
                 else
-                    Log.Debug($"Tried to find unexistent variable in AppState: {key}");
+                    Log.Debug($"Tried to find nonexistent variable in AppState: {key}");
             }
             catch (Exception ex)
             {

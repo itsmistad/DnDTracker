@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Character";
+    var envConfig = Singleton.Get<EnvironmentConfig>();
+    var destinationUrl = envConfig.CurrentHomeUrl + "/Character/Create";
+}
+
+<meta http-equiv="refresh" content="2;url=@destinationUrl" />
+
+<div id="character-page" class="force-center">
+    <p class="text-center">
+        Uh oh, you shouldn't be seeing this!<br />
+        Click <strong><a href="@destinationUrl">here</a></strong> to go to the right page.
+    </p>
+</div>

@@ -17,9 +17,33 @@ namespace DnDTracker.Migrations
                 .Add<TableMap>(new TableMap())
                 .Add<DynamoDbPersister>(new DynamoDbPersister());
 
-            var timeStampArg = args != null && args.Length > 0 ? args[0] : "N/A";
-            Console.WriteLine($"Target timestamp: {timeStampArg}");
-            MigrationRunner.Start(long.TryParse(timeStampArg, out var timeStamp) ? (long?)timeStamp : null);
+            long? timestamp = null;
+            bool forceSave = false;
+            foreach (var arg in args)
+            {
+                var split = arg.Split("=");
+                var key = split[0];
+                var val = "";
+                if (split.Length > 1)
+                    val = split[1];
+                switch (key)
+                {
+                    case "-t":
+                    case "--timestamp":
+                        if (long.TryParse(val, out var converted))
+                        {
+                            Console.WriteLine($"Target timestamp: {val}");
+                            timestamp = converted;
+                        }
+                        break;
+                    case "-f":
+                    case "--force":
+                        forceSave = true;
+                        Console.WriteLine("Forcing saves regardless of pre-existence.");
+                        break;
+                }
+            }
+            MigrationRunner.Start(timestamp, forceSave);
 
             Console.WriteLine("Done!");
         }

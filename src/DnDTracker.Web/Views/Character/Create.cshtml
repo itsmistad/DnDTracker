@@ -1,0 +1,143 @@
+﻿@{
+    ViewData["Title"] = "Create a Character";
+}
+
+<form id="create-character-page">
+    <div class="column-container full-height">
+        <div class="column full-height">
+            <div id="create-character__section1" class="banner second create-character__section">
+                <div class="banner-content">
+                    <div class="create-character__section-title">
+                        <h4>Section 1</h4>
+                        <img class="dropdown-arrow" src="/assets/arrow.svg" />
+                    </div>
+                    <div class="create-character__section-content">
+                        <h5>Question</h5>
+                        <input type="text" />
+                        <h5>Question</h5>
+                        <input type="text" />
+                        <h5>Question</h5>
+                        <input type="text" />
+                    </div>
+                </div>
+            </div>
+            <div id="create-character__section2" class="banner second create-character__section">
+                <div class="banner-content">
+                    <div class="create-character__section-title">
+                        <h4>Section 2</h4>
+                        <img class="dropdown-arrow" src="/assets/arrow.svg" />
+                    </div>
+                    <div class="create-character__section-content">
+                        <h5>Question</h5>
+                        <input type="text" />
+                        <h5>Question</h5>
+                        <input type="text" />
+                        <h5>Question</h5>
+                        <input type="text" />
+                    </div>
+                </div>
+            </div>
+            <div id="create-character__section3" class="banner second create-character__section">
+                <div class="banner-content">
+                    <div class="create-character__section-title">
+                        <h4>Section 3</h4>
+                        <img class="dropdown-arrow" src="/assets/arrow.svg" />
+                    </div>
+                    <div class="create-character__section-content">
+                        <h5>Question</h5>
+                        <input type="text" />
+                        <h5>Question</h5>
+                        <input type="text" />
+                        <h5>Question</h5>
+                        <input type="text" />
+                    </div>
+                </div>
+            </div>
+        
+            <div class="mobile-buttons-container">
+                <button class="export-button full-width thick" type="button">
+                    Export
+                </button>
+                <button class="create-button full-width thick" type="button">
+                    Create
+                </button>
+            </div>
+        </div>
+        <div id="character-summary" class="column full-center">
+            <div class="banner second with-rows with-top-bot-margins">
+                <div class="banner-content">
+                    <div class="banner-row text-center">
+                        <h4>Character Summary</h4>
+                    </div>
+                    <hr />
+                    <div class="banner-row">
+                        <div class="column-container full-height center">
+                            <div class="column no-gutters full-center">
+                                <img class="character-summary__profile-img" src="~/assets/missing_profile_img.png" />
+                                <input class="character-summary__profile-img-browse" type="file" name="pic" accept="image/*">
+                            </div>
+                            <div class="column no-gutters">
+                                <h5>Name</h5>
+                                <div id="character-summary__name" class="character-summary__line-item"></div>
+                                <h5>Gender</h5>
+                                <div id="character-summary__gender" class="character-summary__line-item"></div>
+                                <h5>Race</h5>
+                                <div id="character-summary__race" class="character-summary__line-item"></div>
+                                <h5>Class</h5>
+                                <div id="character-summary__class" class="character-summary__line-item"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-row">
+                        <div class="column-container full-height">
+                            <div class="column">
+                                <div class="column-container full-height">
+                                    <div class="column no-gutters">
+                                        <h5>STAT</h5>
+                                        <h5>STAT</h5>
+                                        <h5>STAT</h5>
+                                        <h5>STAT</h5>
+                                        <h5>STAT</h5>
+                                        <h5>STAT</h5>
+                                    </div>
+                                    <div class="column no-gutters text-right">
+                                        ...<br/>
+                                        ...<br/>
+                                        ...<br/>
+                                        ...<br/>
+                                        ...<br/>
+                                        ...
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <h5>Quick Links</h5>
+                                <ul id="character-summary__quick-links">
+                                    <a href="#"><li>Background</li></a>
+                                    <a href="#"><li>Skills</li></a>
+                                    <a href="#"><li>Test 3</li></a>
+                                    <a href="#"><li>Test 4</li></a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-row">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="buttons-container">
+        <button class="export-button medium" type="button">
+            Export
+        </button>
+        <button class="create-button medium" type="button">
+            Create
+        </button>
+    </div>
+</form>
+
+@section Scripts
+{
+    <script src="~/js/character/create.js"></script>
+}
