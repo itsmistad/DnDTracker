@@ -11,12 +11,18 @@ namespace DnDTracker.Web.Objects
     {
         [DynamoDBProperty]
         public string Name { get; set; }
+        [DynamoDBProperty]
+        public string Description { get; set; }
+        [DynamoDBProperty]
+        public string Information { get; set; }
 
         public CampaignObject() : base() { } // Required
 
-        public CampaignObject(string name)
+        public CampaignObject(string name, string description, string information)
         {
             Name = name;
+            Description = description;
+            Information = information;
         }
 
         public new void FromDocument(Document document)
@@ -24,6 +30,14 @@ namespace DnDTracker.Web.Objects
             base.FromDocument(document); // Required
 
             Name = document.TryGetValue("Name", out var entry) ?
+                entry.AsString() :
+                "";
+
+            Description = document.TryGetValue("Description", out entry) ?
+                entry.AsString() :
+                "";
+
+            Information = document.TryGetValue("Information", out entry) ?
                 entry.AsString() :
                 "";
         }
