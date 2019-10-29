@@ -1,16 +1,18 @@
 ﻿input[type=text] {
+    max-width: 400px;
     width: 100%;
     padding: 5px;
     margin: 8px 0;
     box-sizing: border-box;
     align-self: inherit;
     align-content: space-around;
-    transition: 0.5s ease-out;
+    transition: 0.2s ease-in-out;
+    border: 3px solid rgba(0,0,0,0.0);
 }
 
 input[type=text]:focus {
     border: 3px solid #7777ff;
-    height: 350px;
+    transition: 0.2s ease-in-out;
 }
 
 textarea {
@@ -18,11 +20,13 @@ textarea {
     padding: 5px;
     margin: 8px 0;
     box-sizing: border-box;
-    transition: 1s ease-out;
+    transition: 0.2s ease-in-out;
     resize: none;
+    border: 3px solid rgba(0,0,0,0.0);
 }
 
 textarea:focus {
     border: 3px solid #7777ff;
+    transition: 0.2s ease-in-out;
     height: 150px;
 }
