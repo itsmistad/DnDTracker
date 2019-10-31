@@ -47,7 +47,7 @@
         <!-- Corner Notification Queue -->
         <div id="notify-queue"></div>
 
-        <script src="~/js/theme.js"></script> <!-- Load the primary theme script -->
+        <script src="~/js/theme.js?@(new Random().Next())"></script> <!-- Load the primary theme script -->
         @RenderSection("Scripts", required: false)
         <script>
             $(function () {
