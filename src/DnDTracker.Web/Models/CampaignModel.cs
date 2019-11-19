@@ -7,6 +7,6 @@ namespace DnDTracker.Web.Models
 {
     public class CampaignModel
     {
-        public string Name, Description, Information;
+        public string Name, Description, Information, DungeonMasterGuid;
     }
 }

@@ -27,7 +27,8 @@ namespace DnDTracker.Web.Controllers
             try
             {
                 var persister = Singleton.Get<DynamoDbPersister>();
-                persister.Save(new CampaignObject(createCampaign.Name, createCampaign.Description, createCampaign.Information));
+                persister.Save(new CampaignObject(createCampaign.Name, createCampaign.Description,
+                    createCampaign.Information, Guid.Parse(createCampaign.DungeonMasterGuid)));
             }
             catch (Exception ex)
             {
