@@ -19,6 +19,8 @@ namespace DnDTracker.Web.Objects
         public Guid DungeonMasterGuid { get; set; }
         [DynamoDBProperty]
         public List<Guid> PartyGuids { get; set; }
+        [DynamoDBProperty]
+        public List<Guid> NoteGuids { get; set; }
 
         public CampaignObject() : base() { } // Required
 
@@ -29,6 +31,7 @@ namespace DnDTracker.Web.Objects
             Information = information;
             DungeonMasterGuid = dungeonMasterGuid;
             PartyGuids = new List<Guid>();
+            NoteGuids = new List<Guid>();
         }
 
         public new void FromDocument(Document document)
@@ -52,6 +55,12 @@ namespace DnDTracker.Web.Objects
                 PartyGuids = new List<Guid>();
                 foreach (var v in entry.AsListOfPrimitive())
                     PartyGuids.Add(v.AsGuid());
+            }
+            if (document.TryGetValue("NoteGuids", out entry))
+            {
+                NoteGuids = new List<Guid>();
+                foreach (var v in entry.AsListOfPrimitive())
+                    NoteGuids.Add(v.AsGuid());
             }
         }
     }

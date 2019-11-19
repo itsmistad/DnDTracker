@@ -13,15 +13,18 @@ namespace DnDTracker.Web.Objects
         [DynamoDBProperty]
         public Guid AuthorGuid { get; set; }
         [DynamoDBProperty]
+        public Guid CampaignGuid { get; set; }
+        [DynamoDBProperty]
         public string Contents { get; set; }
         [DynamoDBProperty]
         public List<Guid> SharedWithGuids { get; set; }
 
         public NoteObject() : base() { }
 
-        public NoteObject(Guid authorGuid, string contents, List<Guid> sharedWithGuids)
+        public NoteObject(Guid authorGuid, Guid campaignGuid, string contents, List<Guid> sharedWithGuids)
         {
             AuthorGuid = authorGuid;
+            CampaignGuid = campaignGuid;
             Contents = contents;
             SharedWithGuids = sharedWithGuids;
         }
@@ -31,6 +34,9 @@ namespace DnDTracker.Web.Objects
             base.FromDocument(document);
 
             AuthorGuid = document.TryGetValue("AuthorGuid", out var entry) ?
+                entry.AsGuid() :
+                Guid.Empty;
+            CampaignGuid = document.TryGetValue("CampaignGuid", out entry) ?
                 entry.AsGuid() :
                 Guid.Empty;
             Contents = document.TryGetValue("Contents", out entry) ?
