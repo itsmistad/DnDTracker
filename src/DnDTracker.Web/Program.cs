@@ -12,6 +12,7 @@ using DnDTracker.Web.Configuration;
 using DnDTracker.Web.Logging;
 using Microsoft.AspNetCore;
 using DnDTracker.Web.Services.Auth;
+using DnDTracker.Web.Services.Objects;
 using DnDTracker.Web.Services.Session;
 
 namespace DnDTracker.Web
@@ -27,6 +28,7 @@ namespace DnDTracker.Web
                 .Add<AppConfig>(new AppConfig())
                 .Add<AuthService>(new AuthService())
                 .Add<SessionService>(new SessionService())
+                .Add<CampaignService>(new CampaignService())
                 // Add more global instances here
                 ;
 

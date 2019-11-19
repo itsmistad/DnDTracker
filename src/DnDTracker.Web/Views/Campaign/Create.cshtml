@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Create a Campaign";
+    var persister = Singleton.Get<DynamoDbPersister>();
 }
 
 @section Head
@@ -61,7 +62,8 @@
             var createCampaignModel = {
                 Name: $('#create-campaign__name').val(),
                 Description: $('#create-campaign__description').val(),
-                Information: $('#create-campaign__information').val()
+                Information: $('#create-campaign__information').val(),
+                DungeonMasterGuid: currentUser.guid // Refer to _GlobalJavascript.cshtml
             };
             network.post('/Campaign/Create', createCampaignModel, json => {
 
