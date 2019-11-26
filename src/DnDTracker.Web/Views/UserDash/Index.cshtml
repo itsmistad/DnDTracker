@@ -1,11 +1,32 @@
 ﻿@{
     ViewData["Title"] = "User Dashboard";
 }
-<div id="user-dash" class="force-center">
-    <div class="text-center">
-        <p>Current Campaigns</p>
-        <p>🤯</p>
-        <p>Oh Snap! We don't have the data structures to support that yet.</p>
-        <p>Be patient with us... or I'll find you.</p>
-    </div>
+@{
+    var session = Singleton.Get<SessionService>();
+    var persister = Singleton.Get<DynamoDbPersister>();
+    var campaignService = Singleton.Get<CampaignService>();
+    var userGuid = Guid.Parse(session.Get("UserGuid", "", HttpContextAccessor));
+    var currentUser = persister.Get<UserObject>(userGuid);
+    var campaigns = persister.Scan<CampaignObject>();
+
+    <h3>Current Campaigns</h3>
+    foreach (var campaign in campaigns)
+    {
+        var campaignGuid = campaign.Guid;
+        if (campaignService.IsMemberInCampaign(userGuid, campaignGuid))
+        {
+<div class="user-dash__campaign">
+    <h4>Name:</h4>
+    <p>@campaign.Name</p>
+    <h4>Dungeon Master:</h4>
+    <p>@campaign.DungeonMasterGuid</p>
+    <!-- Get the DM's user object and .FullName -->
+    <h4>Players:</h4>
+    <p>@campaign.PartyGuids</p>
+    <!-- Get the list of players as user objects and then concatenate their.FullName as a string-list "A, B, C..." -->
+    <h4>Description:</h4>
+    <p>@campaign.Description</p>
 </div>
+        }
+    }
+}

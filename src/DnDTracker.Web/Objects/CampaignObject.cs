@@ -34,7 +34,7 @@ namespace DnDTracker.Web.Objects
             NoteGuids = new List<Guid>();
         }
 
-        public new void FromDocument(Document document)
+        public override void FromDocument(Document document)
         {
             base.FromDocument(document); // Required
 
