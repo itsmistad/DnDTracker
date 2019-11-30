@@ -15,18 +15,26 @@
         var campaignGuid = campaign.Guid;
         if (campaignService.IsMemberInCampaign(userGuid, campaignGuid))
         {
-<div class="user-dash__campaign">
-    <h4>Name:</h4>
-    <p>@campaign.Name</p>
-    <h4>Dungeon Master:</h4>
-    <p>@campaign.DungeonMasterGuid</p>
-    <!-- Get the DM's user object and .FullName -->
-    <h4>Players:</h4>
-    <p>@campaign.PartyGuids</p>
-    <!-- Get the list of players as user objects and then concatenate their.FullName as a string-list "A, B, C..." -->
-    <h4>Description:</h4>
-    <p>@campaign.Description</p>
-</div>
+            var dmName = persister.Get<UserObject>(campaign.DungeonMasterGuid).FullName;
+
+    <div class="user-dash__campaign">
+        <div class="column-container full-height">
+                <div class="wide banner with-top-bot-margins">
+                    <div class="banner-content">
+                        <div class="column full-center">
+                            <a href="" class="main-taskbar__item"><h3>@campaign.Name</h3></a>
+                        </div>
+                            <div class="column text-left">
+                                <p><strong>Dungeon Master: </strong>@dmName</p>
+                                <!-- Get the DM's user object and .FullName -->
+                                <p><strong>Players: </strong>@campaign.PartyGuids</p>
+                                <!-- Get the list of players as user objects and then concatenate their.FullName as a string-list "A, B, C..." -->
+                                <p><strong>Description: </strong>@campaign.Description</p>
+                            </div>
+                    </div>
+                </div>
+        </div>
+    </div>
         }
     }
 }
