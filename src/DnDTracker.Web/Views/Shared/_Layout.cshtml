@@ -15,9 +15,9 @@
                         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
                             crossorigin="anonymous"></script> <!-- Load the jQuery UI library -->
         <script src="~/lib/signalr/dist/browser/signalr.js"></script> <!-- Load the SignalR client library -->
-        <script src="https://cdn.mistad.net/network.js"></script> <!-- Load the network.js library -->
-        <script src="https://cdn.mistad.net/notify.js"></script> <!-- Load the notify.js library -->
-        <link href="https://cdn.mistad.net/notify.min.css" rel="stylesheet" />
+        <script src="https://cdn.mistad.net/network.js?@(new Random().Next())"></script> <!-- Load the network.js library -->
+        <script src="https://cdn.mistad.net/notify.js?@(new Random().Next())"></script> <!-- Load the notify.js library -->
+        <link href="https://cdn.mistad.net/notify.min.css?@(new Random().Next())" rel="stylesheet" />
         @await Html.PartialAsync("/Views/Shared/Snippets/_GlobalJavascript.cshtml")
         @RenderSection("Head", required: false)
     </head>
@@ -48,6 +48,7 @@
         <div id="notify-queue"></div>
 
         <script src="~/js/theme.js?@(new Random().Next())"></script> <!-- Load the primary theme script -->
+        <script src="~/js/roll.js?@(new Random().Next())"></script>
         @RenderSection("Scripts", required: false)
         <script>
             $(function () {

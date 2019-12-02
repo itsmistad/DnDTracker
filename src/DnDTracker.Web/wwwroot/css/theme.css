@@ -55,14 +55,20 @@ body {
     transition: 0.2s ease-in-out; }
     body a:hover {
       color: #7777ff; }
+  body select,
   body input {
-    font-size: 0.875em;
+    font-size: 1em;
     padding: 4px 10px;
     border: none;
     transition: 0.3s;
     outline-color: transparent; }
+    body select:focus,
     body input:focus {
       outline-color: #7777ff; }
+  body input[type=number]::-webkit-inner-spin-button,
+  body input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0; }
   body span.underline {
     text-decoration: underline; }
   body button {
@@ -99,6 +105,11 @@ body {
       transform: translate(0, 2px); }
     body button:active, body button:focus {
       outline: none; }
+    body button[disabled] {
+      cursor: not-allowed;
+      background-color: #888; }
+      body button[disabled]:hover {
+        background-color: #888; }
   body h1,
   body h2,
   body h3,
@@ -178,6 +189,10 @@ body {
   @media only screen and (max-width: 539.9px) {
     body .hide-on-phones {
       display: none; } }
+  body .roll-button img {
+    transition: 0.3s; }
+  body .roll-button:hover img {
+    transform: scale(1.1); }
 
 /* Notification shared classes */
 #notify-queue {
@@ -399,8 +414,8 @@ body {
   max-width: 1480px; }
   @media only screen and (min-width: 1600px) {
     #main-content {
-      left: 50%;
-      transform: translateX(-50%); } }
+      margin: 0 auto;
+      width: 1480px; } }
   @media only screen and (max-width: 1599.9px) {
     #main-content {
       margin: 0 60px; } }
@@ -462,14 +477,9 @@ body {
   #create-character-page h4,
   #create-character-page h5 {
     margin: 0; }
-  #create-character-page input {
-    margin-bottom: 10px;
-    margin-left: 10px; }
   @media only screen and (max-width: 799.9px) {
     #create-character-page #character-summary {
       display: none; } }
-  #create-character-page #character-summary .banner {
-    display: none; }
   #create-character-page #character-summary hr {
     border: none;
     border-top: 1px solid #bbb;
@@ -543,6 +553,15 @@ body {
       margin-top: 6px;
       padding: 0 10px;
       display: none;
-      text-align: center; }
+      text-align: left; }
+      #create-character-page .create-character__section .create-character__section-content p,
+      #create-character-page .create-character__section .create-character__section-content select,
+      #create-character-page .create-character__section .create-character__section-content textarea,
+      #create-character-page .create-character__section .create-character__section-content input {
+        width: 100%; }
+      #create-character-page .create-character__section .create-character__section-content textarea {
+        resize: none;
+        margin-right: -4px;
+        height: 100px; }
     #create-character-page .create-character__section .banner-content {
       padding: 10px 30px; }

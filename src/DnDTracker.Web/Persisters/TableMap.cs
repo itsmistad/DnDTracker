@@ -23,6 +23,7 @@ namespace DnDTracker.Web.Persisters
             Add<ConfigKeyObject>("configkeys");
             Add<LogObject>("logs");
             Add<UserObject>("users");
+            Add<CharacterObject>("characters");
             Add<CampaignObject>("campaigns");
             Add<NoteObject>("notes");
         }

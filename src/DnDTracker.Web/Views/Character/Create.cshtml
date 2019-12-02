@@ -1,63 +1,164 @@
-﻿@{
+﻿@using System.Text.RegularExpressions
+@using DnDTracker.Web.Logging
+@using DnDTracker.Web.Objects.Character
+@{
     ViewData["Title"] = "Create a Character";
 }
 
-<form id="create-character-page">
+<div id="create-character-page">
     <div class="column-container full-height">
         <div class="column full-height">
             <div id="create-character__section1" class="banner second create-character__section">
                 <div class="banner-content">
                     <div class="create-character__section-title">
-                        <h4>Section 1</h4>
+                        <h4>General</h4>
                         <img class="dropdown-arrow" src="/assets/arrow.svg" />
                     </div>
                     <div class="create-character__section-content">
-                        <h5>Question</h5>
-                        <input type="text" />
-                        <h5>Question</h5>
-                        <input type="text" />
-                        <h5>Question</h5>
-                        <input type="text" />
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <strong style="width: 80px;">Name</strong>
+                            <input id="character-name" type="text" />
+                        </div>
+                        <h5>Gender</h5>
+                        <select id="character-gender" name="Gender" type="text" style="margin-bottom: 20px">
+                            <option value="0">Male</option>
+                            <option value="1">Female</option>
+                        </select>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <strong>Level</strong>
+                            <input style="width: 30px;" id="character-level" type="number" min="1" max="20" />
+                        </div>
+                        <h5>Ability Scores</h5>
+                        <div style="display: flex; flex-direction: column; align-items: center;margin-bottom: 20px">
+                            <strong style="font-size:12px">Roll</strong>
+                            <button id="roll-ability-scores" class="roll-button"><img src="~/assets/dice/6.png" width="60"/></button>
+                            <button id="take-standard">Take Standard Set</button>
+                            <div style="display: flex; justify-content: space-around; margin: 10px 0; width: 100%;">
+                                <strong id="stat-1" style="padding: 0 4px"></strong>
+                                <strong id="stat-2" style="padding: 0 4px"></strong>
+                                <strong id="stat-3" style="padding: 0 4px"></strong>
+                                <strong id="stat-4" style="padding: 0 4px"></strong>
+                                <strong id="stat-5" style="padding: 0 4px"></strong>
+                                <strong id="stat-6" style="padding: 0 4px"></strong>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <strong>Strength</strong>
+                            <input style="width: 30px;" id="character-strength" type="number" min="3" max="18" />
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <strong>Dexterity</strong>
+                            <input style="width: 30px;" id="character-dexterity" type="number" min="3" max="18" />
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <strong>Constitution</strong>
+                            <input style="width: 30px;" id="character-constitution" type="number" min="3" max="18" />
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <strong>Intelligence</strong>
+                            <input style="width: 30px;" id="character-intelligence" type="number" min="3" max="18" />
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <strong>Wisdom</strong>
+                            <input style="width: 30px;" id="character-wisdom" type="number" min="3" max="18" />
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <strong>Charisma</strong>
+                            <input style="width: 30px;" id="character-charisma" type="number" min="3" max="18" />
+                        </div>
                     </div>
                 </div>
             </div>
             <div id="create-character__section2" class="banner second create-character__section">
                 <div class="banner-content">
                     <div class="create-character__section-title">
-                        <h4>Section 2</h4>
+                        <h4>Class</h4>
                         <img class="dropdown-arrow" src="/assets/arrow.svg" />
                     </div>
                     <div class="create-character__section-content">
-                        <h5>Question</h5>
-                        <input type="text" />
-                        <h5>Question</h5>
-                        <input type="text" />
-                        <h5>Question</h5>
-                        <input type="text" />
+                        <h5>Pick a Class</h5>
+                        <select id="character-class" name="Class" type="text" style="margin-bottom: 10px;">
+                            @{
+                                var classes = Enum.GetNames(typeof(CharacterClassType));
+                                for (int i = 0; i < classes.Length; i++)
+                                {
+                                    var classId = i;
+                                    var className = string.Join(' ', Regex.Split(classes[i], @"(?<!^)(?=[A-Z])"));
+                                    <option value="@classId">@className</option>
+                                }
+                            }
+                        </select>
+                        <h5 id="character-subclass-label" style="display: none;">Pick a Subclass</h5>
+                        @{
+                            var classMap = Singleton.Get<CharacterClassMap>();
+                            for (int i = 1; i < classes.Length; i++)
+                            {
+                                var classId = i;
+                                Log.Debug("" + (CharacterClassType)classId);
+                                var classObj = classMap[(CharacterClassType) i];
+                                <select class="character-subclass-dropdown" id="character-subclass-@classId" name="Subclass" type="text" style="display: none; margin-bottom: 10px;">
+                                    @{
+                                        foreach (var subclass in classObj.SubTypes)
+                                        {
+                                            var className = string.Join(' ', Regex.Split(subclass.ToString(), @"(?<!^)(?=[A-Z])"));
+                                            <option value="@((int)subclass)">@className</option>
+                                        }
+                                    }
+                                </select>
+                            }
+                        }
+                        <h5>Proficiencies</h5>
+                        <textarea id="character-proficiencies" style="margin-bottom: 20px"></textarea>
+                        <h5>Equipment</h5>
+                        <textarea id="character-equipment" style="margin-bottom: 20px"></textarea>
+                        <h5 id="character-health-label" style="display: none;">Health</h5>
+                        <div id="character-health-section" style="display: none; flex-direction: column; align-items: center;margin-bottom: 20px">
+                            <strong style="font-size:12px">Roll</strong>
+                            <button id="roll-health" class="roll-button"><img width="60"/></button>
+                            <button id="take-standard-health">Take Standard Roll</button>
+                            <div style="display: flex; justify-content: space-around; margin: 10px 0; width: 100%;">
+                                <input style="width: 80px; text-align: center;" id="character-health" type="number" min="1" max="10000" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div id="create-character__section3" class="banner second create-character__section">
                 <div class="banner-content">
                     <div class="create-character__section-title">
-                        <h4>Section 3</h4>
+                        <h4>Race & Background</h4>
                         <img class="dropdown-arrow" src="/assets/arrow.svg" />
                     </div>
                     <div class="create-character__section-content">
-                        <h5>Question</h5>
-                        <input type="text" />
-                        <h5>Question</h5>
-                        <input type="text" />
-                        <h5>Question</h5>
-                        <input type="text" />
+                        <h5>Pick a Race</h5>
+                        <select id="character-race" name="Race" type="text" style="margin-bottom: 10px;">
+                            @{
+                                var races = Enum.GetNames(typeof(CharacterRaceType));
+                                for (int i = 0; i < races.Length; i++)
+                                {
+                                    var raceId = i;
+                                    var raceName = string.Join(' ', Regex.Split(races[i], @"(?<!^)(?=[A-Z])"));
+                                    <option value="@raceId">@raceName</option>
+                                }
+                            }
+                        </select>
+                        <h5>Pick a Background</h5>
+                        <select id="character-background" name="Background" type="text" style="margin-bottom: 10px;">
+                            @{
+                                var backgrounds = Enum.GetNames(typeof(CharacterBackgroundType));
+                                for (int i = 0; i < backgrounds.Length; i++)
+                                {
+                                    var bgId = i;
+                                    var bgName = string.Join(' ', Regex.Split(backgrounds[i], @"(?<!^)(?=[A-Z])"));
+                                    <option value="@bgId">@bgName</option>
+                                }
+                            }
+                        </select>
                     </div>
                 </div>
             </div>
         
             <div class="mobile-buttons-container">
-                <button class="export-button full-width thick" type="button">
-                    Export
-                </button>
                 <button class="create-button full-width thick" type="button">
                     Create
                 </button>
@@ -70,7 +171,7 @@
                         <h4>Character Summary</h4>
                     </div>
                     <hr />
-                    <div class="banner-row">
+                    @*<div class="banner-row">
                         <div class="column-container full-height center">
                             <div class="column no-gutters full-center">
                                 <img class="character-summary__profile-img" src="~/assets/missing_profile_img.png" />
@@ -81,43 +182,48 @@
                                 <div id="character-summary__name" class="character-summary__line-item"></div>
                                 <h5>Gender</h5>
                                 <div id="character-summary__gender" class="character-summary__line-item"></div>
-                                <h5>Race</h5>
-                                <div id="character-summary__race" class="character-summary__line-item"></div>
                                 <h5>Class</h5>
                                 <div id="character-summary__class" class="character-summary__line-item"></div>
+                                <h5>Race</h5>
+                                <div id="character-summary__race" class="character-summary__line-item"></div>
+                                <h5>Background</h5>
+                                <div id="character-summary__background" class="character-summary__line-item"></div>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                     <div class="banner-row">
                         <div class="column-container full-height">
-                            <div class="column">
-                                <div class="column-container full-height">
-                                    <div class="column no-gutters">
-                                        <h5>STAT</h5>
-                                        <h5>STAT</h5>
-                                        <h5>STAT</h5>
-                                        <h5>STAT</h5>
-                                        <h5>STAT</h5>
-                                        <h5>STAT</h5>
-                                    </div>
-                                    <div class="column no-gutters text-right">
-                                        ...<br/>
-                                        ...<br/>
-                                        ...<br/>
-                                        ...<br/>
-                                        ...<br/>
-                                        ...
-                                    </div>
+                            <div class="column-container full-height">
+                                <div class="column no-gutters">
+                                    <h5>Name</h5>
+                                    <h5>Gender</h5>
+                                    <h5>Class</h5>
+                                    <h5>Race</h5>
+                                    <h5>Background</h5>
+                                    <h5>Level</h5>
+                                    <h5>Strength</h5>
+                                    <h5>Dexterity</h5>
+                                    <h5>Constitution</h5>
+                                    <h5>Intelligence</h5>
+                                    <h5>Wisdom</h5>
+                                    <h5>Charisma</h5>
+                                    <h5>Health</h5>
                                 </div>
-                            </div>
-                            <div class="column">
-                                <h5>Quick Links</h5>
-                                <ul id="character-summary__quick-links">
-                                    <a href="#"><li>Background</li></a>
-                                    <a href="#"><li>Skills</li></a>
-                                    <a href="#"><li>Test 3</li></a>
-                                    <a href="#"><li>Test 4</li></a>
-                                </ul>
+                                <div class="column no-gutters text-right" style="flex-direction: column; display: flex;">
+                                    <div id="character-summary__name">...</div>
+                                    <div id="character-summary__gender">Male</div>
+                                    <div id="character-summary__class">...</div>
+                                    <div id="character-summary__race">...</div>
+                                    <div id="character-summary__background">...</div>
+                                    <div id="character-summary__level">...</div>
+                                    <div id="character-summary__strength">...</div>
+                                    <div id="character-summary__dexterity">...</div>
+                                    <div id="character-summary__constitution">...</div>
+                                    <div id="character-summary__intelligence">...</div>
+                                    <div id="character-summary__wisdom">...</div>
+                                    <div id="character-summary__charisma">...</div>
+                                    <div id="character-summary__health">...</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -128,16 +234,13 @@
         </div>
     </div>
     <div class="buttons-container">
-        <button class="export-button medium" type="button">
-            Export
-        </button>
         <button class="create-button medium" type="button">
             Create
         </button>
     </div>
-</form>
+</div>
 
 @section Scripts
 {
-    <script src="~/js/character/create.js"></script>
+    <script src="~/js/character/create.js?@(new Random().Next())"></script>
 }

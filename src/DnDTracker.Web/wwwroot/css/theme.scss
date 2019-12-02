@@ -19,7 +19,7 @@ $font_base_size: 16px;
     @return ($px / strip-units($font_base_size)) * 1em;
 }
 
-@function scale($px, $factor) {
+@function scalefont($px, $factor) {
     @if not unitless($px) {
         $px: strip-units($px);
     }
@@ -125,7 +125,7 @@ html, body {
     margin: 0;
 
     @include for-small-tablet-down {
-        font-size: scale($font_base_size, 0.8);
+        font-size: scalefont($font_base_size, 0.8);
     }
 }
 
@@ -189,8 +189,9 @@ body {
         }
     }
 
+    select,
     input {
-        font-size: em(14px);
+        font-size: em(16px);
         padding: 4px 10px;
         border: none;
         transition: 0.3s;
@@ -198,6 +199,12 @@ body {
         &:focus {
             outline-color: $color_accent;
         }
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
 
     span {
@@ -251,6 +258,15 @@ body {
 
         &:active, &:focus {
             outline: none;
+        }
+
+        &[disabled] {
+            cursor: not-allowed;
+            background-color: #888;
+
+            &:hover {
+                background-color: #888;
+            }
         }
     }
 
@@ -379,6 +395,18 @@ body {
     .hide-on-phones {
         @include for-phone-only {
             display: none;
+        }
+    }
+
+    .roll-button {
+        img {
+            transition: 0.3s;
+        }
+
+        &:hover {
+            img {
+                transform: scale(1.1);
+            }
         }
     }
 }
@@ -538,8 +566,8 @@ body {
     max-width: 1480px;
 
     @include for-custom-up(1600px) {
-        left: 50%;
-        transform: translateX(-50%);
+        margin: 0 auto;
+        width: 1480px;
     }
 
     @include for-custom-down(1599.9px) {
@@ -619,8 +647,6 @@ body {
     }
 }
 
-
-
 #create-character-page {
     //background-color: $color_second_banner;
     width: 100%;
@@ -631,17 +657,8 @@ body {
         margin: 0;
     }
 
-    input {
-        margin-bottom: 10px;
-        margin-left: 10px;
-    }
-
     #character-summary {
         @include for-small-tablet-down {
-            display: none;
-        }
-
-        .banner {
             display: none;
         }
 
@@ -750,7 +767,20 @@ body {
             margin-top: 6px;
             padding: 0 10px;
             display: none;
-            text-align: center;
+            text-align: left;
+
+            p,
+            select,
+            textarea,
+            input {
+                width: 100%;
+            }
+
+            textarea {
+                resize: none;
+                margin-right: -4px;
+                height: 100px;
+            }
         }
 
         .banner-content {
