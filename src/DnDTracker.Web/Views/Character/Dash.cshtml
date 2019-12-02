@@ -1,7 +1,82 @@
 ﻿@{
     ViewData["Title"] = "Character Dashboard";
 }
+    @{
+        var session = Singleton.Get<SessionService>();
+        var persister = Singleton.Get<DynamoDbPersister>();
+        var campaignService = Singleton.Get<CampaignService>();
+        var userGuid = Guid.Parse(session.Get("UserGuid", "", HttpContextAccessor));
+        var currentUser = persister.Get<UserObject>(userGuid);
+        var campaigns = persister.Scan<CampaignObject>();
 
-<div id="character-dash">
-    <!-- Placeholder for #31 "Create Character Dashboard page" -->
-</div>
+        foreach (var character in UserGuid)
+        {
+            var userGuid = user.Guid;
+
+        <form id="character-dashboard-page">
+            <div id="character-summary" class="column full-center">
+                <div class="banner second with-rows with-top-bot-margins">
+                    <div class="banner-content">
+                        <div class="banner-row text-center">
+                            <h4>Character NAME</h4>
+                        </div>
+                        <hr />
+                        <div class="banner-row">
+                            <div class="column-container full-height center">
+                                <div class="column no-gutters full-center">
+                                    <img class="character-summary__profile-img" src="~/assets/missing_profile_img.png" />
+                                    <input class="character-summary__profile-img-browse" type="file" name="pic" accept="image/*">
+                                </div>
+                                <div class="column no-gutters">
+                                    <h5>Name</h5>
+                                    <div id="character-summary__name" class="character-summary__line-item"></div>
+                                    <h5>Gender</h5>
+                                    <div id="character-summary__gender" class="character-summary__line-item"></div>
+                                    <h5>Race</h5>
+                                    <div id="character-summary__race" class="character-summary__line-item"></div>
+                                    <h5>Class</h5>
+                                    <div id="character-summary__class" class="character-summary__line-item"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="banner-row">
+                            <div class="column-container full-height">
+                                <div class="column">
+                                    <div class="column-container full-height">
+                                        <div class="column no-gutters">
+                                            <h5>STAT</h5>
+                                            <h5>STAT</h5>
+                                            <h5>STAT</h5>
+                                            <h5>STAT</h5>
+                                            <h5>STAT</h5>
+                                            <h5>STAT</h5>
+                                        </div>
+                                        <div class="column no-gutters text-right">
+                                            ...<br />
+                                            ...<br />
+                                            ...<br />
+                                            ...<br />
+                                            ...<br />
+                                            ...
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <h5>Quick Links</h5>
+                                    <ul id="character-summary__quick-links">
+                                        <a href="#"><li>Background</li></a>
+                                        <a href="#"><li>Skills</li></a>
+                                        <a href="#"><li>Test 3</li></a>
+                                        <a href="#"><li>Test 4</li></a>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="banner-row">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </form>
+        }
