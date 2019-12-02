@@ -14,6 +14,7 @@ using DnDTracker.Web.Objects.Character.Classes;
 using Microsoft.AspNetCore;
 using DnDTracker.Web.Services.Auth;
 using DnDTracker.Web.Services.Character;
+using DnDTracker.Web.Services.Objects;
 using DnDTracker.Web.Services.Session;
 
 namespace DnDTracker.Web
@@ -31,6 +32,7 @@ namespace DnDTracker.Web
                 .Add<SessionService>(new SessionService())
                 .Add<CharacterClassMap>(new CharacterClassMap())
                 .Add<CharacterService>(new CharacterService())
+                .Add<CampaignService>(new CampaignService())
                 // Add more global instances here
                 ;
 

@@ -1,0 +1,132 @@
+﻿@{
+    ViewData["Title"] = "Create a Campaign";
+    var persister = Singleton.Get<DynamoDbPersister>();
+}
+
+@section Head
+{
+    <link rel="stylesheet" href="~/css/createCampaign.css?@(new Random().Next())" />
+}
+
+<div id="create-campaign" class="full-center">
+    <div class="column-container full-height">
+        <div class="column full-center">
+            <div class="banner with-top-bot-margins left">
+                <div class="banner-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center">
+                        <h3 style="margin:0">Create a Campaign</h3>
+                        <button id="create-button" class="wide" style="margin:0">Create</button>
+                    </div>
+
+                    <h5>Campaign Name</h5>
+                    <input id="create-campaign__name" type="text"
+                              maxlength="100" required placeholder="What is your campaign called?" />
+
+                    <h5>Campaign Description</h5>
+                    <textarea id="create-campaign__description"
+                              maxlength="300" required placeholder="What should your players know about your world?"></textarea>
+
+                    <h5>Information for the Players</h5>
+                    <textarea id="create-campaign__information"
+                              maxlength="300" placeholder="Ex. avalibale races, what level to make characters, etc."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $('#create-button').click(function () {
+            if (!areRequiredFieldsFilled()) {
+                notify.me({
+                    class: centerPopupClasses,
+                    header: 'Uh oh...',
+                    subheader: 'You missed a few fields',
+                    body: 'You must fill in all of the required fields before clicking <strong>Create</strong><br/>Please fill these in and try again.',
+                    onStartClose: () => {
+                        notify.overlay(false);
+                    },
+                    closeButton: true
+                });
+                notify.overlay(true);
+                return;
+            }
+
+            // Disable all the input fields.
+            $('#create-campaign__name').attr("disabled", true);
+            $('#create-campaign__description').attr("disabled", true);
+            $('#create-campaign__information').attr("disabled", true);
+            
+            var createCampaignModel = {
+                Name: $('#create-campaign__name').val(),
+                Description: $('#create-campaign__description').val(),
+                Information: $('#create-campaign__information').val(),
+                DungeonMasterGuid: currentUser.guid // Refer to _GlobalJavascript.cshtml
+            };
+            network.post('/Campaign/Create', createCampaignModel, json => {
+
+                // Enable all the input fields
+                $('#create-campaign__name').attr("disabled", false);
+                $('#create-campaign__description').attr("disabled", false);
+                $('#create-campaign__information').attr("disabled", false);
+
+                switch (json.response) {
+                    case "ok":
+                        console.log(json.message);
+
+                        // Clear the input fields
+                        $('#create-campaign__name').val("");
+                        $('#create-campaign__description').val("");
+                        $('#create-campaign__information').val("");
+
+                        // Use notify.js to give the user a "success" notification
+                        notify.me({
+                            class: centerPopupClasses,
+                            header: 'Done!',
+                            subheader: 'Campaign created successfully',
+                            body: 'Your campaign was created successfully and will now show in the View Campaigns page.',
+                            onStartClose: () => {
+                                notify.overlay(false);
+                            },
+                            buttons: [
+                                {
+                                    text: 'OK',
+                                    class: '',
+                                    action: button => { },
+                                    close: true
+                                },
+                                {
+                                    text: 'View Campaigns',
+                                    class: '',
+                                    action: button => window.location.href = '/UserDash',
+                                    close: false
+                                }
+                            ],
+                            closeButton: true
+                        });
+                        notify.overlay(true);
+                        break;
+                    case "err":
+                        console.error(json.message);
+
+                        // Use notify.js to give the user a "failure" notification
+                        notify.me({
+                            class: centerPopupClasses,
+                            header: 'Uh oh...',
+                            subheader: 'Your campaign failed to create :(',
+                            body: 'Something went wrong on our end.<br/>Please try again.',
+                            onStartClose: () => {
+                                notify.overlay(false);
+                            },
+                            closeButton: true
+                        });
+                        notify.overlay(true);
+
+                        break;
+                }
+            });
+        });
+    </script>
+}

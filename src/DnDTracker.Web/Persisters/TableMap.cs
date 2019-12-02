@@ -24,6 +24,8 @@ namespace DnDTracker.Web.Persisters
             Add<LogObject>("logs");
             Add<UserObject>("users");
             Add<CharacterObject>("characters");
+            Add<CampaignObject>("campaigns");
+            Add<NoteObject>("notes");
         }
         
         private void Add<T>(string tableName) where T : IObject

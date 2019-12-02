@@ -141,6 +141,9 @@ body {
       max-width: 800px; }
       body .banner.wide .banner-content {
         max-width: 650px; }
+    body .banner.left {
+      justify-content: left;
+      align-items: initial; }
     body .banner .banner-content {
       margin: 0;
       padding: 30px;
