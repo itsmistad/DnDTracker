@@ -15,6 +15,21 @@ $(function () {
     $(window).on('resize', resize);
 });
 
+$.fn.sync = function ($targets, $default) {
+    var $els = $targets.add(this);
+    $els.on('keyup change', function () {
+        var $this = $(this);
+        var val = $this.val();
+        if (val && val.length > 0)
+            val = $this.val();
+        else
+            val = $default;
+        $els.not($this).text(val);
+        $els.not($this).val(val);
+    });
+    return this;
+};
+
 notify.initNetwork(() => {
     network.on('HandshakeConfirm', json => {
         switch (json.response) {

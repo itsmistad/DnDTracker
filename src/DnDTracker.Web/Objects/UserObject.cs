@@ -35,6 +35,8 @@ namespace DnDTracker.Web.Objects
         /// </summary>
         [DynamoDBProperty]
         public string ImageUrl { get; set; }
+        [DynamoDBProperty]
+        public List<Guid> CharacterGuids { get; set; }
 
         public UserObject() : base() { }
 
@@ -45,6 +47,7 @@ namespace DnDTracker.Web.Objects
             FirstName = firstName;
             LastName = lastName;
             ImageUrl = imageUrl;
+            CharacterGuids = new List<Guid>();
         }
 
         public override void FromDocument(Document document)
@@ -66,6 +69,15 @@ namespace DnDTracker.Web.Objects
             ImageUrl = document.TryGetValue("ImageUrl", out entry) ?
                 entry.AsString() :
                 "";
+
+            CharacterGuids = new List<Guid>();
+            if (document.TryGetValue("CharacterGuids", out entry))
+            {
+                foreach (var p in entry.AsListOfPrimitive())
+                {
+                    CharacterGuids.Add(p.AsGuid());
+                }
+            }
         }
     }
 }

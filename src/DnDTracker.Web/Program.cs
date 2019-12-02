@@ -10,8 +10,10 @@ using System.IO;
 using DnDTracker.Web.Persisters;
 using DnDTracker.Web.Configuration;
 using DnDTracker.Web.Logging;
+using DnDTracker.Web.Objects.Character.Classes;
 using Microsoft.AspNetCore;
 using DnDTracker.Web.Services.Auth;
+using DnDTracker.Web.Services.Character;
 using DnDTracker.Web.Services.Session;
 
 namespace DnDTracker.Web
@@ -27,6 +29,8 @@ namespace DnDTracker.Web
                 .Add<AppConfig>(new AppConfig())
                 .Add<AuthService>(new AuthService())
                 .Add<SessionService>(new SessionService())
+                .Add<CharacterClassMap>(new CharacterClassMap())
+                .Add<CharacterService>(new CharacterService())
                 // Add more global instances here
                 ;
 
