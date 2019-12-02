@@ -73,9 +73,18 @@ $(function () {
         hiddenImgBrowse.click();
     });
 
-    $('.character-summary__line-item').text('...');
-
-    $('#character-name').sync($('#character-summary__name'), '...');
+    var currentName = $('#character-name').val();
+    $('#character-name').on('input', function () {
+        if ($('#character-name').val().length > 64) {
+            $('#character-name').val(currentName);
+            return;
+        }
+        currentName = $('#character-name').val();
+        if ($(this).val() === '')
+            $('#character-summary__name').text('...');
+        else
+            $('#character-summary__name').text($(this).val());
+    });
 
     var footerHeight = footer.outerHeight();
     var headerHeight = header.outerHeight() + taskbar.outerHeight();

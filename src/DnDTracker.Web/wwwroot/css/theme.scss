@@ -647,8 +647,6 @@ body {
     }
 }
 
-
-
 #create-character-page {
     //background-color: $color_second_banner;
     width: 100%;
@@ -661,10 +659,6 @@ body {
 
     #character-summary {
         @include for-small-tablet-down {
-            display: none;
-        }
-
-        .banner {
             display: none;
         }
 

@@ -480,8 +480,6 @@ body {
   @media only screen and (max-width: 799.9px) {
     #create-character-page #character-summary {
       display: none; } }
-  #create-character-page #character-summary .banner {
-    display: none; }
   #create-character-page #character-summary hr {
     border: none;
     border-top: 1px solid #bbb;
