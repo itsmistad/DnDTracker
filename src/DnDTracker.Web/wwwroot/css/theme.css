@@ -526,7 +526,7 @@ body {
   margin: 0 0 4px; }
 
 #view-campaign-page .banner p {
-  margin: 0 0 8px 10px; }
+  margin: 0 10px 8px 10px; }
 
 #view-campaign-page .view-campaign__join-code {
   color: #7777ff;
@@ -558,7 +558,9 @@ body {
 
 #view-campaign-page .view-campaign__info,
 #view-campaign-page .view-campaign__desc {
-  display: none; }
+  display: none;
+  word-break: break-word;
+  white-space: normal; }
 
 @media only screen and (max-width: 799.9px) {
   #view-campaign-page #view-campaign__wrapper {

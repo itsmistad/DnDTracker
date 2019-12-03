@@ -722,7 +722,7 @@ body {
         }
 
         p {
-            margin: 0 0 8px 10px;
+            margin: 0 10px 8px 10px;
         }
     }
 
@@ -769,6 +769,8 @@ body {
     .view-campaign__info,
     .view-campaign__desc {
         display: none;
+        word-break: break-word; 
+        white-space: normal;
     }
 
     #view-campaign__wrapper {
