@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DnDTracker.Web.Models;
-using DnDTracker.Web.Services.Character;
+using DnDTracker.Web.Services.Objects;
+using DnDTracker.Web.Services.Redirect;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -13,16 +14,21 @@ namespace DnDTracker.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return Singleton.Get<RedirectService>().HandleMissingUser(this, View());
         }
 
         public IActionResult Create()
         {
-            return View();
+            return Singleton.Get<RedirectService>().HandleMissingUser(this, View());
+        }
+
+        public IActionResult Add()
+        {
+            return Singleton.Get<RedirectService>().HandleMissingUser(this, View());
         }
 
         [HttpPost]
-        public IActionResult Save([FromBody] CreateCharacterModel model)
+        public IActionResult Create([FromBody] CreateCharacterModel model)
         {
             var characterService = Singleton.Get<CharacterService>();
             if (characterService.Create(this, model))
@@ -34,6 +40,26 @@ namespace DnDTracker.Web.Controllers
                 });
             }
             
+            return Json(new
+            {
+                response = "err",
+                message = "Not yet implemented."
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] SaveCharacterModel model)
+        {
+            var characterService = Singleton.Get<CharacterService>();
+            if (characterService.Update(this, model))
+            {
+                return Json(new
+                {
+                    response = "ok",
+                    message = $"Successfully modified character \"{model.Name}\""
+                });
+            }
+
             return Json(new
             {
                 response = "err",

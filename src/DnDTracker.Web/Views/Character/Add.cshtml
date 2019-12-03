@@ -1,9 +1,11 @@
 ﻿@using System.Text.RegularExpressions
 @{
-    ViewData["Title"] = "Character Dashboard";
+    ViewData["Title"] = "Add Character to Campaign";
 
     var persister = Singleton.Get<DynamoDbPersister>();
     var characterService = Singleton.Get<CharacterService>();
+    var campaignGuidStr = Context.Request.Query["campaignGuid"][0];
+    Guid.TryParse(campaignGuidStr, out var campaignGuid);
     var userGuidStr = Singleton.Get<SessionService>().Get("UserGuid", "", HttpContextAccessor);
     Guid.TryParse(userGuidStr, out var userGuid);
     var characters = new List<CharacterObject>();
@@ -13,17 +15,17 @@
     }
 }
 
-<div id="character-dash-page">
-    <h2 class="text-center">View Characters</h2>
+<div id="add-character-page">
+    <h2 class="text-center">Add a Character</h2>
     <div class="column-container full-height">
         <div class="column">
-            <h2 class="text-center">Your Characters</h2>
+            <h2>Your Characters</h2>
             <div style="display: flex; flex-wrap: wrap; justify-content: center;">
                 @{
                     foreach (var character in characters)
                     {
-                        <div class="character-dash__character">
-                            <a href="/Character/ViewDetails?characterGuid=@character.Guid" class="character-dash__character-anchor">
+                        <div class="add-character__character">
+                            <a class="add-character__character-anchor" guid="@character.Guid">
                                 <div class="banner second">
                                     <div class="banner-content">
                                         <h2 class="text-center">@character.Name</h2>
@@ -45,9 +47,49 @@
             @{
                 if (!characters.Any())
                 {
-                    <p style="font-size: 0.9em;text-align:center">You currently do not have any characters.</p>
+                    <p>You currently do not have any characters.</p>
                 }
             }
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        $('.add-character__character-anchor').click(function () {
+            var model = {
+                CampaignGuid: '@campaignGuid',
+                CharacterGuid: $(this).attr('guid')
+            };
+            network.post('/Campaign/AddCharacter', model, json => {
+                switch (json.response) {
+                    case 'ok':
+                        window.location.href = '/Campaign/ViewDetails?campaignGuid=@campaignGuid';
+                        break;
+                    case 'err':
+                        notify.me({
+                            class: centerPopupClasses,
+                            header: 'Uh Oh',
+                            subheader: 'Failed to Add Character',
+                            body: json.message,
+                            buttons: [{
+                                text: 'OK',
+                                action: () => { },
+                                close: true
+                            }],
+                            closeButton: false,
+                            fadeInDuration: 200,
+                            fadeOutDuration: 300,
+                            sound: 'default',
+                            onStartClose: () => {
+                                notify.overlay(false);
+                            }
+                        });
+                        notify.overlay(true);
+                        break;
+                }
+            });
+        });
+    </script>
+}

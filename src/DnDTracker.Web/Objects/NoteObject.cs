@@ -18,8 +18,22 @@ namespace DnDTracker.Web.Objects
         public string Contents { get; set; }
         [DynamoDBProperty]
         public List<Guid> SharedWithGuids { get; set; }
+        [DynamoDBProperty]
+        public bool SharedWithAll { get; set; }
 
-        public NoteObject() : base() { }
+        public NoteObject() : base()
+        {
+            SharedWithGuids = new List<Guid>();
+        }
+
+        public NoteObject(Guid authorGuid, Guid campaignGuid, string contents, bool sharedWithAll)
+        {
+            AuthorGuid = authorGuid;
+            CampaignGuid = campaignGuid;
+            Contents = contents;
+            SharedWithGuids = new List<Guid>();
+            SharedWithAll = true;
+        }
 
         public NoteObject(Guid authorGuid, Guid campaignGuid, string contents, List<Guid> sharedWithGuids)
         {
@@ -27,6 +41,7 @@ namespace DnDTracker.Web.Objects
             CampaignGuid = campaignGuid;
             Contents = contents;
             SharedWithGuids = sharedWithGuids;
+            SharedWithAll = false;
         }
 
         public override void FromDocument(Document document)
@@ -42,9 +57,11 @@ namespace DnDTracker.Web.Objects
             Contents = document.TryGetValue("Contents", out entry) ?
                 entry.AsString() :
                 "";
+            SharedWithAll = document.TryGetValue("SharedWithAll", out entry) && entry.AsBoolean();
+
+            SharedWithGuids = new List<Guid>();
             if (document.TryGetValue("SharedWithGuids", out entry))
             {
-                SharedWithGuids = new List<Guid>();
                 foreach (var v in entry.AsListOfPrimitive())
                     SharedWithGuids.Add(v.AsGuid());
             }

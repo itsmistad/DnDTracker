@@ -6,6 +6,7 @@
 }
 
 <div id="create-character-page">
+    <h2 class="text-center">Create a Character</h2>
     <div class="column-container full-height">
         <div class="column full-height">
             <div id="create-character__section1" class="banner second create-character__section">
@@ -94,7 +95,6 @@
                             for (int i = 1; i < classes.Length; i++)
                             {
                                 var classId = i;
-                                Log.Debug("" + (CharacterClassType)classId);
                                 var classObj = classMap[(CharacterClassType) i];
                                 <select class="character-subclass-dropdown" id="character-subclass-@classId" name="Subclass" type="text" style="display: none; margin-bottom: 10px;">
                                     @{
@@ -123,7 +123,7 @@
                     </div>
                 </div>
             </div>
-            <div id="create-character__section3" class="banner second create-character__section">
+            <div id="create-character__section3" class="banner second create-character__section" style="margin-bottom: 20px;">
                 <div class="banner-content">
                     <div class="create-character__section-title">
                         <h4>Race & Background</h4>
@@ -226,8 +226,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="banner-row">
                     </div>
                 </div>
             </div>

@@ -11,6 +11,7 @@ using Amazon.Runtime;
 using DnDTracker.Web.Configuration;
 using DnDTracker.Web.Logging;
 using DnDTracker.Web.Objects;
+using Newtonsoft.Json;
 
 namespace DnDTracker.Web.Persisters
 {
@@ -86,7 +87,7 @@ namespace DnDTracker.Web.Persisters
             }
             catch (Exception ex)
             {
-                Log.Error("Failed to ScanAsync through DynamoDbPersister. " +
+                Log.Error($"Failed to ScanAsync through DynamoDbPersister. {ex}" +
                     (Singleton.Get<EnvironmentConfig>().Current == Environments.Local ?
                         "\n\nDid you run ./start-dynamodb.sh?\n\n" : ""), ex);
                 return new List<T>();
@@ -104,6 +105,11 @@ namespace DnDTracker.Web.Persisters
             {
                 var tableMap = Singleton.Get<TableMap>();
                 var tableName = tableMap[typeof(T)];
+                if (string.IsNullOrEmpty(tableName))
+                {
+                    Log.Error($"Tried to save an IObject {typeof(T).Name} without an entry in TableMap.");
+                    return;
+                }
                 Table table = Table.LoadTable(Client, tableName);
                 await table.DeleteItemAsync(new Primitive(guid.ToString()));
             }
@@ -157,6 +163,32 @@ namespace DnDTracker.Web.Persisters
             {
                 Log.Error("Failed to GetAsync through DynamoDbPersister.", ex);
                 return default;
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously updates the specified persistable object <paramref name="obj"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of IObject.</typeparam>
+        /// <param name="obj">The persistable object.</param>
+        public virtual async void Update<T>(T obj) where T : IObject
+        {
+            try
+            {
+                var tableMap = Singleton.Get<TableMap>();
+                var tableName = tableMap[typeof(T)];
+                if (string.IsNullOrEmpty(tableName))
+                {
+                    Log.Error($"Tried to save an IObject {typeof(T).Name} without an entry in TableMap.");
+                    return;
+                }
+                Table table = Table.LoadTable(Client, tableName);
+                Document document = Context.ToDocument(obj);
+                await table.UpdateItemAsync(document, obj.Guid.ToString());
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to Update through DynamoDbPersister.", ex);
             }
         }
 

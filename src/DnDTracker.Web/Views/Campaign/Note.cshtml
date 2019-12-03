@@ -1,0 +1,228 @@
+﻿
+@{
+    var campaignGuidStr = !string.IsNullOrEmpty(Context.Request.Query["campaignGuid"]) ? Context.Request.Query["campaignGuid"][0] : "";
+    var noteGuidStr = !string.IsNullOrEmpty(Context.Request.Query["noteGuid"]) ? Context.Request.Query["noteGuid"][0] : "";
+    var persister = Singleton.Get<DynamoDbPersister>();
+    Guid.TryParse(campaignGuidStr, out var campaignGuid);
+    Guid.TryParse(noteGuidStr, out var noteGuid);
+    var userGuidStr = Singleton.Get<SessionService>().Get("UserGuid", "", HttpContextAccessor);
+    Guid.TryParse(userGuidStr, out var userGuid);
+    var campaignObj = persister.Get<CampaignObject>(campaignGuid);
+    var noteObj = persister.Get<NoteObject>(noteGuid);
+
+    ViewData["Title"] = "Campaign Note";
+}
+
+<div id="campaign-note-page">
+    <h2 class="text-center">Campaign Note</h2>
+    <div class="column-container full-height" id="campaign-note__desktop">
+        <div class="column">
+            <div class="banner">
+                <div class="banner-content">
+                    <h3>Recipients</h3>
+                    <select class="campaign-note__recipient-select">
+                        @{
+                            <option value="" selected>Select a Party Member</option>
+                            foreach (var p in campaignObj.UserCharacterPairs)
+                            {
+                                if (p.UserGuid == userGuid)
+                                {
+                                    continue;
+                                }
+                                var memberGuid = p.UserGuid;
+                                var characterGuid = p.CharacterGuid;
+                                var memberObj = persister.Get<UserObject>(memberGuid);
+                                var characterObj = persister.Get<CharacterObject>(characterGuid);
+
+                                <option value="@memberGuid" @(noteObj != null && noteObj.SharedWithGuids.Contains(memberObj.Guid) ? "disabled" : "")>@memberObj.FullName (@(characterObj?.Name ?? "N/A"))</option>
+                            }
+                        }
+                    </select>
+                    <p class="instructions">Select a party member from the dropdown to add them to the recipient list.</p>
+                    <div class="campaign-note__recipient-list" style="display:none">
+                        <p class="instructions">Click any party member's name to remove them from the list.</p>
+                        @{
+                            if (noteObj != null)
+                            {
+                                foreach (var guid in noteObj.SharedWithGuids)
+                                {
+                                    var memberObj = persister.Get<UserObject>(guid);
+                                    var characterObj = persister.Get<CharacterObject>(campaignObj.UserCharacterPairs.Find(_ => _.UserGuid == memberObj.Guid).CharacterGuid);
+
+                                    <a guid="@memberObj.Guid" onclick="removeRecipient($(this));" class="campaign-note__recipient-anchor">@memberObj.FullName (@(characterObj?.Name ?? "N/A"))</a>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="banner second">
+                <div class="banner-content">
+                    <h3>Contents</h3>
+                    <textarea class="campaign-note__contents" required placeholder="Write the contents of your note.">@(noteObj != null ? noteObj.Contents : "")</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column-container full-height" id="campaign-note__mobile">
+        <div class="column">
+            <div class="banner with-top-bot-margins">
+                <div class="banner-content">
+                    <h3>Recipients</h3>
+                    @{
+
+                    }
+                </div>
+            </div>
+            <div class="banner second with-top-bot-margins">
+                <div class="banner-content">
+                    <h3>Contents</h3>
+                    <textarea class="campaign-note__contents" required placeholder="Write the contents of your note."></textarea>
+                </div>
+            </div>
+            <div class="mobile-buttons-container">
+                <button class="save-button full-width thick">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="buttons-container">
+        <button class="save-button medium">
+            Save
+        </button>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        var recipientGuids = [];
+        $('.save-button').click(function () {
+            if (recipientGuids.length == 0 && $('.campaign-note__recipient-list').find('a').length > 0) {
+                $('.campaign-note__recipient-list a').each(function() {
+                    recipientGuids.push($(this).attr('guid'));
+                });
+            }
+            var model = {
+                Contents: $('.campaign-note__contents').val(),
+                CampaignGuid: '@campaignGuid',
+                RecipientGuids: recipientGuids,
+                NoteGuid: '@noteGuid'
+            };
+            if (model.Contents.trim().length == 0) {
+                notify.me({
+                    class: centerPopupClasses,
+                    header: 'Save Failed',
+                    subheader: 'Missing Values',
+                    body: 'Be sure to select at least 1 recipient and include some text in your content box.',
+                    buttons: [{
+                        text: 'OK',
+                        action: () => { },
+                        close: true
+                    }],
+                    closeButton: false,
+                    fadeInDuration: 200,
+                    fadeOutDuration: 300,
+                    sound: 'default',
+                    onStartClose: () => {
+                        notify.overlay(false);
+                    }
+                });
+                notify.overlay(true);
+                return;
+            }
+
+            network.post('/Campaign/SaveNote', model, json => {
+                switch (json.response) {
+                case 'ok':
+                    notify.me({
+                        class: centerPopupClasses,
+                        header: 'Save Successful',
+                        subheader: 'Your note has been created',
+                        body: 'Click OK below to go to your campaign page.',
+                        buttons: [{
+                            text: 'OK',
+                            action: () => {
+                                window.location.href = '/Campaign/ViewDetails?campaignGuid=@campaignGuid';
+                            },
+                            close: true
+                        }],
+                        closeButton: false,
+                        fadeInDuration: 200,
+                        fadeOutDuration: 300,
+                        sound: 'default',
+                        onStartClose: () => {
+                            notify.overlay(false);
+                        }
+                    });
+                    notify.overlay(true);
+                    break;
+                case 'err':
+                    notify.me({
+                        class: centerPopupClasses,
+                        header: 'Save Failed',
+                        subheader: 'Something went wrong',
+                        body: json.message,
+                        buttons: [{
+                            text: 'OK',
+                            action: () => { },
+                            close: true
+                        }],
+                        closeButton: false,
+                        fadeInDuration: 200,
+                        fadeOutDuration: 300,
+                        sound: 'default',
+                        onStartClose: () => {
+                            notify.overlay(false);
+                        }
+                    });
+                    notify.overlay(true);
+                    break;
+                }
+            });
+        });
+        function removeRecipient($e) {
+            recipientGuids.splice(recipientGuids.indexOf($e.attr('guid')), 1);
+            $(`.campaign-note__recipient-select option[value="${$e.attr('guid')}"]`).prop('disabled', false);
+            $e.remove();
+            if (recipientGuids.length == 0)
+                $('.campaign-note__recipient-list').hide();
+        }
+
+        $('.campaign-note__recipient-select').change(function() {
+            var memberGuid = $(this).val();
+            console.log(memberGuid);
+            var fullText = $('.campaign-note__recipient-select option:selected').text();
+            if (!recipientGuids.includes(memberGuid)) {
+                $('.campaign-note__recipient-select option:selected').prop('disabled', true);
+                recipientGuids.push(memberGuid);
+                $('.campaign-note__recipient-list')
+                    .append(`<a guid="${memberGuid}" onclick="removeRecipient($(this));" class="campaign-note__recipient-anchor">${fullText}</a>`);
+                $('.campaign-note__recipient-list').show();
+            }
+            $(this).val('');
+        });
+        var buttons = $('.buttons-container');
+        var footer = $('#main-footer');
+        var footerHeight = footer.outerHeight();
+        var handleScroll = () => {
+            var bottom = $(document).height() - ($(document).scrollTop() + $(window).height());
+            if ($(document).height() === $(window).height() || bottom <= footerHeight)
+                buttons.css({
+                    transform: `translateY(${-1 * (footerHeight - bottom)}px)`
+                });
+            else if (bottom > footerHeight)
+                buttons.css({
+                    transform: 'unset'
+                });
+        };
+        handleScroll();
+        $(document).scroll(handleScroll);
+        $(window).resize(handleScroll);
+        if ($('.campaign-note__recipient-list').find('a').length > 0)
+            $('.campaign-note__recipient-list').show();
+    </script>
+}

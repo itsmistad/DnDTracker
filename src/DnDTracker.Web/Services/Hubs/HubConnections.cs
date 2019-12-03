@@ -16,7 +16,7 @@ namespace DnDTracker.Web.Services.Hubs
                 connection = this.First(_ => _.Value.UserGuid == guid.ToString()).Value;
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 connection = null;
                 return false;

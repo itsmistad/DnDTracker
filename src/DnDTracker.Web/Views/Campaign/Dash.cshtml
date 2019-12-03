@@ -1,0 +1,167 @@
+﻿@{
+    ViewData["Title"] = "View Campaigns";
+}
+@{
+    var session = Singleton.Get<SessionService>();
+    var persister = Singleton.Get<DynamoDbPersister>();
+    var campaignService = Singleton.Get<CampaignService>();
+    var userGuid = Guid.Empty;
+    Guid.TryParse(session.Get("UserGuid", "", HttpContextAccessor), out userGuid);
+    var currentUser = persister.Get<UserObject>(userGuid);
+    var ownedCampaigns = campaignService.GetByDungeonMasterGuid(userGuid);
+    var participatingCampaigns = campaignService.GetByMemberGuid(userGuid);
+}
+
+<div id="user-dash-page">
+    <h2 class="text-center">View Campaigns</h2>
+    <div class="column-container full-height">
+        <div class="column">
+            <h2 class="text-center">Your Campaigns as Dungeon Master</h2>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+                @{
+                    ownedCampaigns.Sort((a, b) => DateTime.Parse(b.CreateDate).CompareTo(DateTime.Parse(a.CreateDate)));
+                    foreach (var campaign in ownedCampaigns)
+                    {
+                        var dmName = persister.Get<UserObject>(campaign.DungeonMasterGuid).FullName;
+                        
+                        <div class="user-dash__campaign">
+                            <a href="/Campaign/ViewDetails?campaignGuid=@campaign.Guid" class="user-dash__campaign-anchor">
+                                <div class="banner">
+                                    <div class="banner-content">
+                                        <h2>@campaign.Name</h2>
+                                        <h5>Dungeon Master</h5>
+                                        <p>@dmName</p>
+                                        <h5>Players</h5>
+                                        <p>
+                                            @{
+                                                var playerNames = new List<string>();
+                                                foreach (var guid in campaign.UserCharacterPairs)
+                                                {
+                                                    var player = persister.Get<UserObject>(guid.UserGuid);
+                                                    playerNames.Add(player.FirstName + (player.LastName != null ? " " + player.LastName.Substring(0, 1) + "." : ""));
+                                                    if (playerNames.Count == 5)
+                                                    {
+                                                        playerNames.Add("...");
+                                                        break;
+                                                    }
+                                                }
+                                                if (!playerNames.Any())
+                                                {
+                                                    playerNames.Add("None");
+                                                }
+                                                var players = string.Join(", ", playerNames);
+                                                @players
+                                            }
+                                        </p>
+                                        <h5>Description</h5>
+                                        @{
+                                            var description = campaign.Description;
+                                            if (description.Length > 90)
+                                            {
+                                                var output = "";    
+                                                foreach (var word in description.Split(" "))
+                                                {
+                                                    if ((output + word).Length > 90)
+                                                    {
+                                                        output = output.Trim();
+                                                        output += "...";
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        output += word + " ";
+                                                    }
+                                                }
+                                                description = output;
+                                            }
+                                        }
+                                        <p>@description</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                }
+            </div>
+            @{
+                if (!ownedCampaigns.Any())
+                {
+                    <p style="font-size: 0.9em; text-align:center">You currently do not manage any campaigns as a dungeon master.</p>
+                }
+            }
+            <h2 class="text-center">Your Campaigns as Party Member</h2>
+            <div style="display: flex; flex-wrap: wrap;  justify-content: center;">
+                @{
+                    participatingCampaigns.Sort((a, b) => DateTime.Parse(b.CreateDate).CompareTo(DateTime.Parse(a.CreateDate)));
+                    foreach (var campaign in participatingCampaigns)
+                    {
+                        var dmName = persister.Get<UserObject>(campaign.DungeonMasterGuid).FullName;
+                        
+                        <div class="user-dash__campaign">
+                            <a href="/Campaign/ViewDetails?campaignGuid=@campaign.Guid" class="user-dash__campaign-anchor">
+                                <div class="banner">
+                                    <div class="banner-content">
+                                        <h2>@campaign.Name</h2>
+                                        <h5>Dungeon Master</h5>
+                                        <p>@dmName</p>
+                                        <h5>Players</h5>
+                                        <p>
+                                            @{
+                                                var playerNames = new List<string>();
+                                                foreach (var guid in campaign.UserCharacterPairs)
+                                                {
+                                                    var player = persister.Get<UserObject>(guid.UserGuid);
+                                                    playerNames.Add(player.FirstName + (player.LastName != null ? " " + player.LastName.Substring(0, 1) + "." : ""));
+                                                    if (playerNames.Count == 5)
+                                                    {
+                                                        playerNames.Add("...");
+                                                        break;
+                                                    }
+                                                }
+                                                if (!playerNames.Any())
+                                                {
+                                                    playerNames.Add("None");
+                                                }
+                                                var players = string.Join(", ", playerNames);
+                                                @players
+                                            }
+                                        </p>
+                                        <h5>Description</h5>
+                                        @{
+                                            var description = campaign.Description;
+                                            if (description.Length > 90)
+                                            {
+                                                var output = "";    
+                                                foreach (var word in description.Split(" "))
+                                                {
+                                                    if ((output + word).Length > 90)
+                                                    {
+                                                        output = output.Trim();
+                                                        output += "...";
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        output += word + " ";
+                                                    }
+                                                }
+                                                description = output;
+                                            }
+                                        }
+                                        <p>@description</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                }
+            </div>    
+            @{
+                if (!participatingCampaigns.Any())
+                {
+                    <p style="font-size: 0.9em;text-align:center">You currently are not participating in any campaigns as a party member.</p>
+                }
+            }
+        </div>
+    </div>
+</div>

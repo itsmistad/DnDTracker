@@ -13,8 +13,8 @@ using DnDTracker.Web.Logging;
 using DnDTracker.Web.Objects.Character.Classes;
 using Microsoft.AspNetCore;
 using DnDTracker.Web.Services.Auth;
-using DnDTracker.Web.Services.Character;
 using DnDTracker.Web.Services.Objects;
+using DnDTracker.Web.Services.Redirect;
 using DnDTracker.Web.Services.Session;
 
 namespace DnDTracker.Web
@@ -33,6 +33,7 @@ namespace DnDTracker.Web
                 .Add<CharacterClassMap>(new CharacterClassMap())
                 .Add<CharacterService>(new CharacterService())
                 .Add<CampaignService>(new CampaignService())
+                .Add<RedirectService>(new RedirectService())
                 // Add more global instances here
                 ;
 

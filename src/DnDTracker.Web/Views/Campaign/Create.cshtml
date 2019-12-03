@@ -9,12 +9,13 @@
 }
 
 <div id="create-campaign" class="full-center">
+    <h2 class="text-center">Create a Campaign</h2>
     <div class="column-container full-height">
         <div class="column full-center">
-            <div class="banner with-top-bot-margins left">
+            <div class="banner with-top-bot-margins">
                 <div class="banner-content">
                     <div style="display: flex; justify-content: space-between; align-items: center">
-                        <h3 style="margin:0">Create a Campaign</h3>
+                        <h3 style="margin:0">Campaign Details</h3>
                         <button id="create-button" class="wide" style="margin:0">Create</button>
                     </div>
 
@@ -24,11 +25,11 @@
 
                     <h5>Campaign Description</h5>
                     <textarea id="create-campaign__description"
-                              maxlength="300" required placeholder="What should your players know about your world?"></textarea>
+                              required placeholder="What should your players know about your world?"></textarea>
 
                     <h5>Information for the Players</h5>
                     <textarea id="create-campaign__information"
-                              maxlength="300" placeholder="Ex. avalibale races, what level to make characters, etc."></textarea>
+                              placeholder="Ex. avalibale races, what level to make characters, etc."></textarea>
                 </div>
             </div>
         </div>
@@ -100,7 +101,7 @@
                                 {
                                     text: 'View Campaigns',
                                     class: '',
-                                    action: button => window.location.href = '/UserDash',
+                                    action: button => window.location.href = '/Campaign/Dash',
                                     close: false
                                 }
                             ],
