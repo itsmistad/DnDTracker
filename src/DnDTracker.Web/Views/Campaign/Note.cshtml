@@ -9,6 +9,7 @@
     Guid.TryParse(userGuidStr, out var userGuid);
     var campaignObj = persister.Get<CampaignObject>(campaignGuid);
     var noteObj = persister.Get<NoteObject>(noteGuid);
+    var dungeonMasterObj = persister.Get<UserObject>(campaignObj.DungeonMasterGuid);
 
     ViewData["Title"] = "Campaign Note";
 }
@@ -22,7 +23,8 @@
                     <h3>Recipients</h3>
                     <select class="campaign-note__recipient-select">
                         @{
-                            <option value="" selected>Select a Party Member</option>
+                            <option value="" selected>Select a Recipient</option>
+                            <option value="@campaignObj.DungeonMasterGuid" @(noteObj != null && noteObj.SharedWithGuids.Contains(campaignObj.DungeonMasterGuid) ? "disabled" : "")>@(dungeonMasterObj.FullName) (DM)</option>
                             foreach (var p in campaignObj.UserCharacterPairs)
                             {
                                 if (p.UserGuid == userGuid)
@@ -40,16 +42,23 @@
                     </select>
                     <p class="instructions">Select a party member from the dropdown to add them to the recipient list.</p>
                     <div class="campaign-note__recipient-list" style="display:none">
-                        <p class="instructions">Click any party member's name to remove them from the list.</p>
+                        <p class="instructions">Click any recipient's name to remove them from the list.</p>
                         @{
                             if (noteObj != null)
                             {
                                 foreach (var guid in noteObj.SharedWithGuids)
                                 {
                                     var memberObj = persister.Get<UserObject>(guid);
-                                    var characterObj = persister.Get<CharacterObject>(campaignObj.UserCharacterPairs.Find(_ => _.UserGuid == memberObj.Guid).CharacterGuid);
+                                    if (campaignObj.DungeonMasterGuid == guid)
+                                    {
+                                        <a guid="@memberObj.Guid" onclick="removeRecipient($(this));" class="campaign-note__recipient-anchor">@memberObj.FullName (DM)</a>
+                                    }
+                                    else
+                                    {
+                                        var characterObj = persister.Get<CharacterObject>(campaignObj.UserCharacterPairs.Find(_ => _.UserGuid == memberObj.Guid).CharacterGuid);
 
-                                    <a guid="@memberObj.Guid" onclick="removeRecipient($(this));" class="campaign-note__recipient-anchor">@memberObj.FullName (@(characterObj?.Name ?? "N/A"))</a>
+                                        <a guid="@memberObj.Guid" onclick="removeRecipient($(this));" class="campaign-note__recipient-anchor">@memberObj.FullName (@(characterObj?.Name ?? "N/A"))</a>
+                                    }
                                 }
                             }
                         }
@@ -89,10 +98,10 @@
                 });
             }
             var model = {
-                Contents: $('.campaign-note__contents').val(),
+                Contents: $('.campaign-note__contents').val().trim(),
                 CampaignGuid: '@campaignGuid',
                 RecipientGuids: recipientGuids,
-                NoteGuid: '@noteGuid'
+                NoteGuid: '@noteGuidStr'
             };
             if (model.Contents.trim().length == 0) {
                 notify.me({

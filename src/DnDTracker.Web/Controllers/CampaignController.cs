@@ -91,15 +91,16 @@ namespace DnDTracker.Web.Controllers
             var persister = Singleton.Get<DynamoDbPersister>();
             var campaignService = Singleton.Get<CampaignService>();
             var recipientGuids = new List<Guid>();
-            var includeAll = false;
+            var includeAll = true;
             Guid.TryParse(saveNote.CampaignGuid, out var campaignGuid);
             Guid.TryParse(saveNote.NoteGuid, out var noteGuid);
             foreach (var r in saveNote.RecipientGuids)
             {
                 if (Guid.TryParse(r, out var guid))
+                {
                     recipientGuids.Add(guid);
-                else if (r == "all")
-                    includeAll = true;
+                    includeAll = false;
+                }
             }
             var campaignObj = persister.Get<CampaignObject>(campaignGuid);
             if (Guid.TryParse(userGuidStr, out var userGuid))

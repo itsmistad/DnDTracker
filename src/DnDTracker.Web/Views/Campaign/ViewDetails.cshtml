@@ -85,40 +85,41 @@
                         {
                             <p>There are currently no notes for you to view.</p>
                         }
-                        else 
+                        else
                         {
-                            var firstForYou = false;
-                            var firstForOthers = false;
-                            foreach (var noteGuid in campaignObj.NoteGuids)
+                            <h4 class="text-center">For You</h4>
+                            Predicate<Guid> forYouPredicate = noteGuid =>
                             {
                                 var note = persister.Get<NoteObject>(noteGuid);
-                                var author = persister.Get<UserObject>(note.AuthorGuid);
-                                if (!firstForYou)
-                                {
-                                    <h4 class="text-center">For You</h4>
-                                    firstForYou = true;
-                                }
-                                if (note.AuthorGuid != userGuid && (note.SharedWithGuids.Contains(userGuid) || note.SharedWithAll))
-                                {
-                                    <div class="view-campaign__note" guid="@noteGuid"  author="@note.AuthorGuid">
-                                        <h5>From @(persister.Get<UserObject>(note.AuthorGuid).FullName):</h5>
-                                        <p>@note.Contents</p>
-                                    </div>
-                                }
-                                if (!firstForOthers)
-                                {
-                                    <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.2); margin: 0 40px;"/>
-                                    <h4 class="text-center">For Others</h4>
-                                    firstForOthers = true;
-                                }
-                                if (note.AuthorGuid == userGuid)
-                                {
-                                    var recipients = string.Join(", ", note.SharedWithGuids.Select(_ => persister.Get<UserObject>(_).FullName).ToList());
-                                    <div class="view-campaign__note author-note" guid="@noteGuid" author="@note.AuthorGuid">
-                                        <h5>For @recipients:</h5>
-                                        <p>@note.Contents</p>
-                                    </div>
-                                }
+                                return note.AuthorGuid != userGuid && (note.SharedWithGuids.Contains(userGuid) || note.SharedWithAll);
+                            };
+                            var forYou = campaignObj.NoteGuids.FindAll(forYouPredicate);
+                            forYou.Sort((a, b) => persister.Get<NoteObject>(b).CreateDate.CompareTo(persister.Get<NoteObject>(a).CreateDate));
+                            foreach (var noteGuid in forYou)
+                            {
+                                var note = persister.Get<NoteObject>(noteGuid);
+                                <div class="view-campaign__note" guid="@noteGuid"  author="@note.AuthorGuid">
+                                    <h5>From @(persister.Get<UserObject>(note.AuthorGuid).FullName):</h5>
+                                    <p>@note.Contents</p>
+                                </div>
+                            }
+                            <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.2); margin: 0 40px;"/>
+                            <h4 class="text-center">For Others</h4>
+                            Predicate<Guid> forOthersPredicate = noteGuid =>
+                            {
+                                var note = persister.Get<NoteObject>(noteGuid);
+                                return note.AuthorGuid == userGuid;
+                            };
+                            var forOthers = campaignObj.NoteGuids.FindAll(forOthersPredicate);
+                            forOthers.Sort((a, b) => persister.Get<NoteObject>(b).CreateDate.CompareTo(persister.Get<NoteObject>(a).CreateDate));
+                            foreach (var noteGuid in forOthers)
+                            {
+                                var note = persister.Get<NoteObject>(noteGuid);
+                                var recipients = !note.SharedWithAll ? string.Join(", ", note.SharedWithGuids.Select(_ => persister.Get<UserObject>(_).FullName).ToList()) : "Everyone";
+                                <div class="view-campaign__note author-note" guid="@noteGuid" author="@note.AuthorGuid">
+                                    <h5>For @recipients:</h5>
+                                    <p>@note.Contents</p>
+                                </div>
                             }
                         }
                     }
