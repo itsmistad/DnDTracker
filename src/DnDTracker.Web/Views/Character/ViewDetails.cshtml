@@ -1,7 +1,289 @@
 ﻿@{
-    ViewData["Title"] = "View Character";
+    var characterGuidStr = Context.Request.Query["characterGuid"][0];
+    var persister = Singleton.Get<DynamoDbPersister>();
+    Guid.TryParse(characterGuidStr, out var characterGuid);
+    var userGuidStr = Singleton.Get<SessionService>().Get("UserGuid", "", HttpContextAccessor);
+    Guid.TryParse(userGuidStr, out var userGuid);
+    var characterObj = persister.Get<CharacterObject>(characterGuid);
+    var creatorGuid = characterObj.UserGuid;
+
+    ViewData["Title"] = characterObj?.Name ?? "";
 }
 
 <div id="view-character-page">
-    <!-- Placeholder for #35 "Create Character Details page" -->
+    <h2 class="text-center">Character Details</h2>
+    <div class="column-container full-height">
+        <div class="column full-height">
+            <div class="banner second" style="margin-bottom: 20px;">
+                <div class="banner-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5 style="width: 160px;">Name</h5>
+                        <input id="character-name" type="text" value="@characterObj.Name" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5 style="width: 160px;">Gender</h5>
+                        <input type="text" readonly value="@characterObj.GenderType.ToString()" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5>Level</h5>
+                        <input style="width: 50px;" id="character-level" type="number" min="1" max="20" value="@characterObj.Level"/>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5>Strength</h5>
+                        <input style="width: 50px;" id="character-strength" type="number" min="3" max="9999" value="@characterObj.Strength" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5>Dexterity</h5>
+                        <input style="width: 50px;" id="character-dexterity" type="number" min="3" max="9999" value="@characterObj.Dexterity" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5>Constitution</h5>
+                        <input style="width: 50px;" id="character-constitution" type="number" min="3" max="9999" value="@characterObj.Constitution" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5>Intelligence</h5>
+                        <input style="width: 50px;" id="character-intelligence" type="number" min="3" max="9999" value="@characterObj.Intelligence" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5>Wisdom</h5>
+                        <input style="width: 50px;" id="character-wisdom" type="number" min="3" max="9999" value="@characterObj.Wisdom" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5>Charisma</h5>
+                        <input style="width: 50px;" id="character-charisma" type="number" min="3" max="9999" value="@characterObj.Charisma" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5 style="width: 160px">Health</h5>
+                        <input style="width: 50px;" id="character-health" type="number" min="1" max="10000" value="@characterObj.Health" />
+                    </div>  
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5 style="width: 160px">Current Class</h5>
+                        <input type="text" readonly value="@characterObj.ClassType.ToString()" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5 style="width: 160px">Subclass</h5>
+                        <input type="text" readonly value="@characterObj.SubClassType.ToString()" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5 style="width:160px">Race</h5>
+                        <input type="text" readonly value="@characterObj.RaceType.ToString()" />
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h5 style="width:160px">Background</h5>
+                        <input type="text" readonly value="@characterObj.BackgroundType.ToString()" />
+                    </div>
+                    <h5>Proficiencies</h5>
+                    <textarea id="character-proficiencies" style="margin-bottom: 20px">@characterObj.Proficiencies</textarea>
+                    <h5>Equipment</h5>
+                    <textarea id="character-equipment" style="margin-bottom: 20px">@characterObj.Equipment</textarea>
+                </div>
+            </div>
+        
+            <div class="mobile-buttons-container">
+                <button class="save-button full-width thick" type="button">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="buttons-container">
+        <button class="save-button medium" type="button">
+            Save
+        </button>
+    </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        $(function() {
+            var footer = $('#main-footer');
+            var buttons = $('.buttons-container');
+            var saveBtn = $('.save-button');
+
+            $('.view-character__section-title').click(function() {
+                var section = $(this).parent().parent();
+                var sectionContent = section.find('.view-character__section-content');
+                var duration = 300;
+                section.toggleClass('open');
+                sectionContent.slideToggle(duration);
+                setTimeout(handleScroll, duration);
+            });
+
+            var footerHeight = footer.outerHeight();
+            var handleScroll = () => {
+                var bottom = $(document).height() - ($(document).scrollTop() + $(window).height());
+
+                if ($(document).height() === $(window).height() || bottom <= footerHeight)
+                    buttons.css({
+                        transform: `translateY(${-1 * (footerHeight - bottom)}px)`
+                    });
+                else if (bottom > footerHeight)
+                    buttons.css({
+                        transform: 'unset'
+                    });
+            };
+            handleScroll();
+            $(document).scroll(handleScroll);
+            $(window).resize(handleScroll);
+
+            function validateModel(model) {
+                for (const [key, value] of Object.entries(model)) {
+                    if (!value || value.trim() === "" || value === "...")
+                        return false;
+                }
+                return true;
+            }
+
+            saveBtn.click(function() {
+                var model = {
+                    Name: $('#character-name').val(),
+                    Proficiencies: $('#character-proficiencies').val(),
+                    Equipment: $('#character-equipment').val(),
+                    Level: $('#character-level').val(),
+                    Strength: $('#character-strength').val(),
+                    Dexterity: $('#character-dexterity').val(),
+                    Constitution: $('#character-constitution').val(),
+                    Intelligence: $('#character-intelligence').val(),
+                    Wisdom: $('#character-wisdom').val(),
+                    Charisma: $('#character-charisma').val(),
+                    Health: $('#character-health').val(),
+                    CharacterGuid: '@characterGuid'
+                };
+                if (!validateModel(model)) {
+                    notify.me({
+                        class: centerPopupClasses,
+                        header: 'Oops',
+                        subheader: 'Looks like you\'re missing some values',
+                        body: 'Click OK to go back.',
+                        buttons: [
+                            {
+                                text: 'OK',
+                                action: () => {},
+                                close: true
+                            }
+                        ],
+                        closeButton: false,
+                        fadeInDuration: 200,
+                        fadeOutDuration: 300,
+                        sound: 'default',
+                        onStartClose: () => {
+                            notify.overlay(false);
+                        }
+                    });
+                    notify.overlay(true);
+                    return;
+                }
+                var processing = notify.me({
+                    class: cornerPopupClasses,
+                    subheader: 'Saving...',
+                    body:
+                        'Please wait while we save your character.<br/>Do not reload the page.<br/><img src="/assets/spinner.gif" width="80px" style="margin: -20px 0 -40px -30px; user-select: none;"/>',
+                    forceOnTop: true,
+                    handleAsStack: true,
+                    closeButton: false,
+                    buttons: [],
+                    fadeInDuration: 200,
+                    fadeOutDuration: 300,
+                    targetSelector: '#notify-queue',
+                    targetMethod: 'prepend',
+                    sound: 'default'
+                });
+                network.post('/Character/Update',
+                    model,
+                    json => {
+                        processing.close();
+                        switch (json.response) {
+                        case "ok":
+                            console.log(json.message);
+                            notify.me({
+                                class: centerPopupClasses,
+                                header: 'Modification Successful',
+                                subheader: 'Your character was modified successfully',
+                                body: 'Click OK to close this.',
+                                buttons: [
+                                    {
+                                        text: 'OK',
+                                        action: () => { },
+                                        close: true
+                                    }
+                                ],
+                                closeButton: false,
+                                fadeInDuration: 200,
+                                fadeOutDuration: 300,
+                                sound: 'default',
+                                onStartClose: () => {
+                                    notify.overlay(false);
+                                }
+                            });
+                            break;
+                        case "err":
+                            console.error(json.message);
+                            notify.me({
+                                class: centerPopupClasses,
+                                header: 'Modification Failed',
+                                subheader: 'Something went wrong',
+                                body: json.message,
+                                buttons: [
+                                    {
+                                        text: 'Ok',
+                                        action: () => {},
+                                        close: true
+                                    }
+                                ],
+                                closeButton: false,
+                                fadeInDuration: 200,
+                                fadeOutDuration: 300,
+                                sound: 'default',
+                                onStartClose: () => {
+                                    notify.overlay(false);
+                                }
+                            });
+                            break;
+                        }
+                        notify.overlay(true);
+                    });
+            });
+
+            function limitMinMax(e) {
+                var max = parseInt(e.attr('max'));
+                var min = parseInt(e.attr('min'));
+                if (e.val() > max) {
+                    e.val(max);
+                } else if (e.val() < min) {
+                    e.val(min);
+                }
+            }
+
+            $("#character-level").change(function() {
+                limitMinMax($(this));
+            });
+            $("#character-strength").change(function() {
+                limitMinMax($(this));
+            });
+            $("#character-dexterity").change(function() {
+                limitMinMax($(this));
+            });
+            $("#character-constitution").change(function() {
+                limitMinMax($(this));
+            });
+            $("#character-intelligence").change(function() {
+                limitMinMax($(this));
+            });
+            $("#character-wisdom").change(function() {
+                limitMinMax($(this));
+            });
+            $("#character-charisma").change(function() {
+                limitMinMax($(this));
+            });
+            $("#character-health").change(function() {
+                limitMinMax($(this));
+            });
+            if (@((creatorGuid != userGuid).ToString().ToLower())) {
+                $('input').prop('readonly', true);
+                $('textarea').prop('readonly', true);
+                $('button').hide();
+            }
+        });
+    </script>
+}

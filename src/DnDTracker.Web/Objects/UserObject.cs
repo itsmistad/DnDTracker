@@ -38,7 +38,10 @@ namespace DnDTracker.Web.Objects
         [DynamoDBProperty]
         public List<Guid> CharacterGuids { get; set; }
 
-        public UserObject() : base() { }
+        public UserObject() : base() // Required
+        {
+            CharacterGuids = new List<Guid>();
+        }
 
         public UserObject(string email, string fullName, string firstName, string lastName, string imageUrl)
         {

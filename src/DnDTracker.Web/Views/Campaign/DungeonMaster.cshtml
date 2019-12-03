@@ -1,0 +1,464 @@
+﻿@{
+    var campaignGuidStr = Context.Request.Query["campaignGuid"][0];
+    var persister = Singleton.Get<DynamoDbPersister>();
+    Guid.TryParse(campaignGuidStr, out var campaignGuid);
+    var userGuidStr = Singleton.Get<SessionService>().Get("UserGuid", "", HttpContextAccessor);
+    Guid.TryParse(userGuidStr, out var userGuid);
+    var campaignObj = persister.Get<CampaignObject>(campaignGuid);
+
+    ViewData["Title"] = "DM - " + campaignObj?.Name ?? "";
+}
+
+<div id="dungeon-master-page">
+    <h2 class="text-center">Dungeon Master</h2>
+    <div class="column-container full-height" id="dungeon-master__desktop">
+        <div class="column">
+            <div class="banner with-top-bot-margins">
+                <div class="banner-content">
+                    <a href="/Campaign/ViewDetails?campaignGuid=@campaignGuidStr"><h2 class="text-center">@campaignObj.Name</h2></a>
+                    <h3>Party Members</h3>
+                    @{
+                        if (!campaignObj.UserCharacterPairs.Any())
+                        {
+                            <p>There are currently no party members.</p>
+                        }
+                        else
+                        {
+                            <ul>
+                                @{
+                                    foreach (var pair in campaignObj.UserCharacterPairs)
+                                    {
+                                        var player = persister.Get<UserObject>(pair.UserGuid);
+                                        var associatedCharacterName = persister.Get<CharacterObject>(pair.CharacterGuid)?.Name ?? "N/A";
+                                        <li><a class="dungeon-master__user" guid="@player.Guid">@player.FullName</a> (<a href="/Character/ViewDetails?characterGuid=@pair.CharacterGuid">@associatedCharacterName</a>)</li>
+                                    }
+                                }
+                            </ul>
+                        }
+                    }
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <h3>Description</h3>
+                        <button class="dungeon-master__save-desc" guid="@campaignObj.Guid">Save</button>
+                    </div>
+                    <textarea class="dungeon-master__desc">@campaignObj.Description</textarea>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <h3>Information</h3>
+                        <button class="dungeon-master__save-info" guid="@campaignObj.Guid">Save</button>
+                    </div>
+                    <textarea class="dungeon-master__info">@campaignObj.Information</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="banner second with-top-bot-margins">
+                <div class="banner-content">
+                    <h2 class="text-center">Join Requests</h2>
+                    @{
+                        if (!campaignObj.PendingGuids.Any())
+                        {
+                            <p>There are currently no pending join requests.</p>
+                        }
+                        else 
+                        {
+                            foreach (var pendingGuid in campaignObj.PendingGuids)
+                            {
+                                var userObj = persister.Get<UserObject>(pendingGuid);
+                                <div style="box-shadow: 0 0 16px -8px rgba(0, 0, 0, 0.7); display: flex; flex-direction: column; align-items: center; padding: 8px 0;">
+                                    <h4>@userObj.FullName</h4>
+                                    <div style="display: flex;">
+                                        <button class="dungeon-master__accept-request" guid="@userObj.Guid">Accept</button>
+                                        <button class="dungeon-master__decline-request" guid="@userObj.Guid">Decline</button>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column-container full-height" id="dungeon-master__mobile">
+        <div class="column">
+            <div class="banner with-top-bot-margins">
+                <div class="banner-content">
+                    <a href="/Campaign/ViewDetails?campaignGuid=@campaignGuidStr"><h2 class="text-center">@campaignObj.Name</h2></a>
+                    <h3>Party Members</h3>
+                    @{
+                        if (!campaignObj.UserCharacterPairs.Any())
+                        {
+                            <p>There are currently no party members.</p>
+                        }
+                        else
+                        {
+                            <ul>
+                                @{
+                                    foreach (var pair in campaignObj.UserCharacterPairs)
+                                    {
+                                        var player = persister.Get<UserObject>(pair.UserGuid);
+                                        var associatedCharacterName = persister.Get<CharacterObject>(pair.CharacterGuid)?.Name ?? "N/A";
+                                        <li><a class="dungeon-master__user" guid="@player.Guid">@player.FullName</a> (<a href="/Character/ViewDetails?characterGuid=@pair.CharacterGuid">@associatedCharacterName</a>)</li>
+                                    }
+                                }
+                            </ul>
+                        }
+                    }
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <h3>Description</h3>
+                        <button class="dungeon-master__save-desc" guid="@campaignObj.Guid">Save</button>
+                    </div>
+                    <textarea class="dungeon-master__desc">@campaignObj.Description</textarea>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <h3>Information</h3>
+                        <button class="dungeon-master__save-info" guid="@campaignObj.Guid">Save</button>
+                    </div>
+                    <textarea class="dungeon-master__info">@campaignObj.Information</textarea>
+                </div>
+            </div>
+            <div class="banner second with-top-bot-margins">
+                <div class="banner-content">
+                    <h2 class="text-center">Join Requests</h2>
+                    @{
+                        if (!campaignObj.PendingGuids.Any())
+                        {
+                            <p>There are currently no pending join requests.</p>
+                        }
+                        else 
+                        {
+                            foreach (var pendingGuid in campaignObj.PendingGuids)
+                            {
+                                var userObj = persister.Get<UserObject>(pendingGuid);
+                                <div style="box-shadow: 0 0 16px -8px rgba(0, 0, 0, 0.7); display: flex; flex-direction: column; align-items: center; padding: 8px 0;">
+                                    <h4>@userObj.FullName</h4>
+                                    <div style="display: flex;">
+                                        <button class="dungeon-master__accept-request" guid="@userObj.Guid">Accept</button>
+                                        <button class="dungeon-master__decline-request" guid="@userObj.Guid">Decline</button>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $('.dungeon-master__user').click(function() {
+            notify.me({
+                class: centerPopupClasses,
+                header: $(this).text(),
+                subheader: 'Remove Player',
+                body: 'Would you like to remove this player?',
+                buttons: [{
+                    text: 'No',
+                    action: () => {},
+                    close: true
+                }, {
+                    text: 'Yes',
+                    action: () => {
+                        var model = {
+                            CampaignGuid: '@campaignObj.Guid',
+                            UserGuid: $(this).attr('guid')
+                        };
+                        network.post('/Campaign/RemoveUser', model, json => {
+                            switch (json.response) {
+                                case 'ok':
+                                    location.reload();
+                                    break;
+                                case 'err':
+                                    console.log(json.message);
+                                    notify.me({
+                                        class: centerPopupClasses,
+                                        header: 'Uh Oh',
+                                        subheader: 'Failed to Remove Player',
+                                        body: json.message,
+                                        buttons: [{
+                                            text: 'OK',
+                                            action: () => { },
+                                            close: true
+                                        }],
+                                        closeButton: false,
+                                        fadeInDuration: 200,
+                                        fadeOutDuration: 300,
+                                        sound: 'default',
+                                        onStartClose: () => {
+                                            notify.overlay(false);
+                                        }
+                                    });
+                                    notify.overlay(true);
+                                    break;
+                            }
+                        });
+                    }
+                }],
+                closeButton: false,
+                fadeInDuration: 200,
+                fadeOutDuration: 300,
+                sound: 'default',
+                onStartClose: () => {
+                    notify.overlay(false);
+                }
+            });
+            notify.overlay(true);
+        });
+        $('.dungeon-master__decline-request').click(function() {
+            var userGuid = $(this).attr('guid');
+            var campaignGuid = '@campaignObj.Guid';
+            var model = {
+                CampaignGuid: campaignGuid,
+                UserGuid: userGuid
+            };
+            network.post('/Campaign/DeclineRequest', model, json => {
+                switch (json.response) {
+                case 'ok':
+                    console.log(json.message);
+                    notify.me({
+                        class: cornerPopupClasses,
+                        subheader: 'Request Declined',
+                        body: 'Request has been cleared.',
+                        forceOnTop: true,
+                        handleAsStack: true,
+                        buttons: [],
+                        fadeInDuration: 100,
+                        fadeOutDuration: 100,
+                        timeout: 2000,
+                        targetSelector: '#notify-queue',
+                        targetMethod: 'prepend',
+                        sound: 'default'
+                    });
+                    $(this).parent().parent().remove();
+                    break;
+                case 'err':
+                    console.log(json.message);
+                    notify.me({
+                        class: centerPopupClasses,
+                        header: 'Uh Oh',
+                        subheader: 'Failed to Decline Request',
+                        body: json.message,
+                        buttons: [{
+                            text: 'OK',
+                            action: () => { },
+                            close: true
+                        }],
+                        closeButton: false,
+                        fadeInDuration: 200,
+                        fadeOutDuration: 300,
+                        sound: 'default',
+                        onStartClose: () => {
+                            notify.overlay(false);
+                        }
+                    });
+                    notify.overlay(true);
+                    break;
+                }
+            });
+        });
+        $('.dungeon-master__accept-request').click(function() {
+            var userGuid = $(this).attr('guid');
+            var campaignGuid = '@campaignObj.Guid';
+            var model = {
+                CampaignGuid: campaignGuid,
+                UserGuid: userGuid
+            };
+            network.post('/Campaign/AcceptRequest', model, json => {
+                switch (json.response) {
+                case 'ok':
+                    console.log(json.message);
+                    notify.me({
+                        class: cornerPopupClasses,
+                        subheader: 'Request Accepted',
+                        body: 'Your list of party members will only update on page refresh.',
+                        forceOnTop: true,
+                        handleAsStack: true,
+                        buttons: [],
+                        fadeInDuration: 100,
+                        fadeOutDuration: 100,
+                        timeout: 2000,
+                        targetSelector: '#notify-queue',
+                        targetMethod: 'prepend',
+                        sound: 'default'
+                    });
+                    $(this).parent().parent().remove();
+                    break;
+                case 'err':
+                    console.log(json.message);
+                    notify.me({
+                        class: centerPopupClasses,
+                        header: 'Uh Oh',
+                        subheader: 'Failed to Decline Request',
+                        body: json.message,
+                        buttons: [{
+                            text: 'OK',
+                            action: () => { },
+                            close: true
+                        }],
+                        closeButton: false,
+                        fadeInDuration: 200,
+                        fadeOutDuration: 300,
+                        sound: 'default',
+                        onStartClose: () => {
+                            notify.overlay(false);
+                        }
+                    });
+                    notify.overlay(true);
+                    break;
+                }
+            });
+        });
+        $('.dungeon-master__save-info').click(function() {
+            var val = $('.dungeon-master__info').val();
+            var processing = notify.me({
+                class: cornerPopupClasses,
+                subheader: 'Creating...',
+                body: 'Please wait while we update your campaign.<br/>Do not reload the page.<br/><img src="/assets/spinner.gif" width="80px" style="margin: -20px 0 -40px -30px; user-select: none;"/>',
+                forceOnTop: true,
+                handleAsStack: true,
+                closeButton: false,
+                buttons: [],
+                fadeInDuration: 200,
+                fadeOutDuration: 300,
+                targetSelector: '#notify-queue',
+                targetMethod: 'prepend',
+                sound: 'default'
+            });
+            var model = {
+                Information: val,
+                CampaignGuid: $(this).attr('guid')
+            };
+            network.post('/Campaign/Update', model, json => {
+                processing.close();
+                switch (json.response) {
+                case 'ok':
+                    console.log(json.message);
+                    notify.me({
+                        class: cornerPopupClasses,
+                        subheader: 'Information Saved',
+                        body: 'Your changes were successfully saved.',
+                        forceOnTop: true,
+                        handleAsStack: true,
+                        buttons: [],
+                        fadeInDuration: 100,
+                        fadeOutDuration: 100,
+                        timeout: 1500,
+                        targetSelector: '#notify-queue',
+                        targetMethod: 'prepend',
+                        sound: 'default'
+                    });
+                    break;
+                case 'err':
+                    console.log(json.message);
+                    notify.me({
+                        class: centerPopupClasses,
+                        header: 'Uh Oh',
+                        subheader: 'Information Saved Failed',
+                        body: json.message,
+                        buttons: [{
+                            text: 'OK',
+                            action: () => { },
+                            close: true
+                        }],
+                        closeButton: false,
+                        fadeInDuration: 200,
+                        fadeOutDuration: 300,
+                        sound: 'default',
+                        onStartClose: () => {
+                            notify.overlay(false);
+                        }
+                    });
+                    notify.overlay(true);
+                    break;
+                }
+            });
+        });
+        $('.dungeon-master__save-desc').click(function() {
+            var val = $('.dungeon-master__desc').val();
+            if (val.trim().length !== 0) {
+                var processing = notify.me({
+                    class: cornerPopupClasses,
+                    subheader: 'Creating...',
+                    body: 'Please wait while we update your campaign.<br/>Do not reload the page.<br/><img src="/assets/spinner.gif" width="80px" style="margin: -20px 0 -40px -30px; user-select: none;"/>',
+                    forceOnTop: true,
+                    handleAsStack: true,
+                    closeButton: false,
+                    buttons: [],
+                    fadeInDuration: 200,
+                    fadeOutDuration: 300,
+                    targetSelector: '#notify-queue',
+                    targetMethod: 'prepend',
+                    sound: 'default'
+                });
+                var model = {
+                    Description: val,
+                    CampaignGuid: $(this).attr('guid')
+                };
+                network.post('/Campaign/Update', model, json => {
+                    processing.close();
+                    switch (json.response) {
+                    case 'ok':
+                        console.log(json.message);
+                        notify.me({
+                            class: cornerPopupClasses,
+                            subheader: 'Description Saved',
+                            body: 'Your changes were successfully saved.',
+                            forceOnTop: true,
+                            handleAsStack: true,
+                            buttons: [],
+                            fadeInDuration: 100,
+                            fadeOutDuration: 100,
+                            timeout: 1500,
+                            targetSelector: '#notify-queue',
+                            targetMethod: 'prepend',
+                            sound: 'default'
+                        });
+                        break;
+                    case 'err':
+                        console.log(json.message);
+                        notify.me({
+                            class: centerPopupClasses,
+                            header: 'Uh Oh',
+                            subheader: 'Description Saved Failed',
+                            body: json.message,
+                            buttons: [{
+                                text: 'OK',
+                                action: () => { },
+                                close: true
+                            }],
+                            closeButton: false,
+                            fadeInDuration: 200,
+                            fadeOutDuration: 300,
+                            sound: 'default',
+                            onStartClose: () => {
+                                notify.overlay(false);
+                            }
+                        });
+                        notify.overlay(true);
+                        break;
+                    }
+                });
+            } else {
+                notify.me({
+                    class: centerPopupClasses,
+                    header: 'Oops',
+                    subheader: 'Description cannot be empty',
+                    body: 'Your campaign\'s description is a required field.<br/>Be sure to have something in the text box before clicking save.',
+                    buttons: [{
+                        text: 'OK',
+                        action: () => { },
+                        close: true
+                    }],
+                    closeButton: false,
+                    fadeInDuration: 200,
+                    fadeOutDuration: 300,
+                    sound: 'default',
+                    onStartClose: () => {
+                        notify.overlay(false);
+                    }
+                });
+                notify.overlay(true);
+            }
+        });
+    </script>
+}

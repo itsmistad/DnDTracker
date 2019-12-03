@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DnDTracker.Web.Models;
 
 namespace DnDTracker.Web.Objects
 {
@@ -18,11 +19,20 @@ namespace DnDTracker.Web.Objects
         [DynamoDBProperty]
         public Guid DungeonMasterGuid { get; set; }
         [DynamoDBProperty]
-        public List<Guid> PartyGuids { get; set; }
+        public List<UserCharacterPairModel> UserCharacterPairs { get; set; }
         [DynamoDBProperty]
         public List<Guid> NoteGuids { get; set; }
+        [DynamoDBProperty]
+        public string JoinCode { get; set; }
+        [DynamoDBProperty]
+        public List<Guid> PendingGuids { get; set; }
 
-        public CampaignObject() : base() { } // Required
+        public CampaignObject() : base()  // Required
+        {
+            UserCharacterPairs = new List<UserCharacterPairModel>();
+            NoteGuids = new List<Guid>();
+            PendingGuids = new List<Guid>();
+        }
 
         public CampaignObject(string name, string description, string information, Guid dungeonMasterGuid)
         {
@@ -30,8 +40,14 @@ namespace DnDTracker.Web.Objects
             Description = description;
             Information = information;
             DungeonMasterGuid = dungeonMasterGuid;
-            PartyGuids = new List<Guid>();
+            UserCharacterPairs = new List<UserCharacterPairModel>();
             NoteGuids = new List<Guid>();
+            PendingGuids = new List<Guid>();
+
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random rnd = new Random();
+            JoinCode = new string(Enumerable.Repeat(chars, 7)
+                .Select(s => s[rnd.Next(s.Length)]).ToArray());
         }
 
         public override void FromDocument(Document document)
@@ -50,17 +66,34 @@ namespace DnDTracker.Web.Objects
             DungeonMasterGuid = document.TryGetValue("DungeonMasterGuid", out entry) ?
                 entry.AsGuid() :
                 Guid.Empty;
-            if (document.TryGetValue("PartyGuids", out entry))
+            JoinCode = document.TryGetValue("JoinCode", out entry) ?
+                entry.AsString() :
+                "";
+
+            UserCharacterPairs = new List<UserCharacterPairModel>();
+            NoteGuids = new List<Guid>();
+            PendingGuids = new List<Guid>();
+
+            if (document.TryGetValue("UserCharacterPairs", out entry))
             {
-                PartyGuids = new List<Guid>();
-                foreach (var v in entry.AsListOfPrimitive())
-                    PartyGuids.Add(v.AsGuid());
+                foreach (var v in entry.AsListOfDocument())
+                {
+                    UserCharacterPairs.Add(new UserCharacterPairModel
+                    {
+                        UserGuid = v["UserGuid"].AsGuid(),
+                        CharacterGuid = v["CharacterGuid"].AsGuid()
+                    });
+                }
             }
             if (document.TryGetValue("NoteGuids", out entry))
             {
-                NoteGuids = new List<Guid>();
                 foreach (var v in entry.AsListOfPrimitive())
                     NoteGuids.Add(v.AsGuid());
+            }
+            if (document.TryGetValue("PendingGuids", out entry))
+            {
+                foreach (var v in entry.AsListOfPrimitive())
+                    PendingGuids.Add(v.AsGuid());
             }
         }
     }

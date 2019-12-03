@@ -190,7 +190,7 @@ $(function () {
             targetMethod: 'prepend',
             sound: 'default'
         });
-        network.post('/Character/Save', model, json => {
+        network.post('/Character/Create', model, json => {
             processing.close();
             switch (json.response) {
                 case "ok":

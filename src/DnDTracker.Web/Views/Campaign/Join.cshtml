@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewData["Title"] = "Join a Campaign";
+}
+
+<div id="join-campaign-page">
+    <h2 class="text-center">Join a Campaign</h2>
+    <div class="column-container full-height">
+        <div class="column full-center">
+            <div class="banner">
+                <div class="banner-content full-center">
+                    <h3>Join Code</h3>
+                    <input type="text" maxlength="7" id="join-campaign__join-code" name="Join Code" placeholder="Insert Join Code"/>
+                    <button class="wide thick" id="join-campaign__submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $('#join-campaign__submit').click(function () {
+            var model = {
+                JoinCode: $('#join-campaign__join-code').val()
+            };
+            var processing = notify.me({
+                class: cornerPopupClasses,
+                subheader: 'Sending Request...',
+                body: 'Please wait while we send your request.<br/>Do not reload the page.<br/><img src="/assets/spinner.gif" width="80px" style="margin: -20px 0 -40px -30px; user-select: none;"/>',
+                forceOnTop: true,
+                handleAsStack: true,
+                closeButton: false,
+                buttons: [],
+                fadeInDuration: 200,
+                fadeOutDuration: 300,
+                targetSelector: '#notify-queue',
+                targetMethod: 'prepend',
+                sound: 'default'
+            });
+            network.post('/Campaign/RequestJoin', model, json => {
+                processing.close();
+                switch (json.response) {
+                    case "ok":
+                        console.log(json.message);
+                        notify.me({
+                            class: centerPopupClasses,
+                            header: 'Request Successful',
+                            subheader: 'Your request was sent',
+                            body: json.message,
+                            buttons: [{
+                                text: 'Ok',
+                                action: () => { },
+                                close: true
+                            }],
+                            closeButton: false,
+                            fadeInDuration: 200,
+                            fadeOutDuration: 300,
+                            sound: 'default',
+                            onStartClose: () => {
+                                notify.overlay(false);
+                            }
+                        });
+                        break;
+                    case "err":
+                        console.error(json.message);
+                        notify.me({
+                            class: centerPopupClasses,
+                            header: 'Request Failed',
+                            subheader: 'Something went wrong',
+                            body: json.message,
+                            buttons: [{
+                                text: 'Ok',
+                                action: () => { },
+                                close: true
+                            }],
+                            closeButton: false,
+                            fadeInDuration: 200,
+                            fadeOutDuration: 300,
+                            sound: 'default',
+                            onStartClose: () => {
+                                notify.overlay(false);
+                            }
+                        });
+                        break;
+                }
+                notify.overlay(true);
+            });
+        });
+    </script>
+}

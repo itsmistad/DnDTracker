@@ -41,9 +41,10 @@ namespace DnDTracker.Web.Objects
         public CharacterRaceType RaceType { get; set; }
         [DynamoDBProperty]
         public CharacterBackgroundType BackgroundType { get; set; }
-
         [DynamoDBProperty]
         public CharacterGenderType GenderType { get; set; }
+        [DynamoDBProperty]
+        public Guid UserGuid { get; set; }
 
         public ICharacterClass Class
         {
@@ -57,7 +58,7 @@ namespace DnDTracker.Web.Objects
         public CharacterObject() : base() { }
 
         public CharacterObject(string name, int level, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma, int health, string proficiencies, string equipment,
-            CharacterClassType classType, CharacterSubClassType subClassType, CharacterRaceType raceType, CharacterBackgroundType backgroundType, CharacterGenderType genderType)
+            CharacterClassType classType, CharacterSubClassType subClassType, CharacterRaceType raceType, CharacterBackgroundType backgroundType, CharacterGenderType genderType, Guid userGuid)
         {
             Name = name;
             Level = level;
@@ -75,6 +76,7 @@ namespace DnDTracker.Web.Objects
             RaceType = raceType;
             BackgroundType = backgroundType;
             GenderType = genderType;
+            UserGuid = userGuid;
         }
 
         public override void FromDocument(Document document)
@@ -97,6 +99,7 @@ namespace DnDTracker.Web.Objects
             RaceType = document.TryGetValue("RaceType", out entry) ? (CharacterRaceType)entry.AsInt() : 0;
             BackgroundType = document.TryGetValue("BackgroundType", out entry) ? (CharacterBackgroundType)entry.AsInt() : 0;
             GenderType = document.TryGetValue("GenderType", out entry) ? (CharacterGenderType)entry.AsInt() : 0;
+            UserGuid = document.TryGetValue("UserGuid", out entry) ? entry.AsGuid() : Guid.Empty;
         }
     }
 }

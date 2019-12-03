@@ -15,7 +15,7 @@ namespace DnDTracker.Web.Services.Objects
         public bool IsMemberInCampaign(Guid memberGuid, Guid campaignGuid)
         {
             var campaign = Persister.Get<CampaignObject>(campaignGuid);
-            return campaign != null && (campaign.DungeonMasterGuid == memberGuid || campaign.PartyGuids.Contains(memberGuid));
+            return campaign != null && (campaign.DungeonMasterGuid == memberGuid || campaign.UserCharacterPairs.FirstOrDefault(_ => _.UserGuid == memberGuid) != null);
         }
 
         public List<CampaignObject> GetByDungeonMasterGuid(Guid dungeonMasterGuid)
@@ -34,16 +34,12 @@ namespace DnDTracker.Web.Services.Objects
 
         public List<CampaignObject> GetByMemberGuid(Guid partyMemberGuid)
         {
-            var results = Persister.Scan<CampaignObject>(new Expression
-            {
-                ExpressionStatement = ":guid IN PartyGuids",
-                ExpressionAttributeValues = new Dictionary<string, DynamoDBEntry>()
-                {
-                    { ":guid", partyMemberGuid }
-                }
-            });
+            return Persister.Scan<CampaignObject>().FindAll(_ => _.UserCharacterPairs.FirstOrDefault(u => u.UserGuid == partyMemberGuid) != null);
+        }
 
-            return results ?? new List<CampaignObject>();
+        public CampaignObject GetByJoinCode(string joinCode)
+        {
+            return Persister.Scan<CampaignObject>().First(_ => _.JoinCode == joinCode);
         }
     }
 }

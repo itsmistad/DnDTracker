@@ -34,7 +34,7 @@
                         console.log(json.message);
                         callbackText.css('color', '#777');
                         callbackText.append('<br/>Redirecting in 2 seconds...');
-                        signInRedirectHandle = setTimeout(() => window.location.href = '/UserDash', 2000); //Redirect to the user dashboard
+                        signInRedirectHandle = setTimeout(() => window.location.href = '/Campaign/Dash', 2000); //Redirect to the user dashboard
                         break;
                     case "err":
                         console.error(json.message);
