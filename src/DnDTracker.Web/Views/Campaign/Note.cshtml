@@ -71,15 +71,46 @@
             <div class="banner with-top-bot-margins">
                 <div class="banner-content">
                     <h3>Recipients</h3>
-                    @{
+                    <select class="campaign-note__recipient-select">
+                        @{
+                            <option value="" selected>Select a Party Member</option>
+                            foreach (var p in campaignObj.UserCharacterPairs)
+                            {
+                                if (p.UserGuid == userGuid)
+                                {
+                                    continue;
+                                }
+                                var memberGuid = p.UserGuid;
+                                var characterGuid = p.CharacterGuid;
+                                var memberObj = persister.Get<UserObject>(memberGuid);
+                                var characterObj = persister.Get<CharacterObject>(characterGuid);
 
-                    }
+                                <option value="@memberGuid" @(noteObj != null && noteObj.SharedWithGuids.Contains(memberObj.Guid) ? "disabled" : "")>@memberObj.FullName (@(characterObj?.Name ?? "N/A"))</option>
+                            }
+                        }
+                    </select>
+                    <p class="instructions">Select a party member from the dropdown to add them to the recipient list.</p>
+                    <div class="campaign-note__recipient-list" style="display:none">
+                        <p class="instructions">Click any party member's name to remove them from the list.</p>
+                        @{
+                            if (noteObj != null)
+                            {
+                                foreach (var guid in noteObj.SharedWithGuids)
+                                {
+                                    var memberObj = persister.Get<UserObject>(guid);
+                                    var characterObj = persister.Get<CharacterObject>(campaignObj.UserCharacterPairs.Find(_ => _.UserGuid == memberObj.Guid).CharacterGuid);
+
+                                    <a guid="@memberObj.Guid" onclick="removeRecipient($(this));" class="campaign-note__recipient-anchor">@memberObj.FullName (@(characterObj?.Name ?? "N/A"))</a>
+                                }
+                            }
+                        }
+                    </div>
                 </div>
             </div>
             <div class="banner second with-top-bot-margins">
                 <div class="banner-content">
                     <h3>Contents</h3>
-                    <textarea class="campaign-note__contents" required placeholder="Write the contents of your note."></textarea>
+                    <textarea class="campaign-note__contents" required placeholder="Write the contents of your note.">@(noteObj != null ? noteObj.Contents : "")</textarea>
                 </div>
             </div>
             <div class="mobile-buttons-container">
