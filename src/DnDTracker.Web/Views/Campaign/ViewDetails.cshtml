@@ -11,121 +11,7 @@
 
 <div id="view-campaign-page">
     <h2 class="text-center">Campaign Details</h2>
-    <div class="column-container full-height" id="view-campaign__desktop">
-        <div class="column">
-            <div class="banner">
-                <div class="banner-content">
-                    <div class="column-container no-gutters">
-                        <div class="column no-gutters">
-                            <h3>Campaign</h3>
-                            <p>@campaignObj.Name</p>
-                        </div>
-                        <div class="column no-gutters text-right">
-                            <h3>Join Code</h3>
-                            <p class="view-campaign__join-code" title="Click to copy">@campaignObj.JoinCode</p>
-                        </div>
-                    </div>
-                    <h3>Party Members</h3>
-                    @{
-                        if (!campaignObj.UserCharacterPairs.Any())
-                        {
-                            <p>There are currently no party members.</p>
-                        }
-                        else
-                        {
-                            <ul>
-                                @{
-                                    foreach (var pair in campaignObj.UserCharacterPairs)
-                                    {
-                                        var player = persister.Get<UserObject>(pair.UserGuid);
-                                        var associatedCharacterName = persister.Get<CharacterObject>(pair.CharacterGuid)?.Name ?? "N/A";
-                                        <li>
-                                            <div style="display: flex; align-items: center">
-                                                @player.FullName (<a href="/Character/ViewDetails?characterGuid=@pair.CharacterGuid">@associatedCharacterName</a>)
-                                                @{
-                                                    if (player.Guid == userGuid)
-                                                    {
-                                                        <button class="view-campaign__add-character">Add</button>
-                                                    }
-                                                }
-                                            </div>
-                                        </li>
-                                    }
-                                }
-                            </ul>
-                        }
-                    }
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <h3>Description</h3>
-                        <button class="view-campaign__toggle-desc">Show</button>
-                    </div>
-                    <p class="view-campaign__desc">@campaignObj.Description</p>
-                    @{
-                        if (campaignObj.Information?.Trim().Length > 0)
-                        {
-                            <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <h3>Information</h3>
-                                <button class="view-campaign__toggle-info">Show</button>
-                            </div>
-                            <p class="view-campaign__info">@campaignObj.Information</p>
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-        <div class="column">
-            <div class="banner second">
-                <div class="banner-content">
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <h3>Notes</h3>
-                        <button class="view-campaign__add-note">Create</button>
-                    </div>
-                    @{
-                        if (!campaignObj.NoteGuids.Any())
-                        {
-                            <p>There are currently no notes for you to view.</p>
-                        }
-                        else 
-                        {
-                            var firstForYou = false;
-                            var firstForOthers = false;
-                            foreach (var noteGuid in campaignObj.NoteGuids)
-                            {
-                                var note = persister.Get<NoteObject>(noteGuid);
-                                var author = persister.Get<UserObject>(note.AuthorGuid);
-                                if (!firstForYou)
-                                {
-                                    <h4>For You</h4>
-                                    firstForYou = true;
-                                }
-                                if (note.AuthorGuid != userGuid && (note.SharedWithGuids.Contains(userGuid) || note.SharedWithAll))
-                                {
-                                    <div class="view-campaign__note" guid="@noteGuid"  author="@note.AuthorGuid">
-                                        <h5>From @(persister.Get<UserObject>(note.AuthorGuid).FullName):</h5>
-                                        <p>@note.Contents</p>
-                                    </div>
-                                }
-                                if (!firstForOthers)
-                                {
-                                    <h4>For Others</h4>
-                                    firstForOthers = true;
-                                }
-                                if (note.AuthorGuid == userGuid)
-                                {
-                                    var recipients = string.Join(", ", note.SharedWithGuids.Select(_ => persister.Get<UserObject>(_).FullName).ToList());
-                                    <div class="view-campaign__note author-note" guid="@noteGuid" author="@note.AuthorGuid">
-                                        <h5>For @recipients:</h5>
-                                        <p>@note.Contents</p>
-                                    </div>
-                                }
-                            }
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="column-container full-height" id="view-campaign__mobile">
+    <div class="column-container full-height" id="view-campaign__wrapper">
         <div class="column">
             <div class="banner with-top-bot-margins">
                 <div class="banner-content">
@@ -186,6 +72,8 @@
                     }
                 </div>
             </div>
+        </div>
+        <div class="column">
             <div class="banner second with-top-bot-margins">
                 <div class="banner-content">
                     <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -197,29 +85,30 @@
                         {
                             <p>There are currently no notes for you to view.</p>
                         }
-                        else
+                        else 
                         {
-                            bool firstForYou = false;
-                            bool firstForOthers = false;
+                            var firstForYou = false;
+                            var firstForOthers = false;
                             foreach (var noteGuid in campaignObj.NoteGuids)
                             {
                                 var note = persister.Get<NoteObject>(noteGuid);
                                 var author = persister.Get<UserObject>(note.AuthorGuid);
                                 if (!firstForYou)
                                 {
-                                    <h4>For You</h4>
+                                    <h4 class="text-center">For You</h4>
                                     firstForYou = true;
                                 }
                                 if (note.AuthorGuid != userGuid && (note.SharedWithGuids.Contains(userGuid) || note.SharedWithAll))
                                 {
-                                    <div class="view-campaign__note" guid="@noteGuid" author="@note.AuthorGuid">
+                                    <div class="view-campaign__note" guid="@noteGuid"  author="@note.AuthorGuid">
                                         <h5>From @(persister.Get<UserObject>(note.AuthorGuid).FullName):</h5>
                                         <p>@note.Contents</p>
                                     </div>
                                 }
                                 if (!firstForOthers)
                                 {
-                                    <h4>For Others</h4>
+                                    <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.2); margin: 0 40px;"/>
+                                    <h4 class="text-center">For Others</h4>
                                     firstForOthers = true;
                                 }
                                 if (note.AuthorGuid == userGuid)

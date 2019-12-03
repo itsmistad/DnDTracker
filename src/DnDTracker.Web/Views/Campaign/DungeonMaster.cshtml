@@ -11,7 +11,7 @@
 
 <div id="dungeon-master-page">
     <h2 class="text-center">Dungeon Master</h2>
-    <div class="column-container full-height" id="dungeon-master__desktop">
+    <div class="column-container full-height" id="dungeon-master__wrapper">
         <div class="column">
             <div class="banner with-top-bot-margins">
                 <div class="banner-content">
@@ -50,70 +50,6 @@
             </div>
         </div>
         <div class="column">
-            <div class="banner second with-top-bot-margins">
-                <div class="banner-content">
-                    <h2 class="text-center">Join Requests</h2>
-                    @{
-                        if (!campaignObj.PendingGuids.Any())
-                        {
-                            <p>There are currently no pending join requests.</p>
-                        }
-                        else 
-                        {
-                            foreach (var pendingGuid in campaignObj.PendingGuids)
-                            {
-                                var userObj = persister.Get<UserObject>(pendingGuid);
-                                <div style="box-shadow: 0 0 16px -8px rgba(0, 0, 0, 0.7); display: flex; flex-direction: column; align-items: center; padding: 8px 0;">
-                                    <h4>@userObj.FullName</h4>
-                                    <div style="display: flex;">
-                                        <button class="dungeon-master__accept-request" guid="@userObj.Guid">Accept</button>
-                                        <button class="dungeon-master__decline-request" guid="@userObj.Guid">Decline</button>
-                                    </div>
-                                </div>
-                            }
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="column-container full-height" id="dungeon-master__mobile">
-        <div class="column">
-            <div class="banner with-top-bot-margins">
-                <div class="banner-content">
-                    <a href="/Campaign/ViewDetails?campaignGuid=@campaignGuidStr"><h2 class="text-center">@campaignObj.Name</h2></a>
-                    <h3>Party Members</h3>
-                    @{
-                        if (!campaignObj.UserCharacterPairs.Any())
-                        {
-                            <p>There are currently no party members.</p>
-                        }
-                        else
-                        {
-                            <ul>
-                                @{
-                                    foreach (var pair in campaignObj.UserCharacterPairs)
-                                    {
-                                        var player = persister.Get<UserObject>(pair.UserGuid);
-                                        var associatedCharacterName = persister.Get<CharacterObject>(pair.CharacterGuid)?.Name ?? "N/A";
-                                        <li><a class="dungeon-master__user" guid="@player.Guid">@player.FullName</a> (<a href="/Character/ViewDetails?characterGuid=@pair.CharacterGuid">@associatedCharacterName</a>)</li>
-                                    }
-                                }
-                            </ul>
-                        }
-                    }
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <h3>Description</h3>
-                        <button class="dungeon-master__save-desc" guid="@campaignObj.Guid">Save</button>
-                    </div>
-                    <textarea class="dungeon-master__desc">@campaignObj.Description</textarea>
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <h3>Information</h3>
-                        <button class="dungeon-master__save-info" guid="@campaignObj.Guid">Save</button>
-                    </div>
-                    <textarea class="dungeon-master__info">@campaignObj.Information</textarea>
-                </div>
-            </div>
             <div class="banner second with-top-bot-margins">
                 <div class="banner-content">
                     <h2 class="text-center">Join Requests</h2>

@@ -265,7 +265,7 @@ $(function () {
         var firstLevelHealth = dN + conModifier;
         var laterLevelHealth = firstLevelHealth + ((roll(1, dN)[0] + conModifier) * (level - 1));
 
-        var health = $('#character-health')
+        var health = $('#character-health');
         var summaryHealth = $('#character-summary__health');
 
         if (level > 1) {
@@ -289,7 +289,7 @@ $(function () {
 
         var healthElements = $('#character-health', '#character-summary__health');
 
-        var health = $('#character-health')
+        var health = $('#character-health');
         var summaryHealth = $('#character-summary__health');
 
         if (level > 1) {

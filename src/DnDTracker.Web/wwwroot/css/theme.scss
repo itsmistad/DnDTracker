@@ -568,7 +568,7 @@ body {
 
 #not-supported {
     display: none;
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 100%;
     left: 0;
@@ -668,17 +668,9 @@ body {
         height: 300px;
     }
 
-    #dungeon-master__mobile {
-        display: none;
-    }
-
-    @include for-small-tablet-down {
-        #dungeon-master__mobile {
-            display: flex;
-        }
-
-        #dungeon-master__desktop {
-            display: none;
+    #dungeon-master__wrapper {
+        @include for-small-tablet-down {
+            flex-wrap: wrap;
         }
     }
 }
@@ -779,17 +771,9 @@ body {
         display: none;
     }
 
-    #view-campaign__mobile {
-        display: none;
-    }
-
-    @include for-small-tablet-down {
-        #view-campaign__mobile {
-            display: flex;
-        }
-
-        #view-campaign__desktop {
-            display: none;
+    #view-campaign__wrapper {
+        @include for-small-tablet-down {
+            flex-wrap: wrap;
         }
     }
 }
@@ -1191,17 +1175,9 @@ body {
         resize: none;
     }
 
-    #campaign-note__mobile {
-        display: none;
-    }
-
-    @include for-small-tablet-down {
-        #campaign-note__mobile {
-            display: flex;
-        }
-
-        #campaign-note__desktop {
-            display: none;
+    #campaign-note__wrapper {
+        @include for-small-tablet-down {
+            flex-wrap: wrap;
         }
     }
 
