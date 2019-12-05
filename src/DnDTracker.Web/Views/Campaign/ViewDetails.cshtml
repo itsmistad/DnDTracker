@@ -41,7 +41,7 @@
                                         var associatedCharacterName = persister.Get<CharacterObject>(pair.CharacterGuid)?.Name ?? "N/A";
                                         <li>
                                             <div style="display: flex; align-items: center">
-                                                @player.FullName (<a href="/Character/ViewDetails?characterGuid=@pair.CharacterGuid">@associatedCharacterName</a>)
+                                                @player.FullName (<@(associatedCharacterName == "N/A" ? "span" : $"a href=/Character/ViewDetails?characterGuid={pair.CharacterGuid}")>@associatedCharacterName<@(associatedCharacterName == "N/A" ? "/span" : $"/a")>)
                                                 @{
                                                     if (player.Guid == userGuid)
                                                     {
